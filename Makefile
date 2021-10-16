@@ -15,8 +15,8 @@ OBJ2=$(OBJ1:.m=.o)
 OBJ3=$(OBJ2:.cpp=.cpp.o)
 OBJ=$(addprefix $(OBJDIR)/,$(OBJ3))
 
-WARNINGS_ = -Wno-sizeof-array-argument -Wno-unknown-warning-option -Wno-sizeof-pointer-div -Wno-unneeded-internal-declaration -Wno-unused-parameter -Wno-unused-variable
-INCLUDES_ = -Iglfw/include -Iglad/include
+WARNINGS_ = -Wno-sizeof-array-argument -Wno-unknown-warning-option -Wno-sizeof-pointer-div -Wno-unneeded-internal-declaration -Wno-unused-parameter -Wno-unused-variable -Wno-unused-private-field
+INCLUDES_ = -Iglfw/include -Iglad/include -Iglm
 
 CFLAGS += -Wall -Wextra -Werror -pedantic $(WARNINGS_) $(INCLUDES_) -g
 CPPFLAGS += -Wall -Wextra -Werror -pedantic $(WARNINGS_) $(INCLUDES_) -std=c++11 -g

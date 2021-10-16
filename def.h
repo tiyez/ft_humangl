@@ -18,5 +18,8 @@ do {fprintf (stderr, "Debug:%s:%d: ", __func__, __LINE__);\
 
 #define GL(v) (v); if ((error = glGetError())) do { Error ("GL Error! %d", error); exit (1); } while (0)
 
+#define Member_Offset(type, memb) (&(((type *)0)->memb))
+#define Array_Count(arr) (sizeof (arr) / sizeof ((arr)[0]))
+
 
 #endif /* Def_H */
