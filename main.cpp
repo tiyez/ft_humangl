@@ -207,20 +207,20 @@ int main () {
 
 	struct vertex verticies_cube[] = {
 		#define Repos(X) ((X) - 0.5f)
-		#define Quad(x1,y1,z1, x2,y2,z2, x3,y3,z3, x4,y4,z4) \
-			{ { Repos(x1), Repos(y1), Repos(z1) }, { 1, 0, 0, 1 } }, \
-			{ { Repos(x2), Repos(y2), Repos(z2) }, { 1, 0, 0, 1 } }, \
-			{ { Repos(x3), Repos(y3), Repos(z3) }, { 1, 0, 0, 1 } }, \
-			{ { Repos(x1), Repos(y1), Repos(z1) }, { 1, 0, 0, 1 } }, \
-			{ { Repos(x3), Repos(y3), Repos(z3) }, { 1, 0, 0, 1 } }, \
-			{ { Repos(x4), Repos(y4), Repos(z4) }, { 1, 0, 0, 1 } }
+		#define Quad(x1,y1,z1, x2,y2,z2, x3,y3,z3, x4,y4,z4,  c1,c2,c3) \
+			{ { Repos(x1), Repos(y1), Repos(z1) }, { c1, c2, c3, 1 } }, \
+			{ { Repos(x2), Repos(y2), Repos(z2) }, { c1, c2, c3, 1 } }, \
+			{ { Repos(x3), Repos(y3), Repos(z3) }, { c1, c2, c3, 1 } }, \
+			{ { Repos(x1), Repos(y1), Repos(z1) }, { c1, c2, c3, 1 } }, \
+			{ { Repos(x3), Repos(y3), Repos(z3) }, { c1, c2, c3, 1 } }, \
+			{ { Repos(x4), Repos(y4), Repos(z4) }, { c1, c2, c3, 1 } }
 
-		Quad (0,0,0, 0,1,0, 1,1,0, 1,0,0),
-		Quad (0,0,1, 1,0,1, 1,1,1, 0,1,1),
-		Quad (0,0,0, 0,0,1, 0,1,1, 0,1,0),
-		Quad (1,0,0, 1,1,0, 1,1,1, 1,0,1),
-		Quad (0,0,0, 1,0,0, 1,0,1, 0,0,1),
-		Quad (0,1,0, 0,1,1, 1,1,1, 1,1,0),
+		Quad (0,0,0, 0,1,0, 1,1,0, 1,0,0,  0,0,1),
+		Quad (0,0,1, 1,0,1, 1,1,1, 0,1,1,  0,0,1),
+		Quad (0,0,0, 0,0,1, 0,1,1, 0,1,0,  1,0,0),
+		Quad (1,0,0, 1,1,0, 1,1,1, 1,0,1,  1,0,0),
+		Quad (0,0,0, 1,0,0, 1,0,1, 0,0,1,  0,1,0),
+		Quad (0,1,0, 0,1,1, 1,1,1, 1,1,0,  0,1,0),
 
 		#undef Quad
 		#undef Repos
@@ -264,7 +264,7 @@ int main () {
 		glfwGetFramebufferSize (window, &width, &height);
 		GL (glViewport (0, 0, width, height));
 		GL (glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-		glm::mat4	projection = glm::infinitePerspective (60.f * (3.1415f / 180.f), (float) width / height, 0.1f);
+		glm::mat4	projection = glm::infinitePerspective (glm::radians (60.f), (float) width / height, 0.1f);
 		// Clip space END
 
 		// Camera
@@ -282,18 +282,71 @@ int main () {
 		// Camera END
 
 		// Model
-		glm::mat4	model(1);
+		class MatrixStack {
+			glm::mat4	matricies[8];
+			size_t		matricies_count;
 
-		
+		public:
+			MatrixStack (): matricies_count (0) {}
+			glm::mat4	&push () {
+				matricies[matricies_count] = glm::mat4 (1);
+				matricies_count += 1;
+				return (top ());
+			}
+			glm::mat4	&pop () {
+				matricies_count -= 1;
+				return (top ());
+			}
+			glm::mat4	&top () {
+				return (matricies[matricies_count - 1]);
+			}
+			void		scale (const glm::vec3 &dim) {
+				top () *= glm::scale (dim);
+			}
+			void		rotate (float angle, const glm::vec3 &axis) {
+				top () *= glm::rotate (angle, axis);
+			}
+			void		translate (const glm::vec3 &delta) {
+				top () *= glm::translate (delta);
+			}
+			glm::mat4	make () {
+				size_t		index = 0;
+				glm::mat4	result(1);
+
+				while (index < matricies_count) {
+					// result *= matricies[matricies_count - index - 1];
+					result *= matricies[index];
+					index += 1;
+				}
+				return (result);
+			}
+		};
+
+		class MatrixStack	stack;
+
+		auto draw = [&](class MatrixStack &stack) {
+			glm::mat4	mvp = projection * camera * stack.make();
+
+			glUniformMatrix4fv (mvp_loc, 1, GL_FALSE, glm::value_ptr(mvp));
+			glDrawArrays (GL_TRIANGLES, 0, Array_Count (verticies_cube));
+		};
+
+		// -- Torso
+		stack.push ();
+		stack.scale (glm::vec3 (1.3f, 3.14f, 0.8f));
+		draw (stack);
+		// -- Torso END
+
+		// -- Head
+		stack.push ();
+		stack.scale (glm::vec3 (1.f / 1.3f, 1 / 3.14f, 1 / 0.8f));
+		stack.rotate (glm::radians (30.f), glm::vec3 (1, 0, 0));
+		stack.scale (glm::vec3 (1.3f, 3.14f, 0.8f));
+		stack.translate (glm::vec3 (0, 1, 0));
+		draw (stack);
+		// -- Head END
 
 		// Model END
-
-		// Render
-		glm::mat4	mvp = projection * camera * model;
-
-		glUniformMatrix4fv (mvp_loc, 1, GL_FALSE, glm::value_ptr(mvp));
-		glDrawArrays (GL_TRIANGLES, 0, Array_Count (verticies_cube));
-		// Render END
 
 		memset (&input.mouse_delta, 0, sizeof input.mouse_delta);
 		glfwSwapBuffers (window);
