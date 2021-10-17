@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <vector>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -7,6 +8,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 
@@ -253,11 +255,22 @@ int main () {
 	double time;
 	float delta;
 
+	float slider = 0, slider_speed = 1.f;
+	int slider_direction = 1;
+
 	while (!glfwWindowShouldClose (window))
 	{
 		time = glfwGetTime ();
 		delta = float (time - last_frame_time);
 		last_frame_time = time;
+
+		slider += slider_direction * slider_speed * delta;
+		if (slider_direction > 0 & slider > 1) {
+			slider_direction = -1;
+		} else if (slider_direction < 0 && slider < 0) {
+			slider_direction = 1;
+		}
+		slider = glm::clamp (slider, 0.f, 1.f);
 
 		// Clip space
 		int width, height;
@@ -289,7 +302,11 @@ int main () {
 		public:
 			MatrixStack (): matricies_count (0) {}
 			glm::mat4	&push () {
-				matricies[matricies_count] = glm::mat4 (1);
+				if (matricies_count <= 0) {
+					matricies[matricies_count] = glm::mat4 (1);
+				} else {
+					matricies[matricies_count] = top ();
+				}
 				matricies_count += 1;
 				return (top ());
 			}
@@ -314,8 +331,8 @@ int main () {
 				glm::mat4	result(1);
 
 				while (index < matricies_count) {
-					// result *= matricies[matricies_count - index - 1];
-					result *= matricies[index];
+					result *= matricies[matricies_count - index - 1];
+					// result *= matricies[index];
 					index += 1;
 				}
 				return (result);
@@ -325,27 +342,143 @@ int main () {
 		class MatrixStack	stack;
 
 		auto draw = [&](class MatrixStack &stack) {
-			glm::mat4	mvp = projection * camera * stack.make();
+			glm::mat4	mvp = projection * camera * stack.top ();
 
 			glUniformMatrix4fv (mvp_loc, 1, GL_FALSE, glm::value_ptr(mvp));
 			glDrawArrays (GL_TRIANGLES, 0, Array_Count (verticies_cube));
 		};
 
-		// -- Torso
-		stack.push ();
-		stack.scale (glm::vec3 (1.3f, 3.14f, 0.8f));
-		draw (stack);
-		// -- Torso END
+		class Node {
+		public:
+			glm::vec3	rotation_axis;
+			float		rotation_angle;
+			glm::vec3	self_origin;
+			glm::vec3	parent_origin;
+			glm::vec3	scale;
+			class Node	*parent;
+			std::vector<class Node *>	childs;
 
-		// -- Head
-		stack.push ();
-		stack.scale (glm::vec3 (1.f / 1.3f, 1 / 3.14f, 1 / 0.8f));
-		stack.rotate (glm::radians (30.f), glm::vec3 (1, 0, 0));
-		stack.scale (glm::vec3 (1.3f, 3.14f, 0.8f));
-		stack.translate (glm::vec3 (0, 1, 0));
-		draw (stack);
-		// -- Head END
+			Node (glm::vec3 rotation_axis,
+				float rotation_angle,
+				glm::vec3 self_origin,
+				glm::vec3 parent_origin,
+				glm::vec3 scale)
+				: rotation_axis(rotation_axis)
+				, rotation_angle(rotation_angle)
+				, self_origin(self_origin)
+				, parent_origin(parent_origin)
+				, scale(scale)
+				, parent(0)
+				{}
 
+			void	set_parent (class Node *parent) {
+				if (this->parent) {
+					Error ("Node already has parent");
+					return ;
+				}
+				this->parent = parent;
+				parent->childs.push_back (this);
+			}
+		};
+
+		std::function<void (class MatrixStack &stack, const class Node &node)> draw_node = [&](class MatrixStack &stack, const class Node &node) {
+			stack.push ();
+				if (node.parent) {
+					stack.translate ((node.parent->scale / 2.f) * node.parent_origin);
+				}
+				if (node.rotation_angle != 0) { // TODO(viktor): epsilon
+					stack.rotate (node.rotation_angle, node.rotation_axis);
+				}
+				stack.translate (-((node.scale / 2.f) * node.self_origin));
+				stack.push ();
+					stack.scale (node.scale);
+					draw (stack);
+				stack.pop ();
+				for (auto &child : node.childs) {
+					draw_node (stack, *child);
+				}
+			stack.pop ();
+		};
+
+		class Node	torso(
+						glm::vec3 (0), /* rotation_axis */
+						0, /* rotation_angle */
+						glm::vec3 (0), /* self_origin */
+						glm::vec3 (0), /* parent_origin */
+						glm::vec3 (1.3f, 3.14f, 0.8f)); /* scale */
+
+		class Node	head(
+						glm::vec3 (1, 0, 0), /* rotation_axis */
+						glm::radians (15.f * (slider * 2 - 1)), /* rotation_angle */
+						glm::vec3 (0, -1, 0), /* self_origin */
+						glm::vec3 (0, 1, 0), /* parent_origin */
+						glm::vec3 (1)); /* scale */
+		head.set_parent (&torso);
+
+		// hands
+		class Node	left_hand(
+						glm::vec3 (0, 0, 1), /* rotation_axis */
+						glm::radians (-30.f + 15.f * (slider * 2 - 1)), /* rotation_angle */
+						glm::vec3 (1, 1, 0), /* self_origin */
+						glm::vec3 (-1, 1, 0), /* parent_origin */
+						glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
+		left_hand.set_parent (&torso);
+		class Node	lower_left_hand(
+						glm::vec3 (1, 0, 0), /* rotation_axis */
+						glm::radians (-40.f + 30.f * (slider * 2 - 1)), /* rotation_angle */
+						glm::vec3 (0, 1, 1), /* self_origin */
+						glm::vec3 (0, -1, 1), /* parent_origin */
+						glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
+		lower_left_hand.set_parent (&left_hand);
+
+		class Node	right_hand(
+						glm::vec3 (0, 0, 1), /* rotation_axis */
+						glm::radians (30.f + 15.f * (slider * -2 + 1)), /* rotation_angle */
+						glm::vec3 (-1, 1, 0), /* self_origin */
+						glm::vec3 (1, 1, 0), /* parent_origin */
+						glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
+		right_hand.set_parent (&torso);
+		class Node	lower_right_hand(
+						glm::vec3 (1, 0, 0), /* rotation_axis */
+						glm::radians (-40.f + 30.f * (slider * 2 - 1)), /* rotation_angle */
+						glm::vec3 (0, 1, 1), /* self_origin */
+						glm::vec3 (0, -1, 1), /* parent_origin */
+						glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
+		lower_right_hand.set_parent (&right_hand);
+
+		// legs
+		class Node	left_leg(
+						glm::vec3 (0, 0, 1), /* rotation_axis */
+						glm::radians (-30.f + 15.f * (slider * 2 - 1)), /* rotation_angle */
+						glm::vec3 (1, 1, 0), /* self_origin */
+						glm::vec3 (-1, -1, 0), /* parent_origin */
+						glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
+		left_leg.set_parent (&torso);
+		class Node	lower_left_leg(
+						glm::vec3 (1, 0, 0), /* rotation_axis */
+						glm::radians (-40.f + 30.f * (slider * 2 - 1)), /* rotation_angle */
+						glm::vec3 (0, 1, 1), /* self_origin */
+						glm::vec3 (0, -1, 1), /* parent_origin */
+						glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
+		lower_left_leg.set_parent (&left_leg);
+
+		class Node	right_leg(
+						glm::vec3 (0, 0, 1), /* rotation_axis */
+						glm::radians (30.f + 15.f * (slider * -2 + 1)), /* rotation_angle */
+						glm::vec3 (-1, 1, 0), /* self_origin */
+						glm::vec3 (1, -1, 0), /* parent_origin */
+						glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
+		right_leg.set_parent (&torso);
+		class Node	lower_right_leg(
+						glm::vec3 (1, 0, 0), /* rotation_axis */
+						glm::radians (-40.f + 30.f * (slider * 2 - 1)), /* rotation_angle */
+						glm::vec3 (0, 1, 1), /* self_origin */
+						glm::vec3 (0, -1, 1), /* parent_origin */
+						glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
+		lower_right_leg.set_parent (&right_leg);
+
+		// Draw
+		draw_node (stack, torso);
 		// Model END
 
 		memset (&input.mouse_delta, 0, sizeof input.mouse_delta);
