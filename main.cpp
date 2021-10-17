@@ -326,17 +326,6 @@ int main () {
 			void		translate (const glm::vec3 &delta) {
 				top () *= glm::translate (delta);
 			}
-			glm::mat4	make () {
-				size_t		index = 0;
-				glm::mat4	result(1);
-
-				while (index < matricies_count) {
-					result *= matricies[matricies_count - index - 1];
-					// result *= matricies[index];
-					index += 1;
-				}
-				return (result);
-			}
 		};
 
 		class MatrixStack	stack;
