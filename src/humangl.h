@@ -3,9 +3,9 @@
 
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
-#include <functional>
 
-#include "Node.hpp"
+class RenderObject;
+class Node;
 
 // SHADERS
 
@@ -29,14 +29,6 @@ void input_register_callbacks(GLFWwindow *window);
 
 // GLFW INITIALIZATION
 
-struct RenderObject {
-	GLuint	vbo;
-	GLuint	vao;
-	GLuint	program;
-	GLint	verts_count;
-	GLint	mvp_loc;
-};
-
 struct vertex {
 	float	pos[3];
 	float	color[4];
@@ -53,8 +45,9 @@ glm::mat4	calculate_camera(Input *input, float delta);
 
 // MODEL
 
-Node	*create_human(float slider);
-//void draw_node(class MatrixStack &stack, const class Node &node);
+void	draw_hierarchy(class MatrixStack &stack, const class Node &node, const glm::mat4 &vp);
+Node	*create_human(float slider, RenderObject *model);
+void 	delete_human(Node *node);
 
 // TIME
 

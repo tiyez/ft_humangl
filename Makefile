@@ -5,7 +5,7 @@ OBJDIR=.obj
 SRCDIR=src
 
 SRC = glad/src/glad.c
-CPPSRC = $(addprefix $(SRCDIR)/,main.cpp shaders.cpp input.cpp initialization.cpp mvp.cpp time.cpp skeleton/model.cpp skeleton/Node.cpp matrix_stack/MatrixStack.cpp )
+CPPSRC = $(addprefix $(SRCDIR)/,main.cpp shaders.cpp input.cpp initialization.cpp mvp.cpp time.cpp skeleton/model.cpp skeleton/Node.cpp matrix_stack/MatrixStack.cpp render/RenderObject.cpp)
 MSRC = 
 ALL_SRC= $(MSRC) $(CPPSRC) $(SRC)
 
@@ -16,7 +16,7 @@ OBJ3=$(OBJ2:.cpp=.cpp.o)
 OBJ=$(addprefix $(OBJDIR)/,$(OBJ3))
 
 WARNINGS_ = -Wno-sizeof-array-argument -Wno-unknown-warning-option -Wno-sizeof-pointer-div -Wno-unneeded-internal-declaration -Wno-unused-parameter -Wno-unused-variable -Wno-unused-private-field
-INCLUDES_ = -Iglfw/include -Iglad/include -Iglm -I./src -I./src/skeleton -I./src/matrix_stack
+INCLUDES_ = -Iglfw/include -Iglad/include -Iglm -I./src -I./src/skeleton/ -I./src/matrix_stack/ -I./src/render
 
 CFLAGS += -Wall -Wextra -Werror -pedantic $(WARNINGS_) $(INCLUDES_) -g
 CPPFLAGS += -Wall -Wextra -Werror -pedantic $(WARNINGS_) $(INCLUDES_) -std=c++11 -g

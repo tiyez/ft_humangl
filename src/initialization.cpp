@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 
 #include "humangl.h"
+#include "RenderObject.hpp"
 #include "def.h"
 
 GLenum error;
@@ -69,9 +70,8 @@ const struct vertex vertices_cube[] = {
 		#undef Repos
 };
 
+// Always cube for now :)
 RenderObject *initialize_render_object(void) {
-	RenderObject *obj = new RenderObject();
-
 	GLuint	vao;
 	GL (glGenVertexArrays (1, &vao));
 	GL (glBindVertexArray (vao));
@@ -86,13 +86,10 @@ RenderObject *initialize_render_object(void) {
 	GL (glEnableVertexAttribArray (0));
 	GL (glEnableVertexAttribArray (1));
 
-	obj->vao = vao;
-	obj->vbo = buffer;
-	obj->verts_count = Array_Count(vertices_cube);
-	obj->program = new_shader_program (get_default_vertex_shader (), get_default_fragment_shader ());
-	obj->mvp_loc = glGetUniformLocation (obj->program, "MVP");
+	GLint program = new_shader_program (get_default_vertex_shader (), get_default_fragment_shader ());
+	GLint mvp_loc = glGetUniformLocation (program, "MVP");
 
-	GL (glUseProgram (obj->program));
+	RenderObject *obj = new RenderObject(buffer, vao, Array_Count(vertices_cube), program, mvp_loc); // TODO: cleanup
 
 	return obj;
 }
