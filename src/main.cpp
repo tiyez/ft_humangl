@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <vector>
 #include <glad/glad.h>
@@ -13,105 +12,14 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 
-GLenum error;
-
-struct Input {
-	glm::vec3	movement_delta;
-	glm::vec2	mouse_position;
-	glm::vec2	mouse_delta;
-};
-
-struct WindowUserData {
-	struct Input	*input;
-};
-
-static void	error_callback(int error, const char* description) {
-	std::cerr << "Error(" << error << "): " << description << std::endl;
-}
-
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	WindowUserData	*userdata = static_cast<WindowUserData *>(glfwGetWindowUserPointer (window));
-	Input			*input = userdata->input;
-
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-		glfwSetWindowShouldClose(window, GLFW_TRUE);
-	}
-	if (action == GLFW_PRESS) {
-		switch (key) {
-			case GLFW_KEY_D: { input->movement_delta.x += 1; } break ;
-			case GLFW_KEY_A: { input->movement_delta.x += -1; } break ;
-			case GLFW_KEY_W: { input->movement_delta.z += 1; } break ;
-			case GLFW_KEY_S: { input->movement_delta.z += -1; } break ;
-			case GLFW_KEY_E: { input->movement_delta.y += 1; } break ;
-			case GLFW_KEY_Q: { input->movement_delta.y += -1; } break ;
-		}
-	} else if (action == GLFW_RELEASE) {
-		switch (key) {
-			case GLFW_KEY_D: { input->movement_delta.x -= 1; } break ;
-			case GLFW_KEY_A: { input->movement_delta.x -= -1; } break ;
-			case GLFW_KEY_W: { input->movement_delta.z -= 1; } break ;
-			case GLFW_KEY_S: { input->movement_delta.z -= -1; } break ;
-			case GLFW_KEY_E: { input->movement_delta.y -= 1; } break ;
-			case GLFW_KEY_Q: { input->movement_delta.y -= -1; } break ;
-		}
-	}
-}
-
-static void	mouse_pos_callback (GLFWwindow *window, double x, double y) {
-	WindowUserData	*userdata = static_cast<WindowUserData *>(glfwGetWindowUserPointer (window));
-	Input			*input = userdata->input;
-
-	if (glm::abs (x - input->mouse_position.x) < 100 && glm::abs (y - input->mouse_position.y) < 100) {
-		input->mouse_delta.x = x - input->mouse_position.x;
-		input->mouse_delta.y = y - input->mouse_position.y;
-	} else {
-		input->mouse_delta.x = 0;
-		input->mouse_delta.y = 0;
-	}
-	input->mouse_position.x = x;
-	input->mouse_position.y = y;
-}
+extern GLenum error;
 
 int main () {
-	if (!glfwInit ()) {
-		std::cerr << "failed to initialize GLFW" << std::endl;
-		return -1;
-	}
-
-	glfwSetErrorCallback (error_callback);
-
-	glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 1);
-	glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-	GLFWwindow	*window = glfwCreateWindow (1000, 600, "humangl", 0, 0);
-	if (!window) {
-		std::cerr << "cannot create a window" << std::endl;
-		return -1;
-	}
-
 	Input			input;
 	WindowUserData	userdata = { &input };
-	glfwSetWindowUserPointer (window, static_cast<void *>(&userdata));
-
-	glfwMakeContextCurrent (window);
-	gladLoadGLLoader ((void *(*)(const char *)) glfwGetProcAddress);
-
-	glfwSetInputMode (window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwSetKeyCallback (window, key_callback);
-	glfwSetCursorPosCallback (window, mouse_pos_callback);
-
-	std::cerr << "OpenGL " << glGetString(GL_VERSION) << ", GLSL " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-
-	glfwSwapInterval (1);
-
-	GL (glEnable (GL_CULL_FACE));
-	GL (glFrontFace (GL_CCW));
-	GL (glClearColor (1, 1, 1, 1));
-	GL (glEnable (GL_DEPTH_TEST));
-	GL (glDepthFunc (GL_LESS));
-
+	GLFWwindow *window = initialize_glfw(userdata);
+	input_register_callbacks(window);
+	initialize_opengl();
 
 	struct vertex {
 		float	pos[3];
