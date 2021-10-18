@@ -4,9 +4,10 @@ NAME=humangl
 
 DEPDIR=.dep
 OBJDIR=.obj
+SRCDIR=src
 
 SRC = glad/src/glad.c
-CPPSRC = main.cpp
+CPPSRC = $(addprefix $(SRCDIR)/, main.cpp shaders.cpp)
 MSRC = 
 ALL_SRC= $(MSRC) $(CPPSRC) $(SRC)
 
@@ -16,7 +17,7 @@ OBJ3=$(OBJ2:.cpp=.cpp.o)
 OBJ=$(addprefix $(OBJDIR)/,$(OBJ3))
 
 WARNINGS_ = -Wno-sizeof-array-argument -Wno-unknown-warning-option -Wno-sizeof-pointer-div -Wno-unneeded-internal-declaration -Wno-unused-parameter -Wno-unused-variable -Wno-unused-private-field
-INCLUDES_ = -Iglfw/include -Iglad/include -Iglm
+INCLUDES_ = -Iglfw/include -Iglad/include -Iglm -I./src
 
 CFLAGS += -Wall -Wextra -Werror -pedantic $(WARNINGS_) $(INCLUDES_) -g
 CPPFLAGS += -Wall -Wextra -Werror -pedantic $(WARNINGS_) $(INCLUDES_) -std=c++11 -g
