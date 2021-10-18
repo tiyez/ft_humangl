@@ -33,7 +33,7 @@
 + [2.15. GLM\_FORCE\_XYZW\_ONLY: Only exposes x, y, z and w components](#section2_15)
 + [2.16. GLM\_FORCE\_LEFT\_HANDED: Force left handed coordinate system](#section2_16)
 + [2.17. GLM\_FORCE\_DEPTH\_ZERO\_TO\_ONE: Force the use of a clip space between 0 to 1](#section2_17)
-+ [2.18. GLM\_FORCE\_SIZE\_T\_LENGTH: Vector and matrix static size type](#section2_18)
++ [2.18. GLM\_FORCE\_SIZE\_T\_LENGTH: Vector and matrix static data_size type](#section2_18)
 + [2.19. GLM\_FORCE\_UNRESTRICTED\_GENTYPE: Removing genType restriction](#section2_19)
 + [2.20. GLM\_FORCE\_SILENT\_WARNINGS: Silent C++ warnings from language extensions](#section2_20)
 + [2.21. GLM\_FORCE\_QUAT\_DATA\_WXYZ: Force GLM to store quat data as w,x,y,z instead of x,y,z,w](#section2_21)
@@ -427,7 +427,7 @@ Each object type imposes its alignment requirement on every object of that type;
 
 In order to satisfy alignment requirements of all non-static members of a class, padding may be inserted after some of its members. 
 
-GLM supports both packed and aligned types. Packed types allow filling data structure without inserting extra padding. Aligned GLM types align addresses based on the size of the value type of a GLM type.
+GLM supports both packed and aligned types. Packed types allow filling data structure without inserting extra padding. Aligned GLM types align addresses based on the data_size of the value type of a GLM type.
 
 ```cpp
 #define GLM_FORCE_ALIGNED_GENTYPES
@@ -571,7 +571,7 @@ vec3 D = B.rsz; // Invalid, won't compile
 
 GLM supports some of this functionality. Swizzling can be enabled by defining `GLM_FORCE_SWIZZLE`.
 
-*Note: Enabling swizzle expressions will massively increase the size of your binaries and the time it takes to compile them!*
+*Note: Enabling swizzle expressions will massively increase the data_size of your binaries and the time it takes to compile them!*
 
 GLM has two levels of swizzling support described in the following subsections.
 
@@ -660,7 +660,7 @@ void foo()
 }
 ```
 
-*Note: The implementation has a caveat: Swizzle operator types must be different on both size of the equal operator or the operation will fail. There is no known fix for this issue to date*
+*Note: The implementation has a caveat: Swizzle operator types must be different on both data_size of the equal operator or the operation will fail. There is no known fix for this issue to date*
 
 ### <a name="section2_15"></a> 2.15. GLM\_FORCE\_XYZW\_ONLY: Only exposes x, y, z and w components
 
@@ -681,7 +681,7 @@ By default, OpenGL is using a -1 to 1 clip space in Z-axis. However, others APIs
 
 GLM allows switching the clip space in Z-axis to 0 to 1 by defining `GLM_FORCE_DEPTH_ZERO_TO_ONE`.
 
-### <a name="section2_18"></a> 2.18. GLM\_FORCE\_SIZE\_T\_LENGTH: Vector and matrix static size
+### <a name="section2_18"></a> 2.18. GLM\_FORCE\_SIZE\_T\_LENGTH: Vector and matrix static data_size
 
 GLSL supports the member function .length() for all vector and matrix types.
 

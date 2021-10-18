@@ -6,6 +6,9 @@
 #include "def.h"
 #include "humangl.h"
 
+#include "Node.hpp"
+#include "MatrixStack.hpp"
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -89,84 +92,17 @@ int main () {
 		}
 		slider = glm::clamp (slider, 0.f, 1.f);
 
-
 		glm::mat4 projection = calculate_projection(window);
 		glm::mat4 camera = calculate_camera(userdata.input, delta);
 
 		// Model
-		class MatrixStack {
-			glm::mat4	matricies[8];
-			size_t		matricies_count;
-
-		public:
-			MatrixStack (): matricies_count (0) {}
-			glm::mat4	&push () {
-				if (matricies_count <= 0) {
-					matricies[matricies_count] = glm::mat4 (1);
-				} else {
-					matricies[matricies_count] = top ();
-				}
-				matricies_count += 1;
-				return (top ());
-			}
-			glm::mat4	&pop () {
-				matricies_count -= 1;
-				return (top ());
-			}
-			glm::mat4	&top () {
-				return (matricies[matricies_count - 1]);
-			}
-			void		scale (const glm::vec3 &dim) {
-				top () *= glm::scale (dim);
-			}
-			void		rotate (float angle, const glm::vec3 &axis) {
-				top () *= glm::rotate (angle, axis);
-			}
-			void		translate (const glm::vec3 &delta) {
-				top () *= glm::translate (delta);
-			}
-		};
-
 		class MatrixStack	stack;
 
-		auto draw = [&](class MatrixStack &stack) { // TODO change proto for glm::mat4 &stack_top
-			glm::mat4	mvp = projection * camera * stack.top ();
+		auto draw = [&](const glm::mat4 &model) {
+			glm::mat4	mvp = projection * camera * model;
 
 			glUniformMatrix4fv (mvp_loc, 1, GL_FALSE, glm::value_ptr(mvp));
 			glDrawArrays (GL_TRIANGLES, 0, Array_Count (verticies_cube));
-		};
-
-		class Node {
-		public:
-			glm::vec3	rotation_axis;
-			float		rotation_angle;
-			glm::vec3	self_origin;
-			glm::vec3	parent_origin;
-			glm::vec3	scale;
-			class Node	*parent;
-			std::vector<class Node *>	childs;
-
-			Node (glm::vec3 rotation_axis,
-				float rotation_angle,
-				glm::vec3 self_origin,
-				glm::vec3 parent_origin,
-				glm::vec3 scale)
-				: rotation_axis(rotation_axis)
-				, rotation_angle(rotation_angle)
-				, self_origin(self_origin)
-				, parent_origin(parent_origin)
-				, scale(scale)
-				, parent(0)
-				{}
-
-			void	set_parent (class Node *parent) {
-				if (this->parent) {
-					Error ("Node already has parent");
-					return ;
-				}
-				this->parent = parent;
-				parent->childs.push_back (this);
-			}
 		};
 
 		std::function<void (class MatrixStack &stack, const class Node &node)> draw_node = [&](class MatrixStack &stack, const class Node &node) {
@@ -180,7 +116,7 @@ int main () {
 				stack.translate (-((node.scale / 2.f) * node.self_origin));
 				stack.push ();
 					stack.scale (node.scale);
-					draw (stack);
+					draw (stack.top ());
 				stack.pop ();
 				for (auto &child : node.childs) {
 					draw_node (stack, *child);
@@ -188,85 +124,10 @@ int main () {
 			stack.pop ();
 		};
 
-		class Node	torso(
-						glm::vec3 (0, 1, 0), /* rotation_axis */
-						glm::radians(15.f * (slider * 2 - 1)), /* rotation_angle */
-						glm::vec3 (0), /* self_origin */
-						glm::vec3 (0), /* parent_origin */
-						glm::vec3 (1.3f, 3.14f, 0.8f)); /* scale */
-
-		class Node	head(
-						glm::vec3 (1, 0, 0), /* rotation_axis */
-						glm::radians (15.f * (slider * 2 - 1)), /* rotation_angle */
-						glm::vec3 (0, -1, 0), /* self_origin */
-						glm::vec3 (0, 1, 0), /* parent_origin */
-						glm::vec3 (1)); /* scale */
-		head.set_parent (&torso);
-
-		// hands
-		class Node	left_hand(
-						glm::vec3 (0, 0, 1), /* rotation_axis */
-						glm::radians (-30.f + 15.f * (slider * 2 - 1)), /* rotation_angle */
-						glm::vec3 (1, 1, 0), /* self_origin */
-						glm::vec3 (-1, 1, 0), /* parent_origin */
-						glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
-		left_hand.set_parent (&torso);
-		class Node	lower_left_hand(
-						glm::vec3 (1, 0, 0), /* rotation_axis */
-						glm::radians (-40.f + 30.f * (slider * 2 - 1)), /* rotation_angle */
-						glm::vec3 (0, 1, 1), /* self_origin */
-						glm::vec3 (0, -1, 1), /* parent_origin */
-						glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
-		lower_left_hand.set_parent (&left_hand);
-
-		class Node	right_hand(
-						glm::vec3 (0, 0, 1), /* rotation_axis */
-						glm::radians (30.f + 15.f * (slider * -2 + 1)), /* rotation_angle */
-						glm::vec3 (-1, 1, 0), /* self_origin */
-						glm::vec3 (1, 1, 0), /* parent_origin */
-						glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
-		right_hand.set_parent (&torso);
-		class Node	lower_right_hand(
-						glm::vec3 (1, 0, 0), /* rotation_axis */
-						glm::radians (-40.f + 30.f * (slider * 2 - 1)), /* rotation_angle */
-						glm::vec3 (0, 1, 1), /* self_origin */
-						glm::vec3 (0, -1, 1), /* parent_origin */
-						glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
-		lower_right_hand.set_parent (&right_hand);
-
-		// legs
-		class Node	left_leg(
-						glm::vec3 (0, 0, 1), /* rotation_axis */
-						glm::radians (-30.f + 15.f * (slider * 2 - 1)), /* rotation_angle */
-						glm::vec3 (1, 1, 0), /* self_origin */
-						glm::vec3 (-1, -1, 0), /* parent_origin */
-						glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
-		left_leg.set_parent (&torso);
-		class Node	lower_left_leg(
-						glm::vec3 (1, 0, 0), /* rotation_axis */
-						glm::radians (-40.f + 30.f * (slider * 2 - 1)), /* rotation_angle */
-						glm::vec3 (0, 1, 1), /* self_origin */
-						glm::vec3 (0, -1, 1), /* parent_origin */
-						glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
-		lower_left_leg.set_parent (&left_leg);
-
-		class Node	right_leg(
-						glm::vec3 (0, 0, 1), /* rotation_axis */
-						glm::radians (30.f + 15.f * (slider * -2 + 1)), /* rotation_angle */
-						glm::vec3 (-1, 1, 0), /* self_origin */
-						glm::vec3 (1, -1, 0), /* parent_origin */
-						glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
-		right_leg.set_parent (&torso);
-		class Node	lower_right_leg(
-						glm::vec3 (1, 0, 0), /* rotation_axis */
-						glm::radians (-40.f + 30.f * (slider * 2 - 1)), /* rotation_angle */
-						glm::vec3 (0, 1, 1), /* self_origin */
-						glm::vec3 (0, -1, 1), /* parent_origin */
-						glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
-		lower_right_leg.set_parent (&right_leg);
+		Node *human = create_human(slider);
 
 		// Draw
-		draw_node (stack, torso);
+		draw_node (stack, *human);
 		// Model END
 
 		memset (&input.mouse_delta, 0, sizeof input.mouse_delta);

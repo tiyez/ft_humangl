@@ -3,6 +3,9 @@
 
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
+#include <functional>
+
+#include "Node.hpp"
 
 // SHADERS
 
@@ -30,8 +33,8 @@ struct RenderObject {
 	GLuint vbo;
 	GLuint vao;
 	GLuint program;
-	GLuint size;
 	GLchar *data;
+	GLuint data_size;
 };
 
 GLFWwindow		*initialize_glfw(WindowUserData&	userdata);
@@ -42,5 +45,10 @@ RenderObject	*initialize_buffers(void);
 
 glm::mat4	calculate_projection(GLFWwindow *window);
 glm::mat4	calculate_camera(Input *input, float delta);
+
+// MODEL
+
+Node	*create_human(float slider);
+//void draw_node(class MatrixStack &stack, const class Node &node);
 
 #endif //HUMANGL_H
