@@ -14,12 +14,22 @@
 
 extern GLenum error;
 
+void update_camera() {
+
+}
+
+void update_projection() {
+
+}
+
 int main () {
 	Input			input;
 	WindowUserData	userdata = { &input };
 	GLFWwindow *window = initialize_glfw(userdata);
 	input_register_callbacks(window);
 	initialize_opengl();
+
+//	RenderObject *cube = initialize_buffers(); // TODO: just moving code into this function destroys render ?!
 
 	struct vertex {
 		float	pos[3];
@@ -60,7 +70,6 @@ int main () {
 	GL (glEnableVertexAttribArray (0));
 	GL (glEnableVertexAttribArray (1));
 
-
 	GLuint	program = new_shader_program (get_default_vertex_shader (), get_default_fragment_shader ());
 	GL (glUseProgram (program));
 
@@ -99,6 +108,7 @@ int main () {
 		glm::mat4	projection = glm::infinitePerspective (glm::radians (60.f), (float) width / height, 0.1f);
 		// Clip space END
 
+		update_camera();
 		// Camera
 		glm::vec3	camera_right = glm::normalize (glm::cross (glm::vec3 (0, 1, 0), camera_forward));
 		glm::vec3	camera_forward_plane = glm::normalize (glm::cross (camera_right, glm::vec3 (0, 1, 0)));
@@ -149,7 +159,7 @@ int main () {
 
 		class MatrixStack	stack;
 
-		auto draw = [&](class MatrixStack &stack) {
+		auto draw = [&](class MatrixStack &stack) { // TODO change proto for glm::mat4 &stack_top
 			glm::mat4	mvp = projection * camera * stack.top ();
 
 			glUniformMatrix4fv (mvp_loc, 1, GL_FALSE, glm::value_ptr(mvp));

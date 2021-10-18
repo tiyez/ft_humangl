@@ -48,15 +48,12 @@ void initialize_opengl(void) {
 	GL (glDepthFunc (GL_LESS));
 }
 
+struct vertex {
+	float	pos[3];
+	float	color[4];
+};
 
-// buffer and vao is not returned because they don't need in program
-int initialize_buffers(void) {
-	struct vertex {
-		float	pos[3];
-		float	color[4];
-	};
-
-	struct vertex verticies_cube[] = {
+struct vertex verticies_cube[] = {
 		#define Repos(X) ((X) - 0.5f)
 		#define Quad(x1,y1,z1, x2,y2,z2, x3,y3,z3, x4,y4,z4,  c1,c2,c3) \
 		{ { Repos(x1), Repos(y1), Repos(z1) }, { c1, c2, c3, 1 } }, \
@@ -66,16 +63,20 @@ int initialize_buffers(void) {
 		{ { Repos(x3), Repos(y3), Repos(z3) }, { c1, c2, c3, 1 } }, \
 		{ { Repos(x4), Repos(y4), Repos(z4) }, { c1, c2, c3, 1 } }
 
-			Quad (0,0,0, 0,1,0, 1,1,0, 1,0,0,  0,0,1),
-					Quad (0,0,1, 1,0,1, 1,1,1, 0,1,1,  0,0,1),
-					Quad (0,0,0, 0,0,1, 0,1,1, 0,1,0,  1,0,0),
-					Quad (1,0,0, 1,1,0, 1,1,1, 1,0,1,  1,0,0),
-					Quad (0,0,0, 1,0,0, 1,0,1, 0,0,1,  0,1,0),
-					Quad (0,1,0, 0,1,1, 1,1,1, 1,1,0,  0,1,0),
+		Quad (0,0,0, 0,1,0, 1,1,0, 1,0,0,  0,0,1),
+				Quad (0,0,1, 1,0,1, 1,1,1, 0,1,1,  0,0,1),
+				Quad (0,0,0, 0,0,1, 0,1,1, 0,1,0,  1,0,0),
+				Quad (1,0,0, 1,1,0, 1,1,1, 1,0,1,  1,0,0),
+				Quad (0,0,0, 1,0,0, 1,0,1, 0,0,1,  0,1,0),
+				Quad (0,1,0, 0,1,1, 1,1,1, 1,1,0,  0,1,0),
 
 		#undef Quad
 		#undef Repos
-		};
+};
+
+// buffer and vao is not returned because they don't need in program
+RenderObject *initialize_buffers(void) {
+	RenderObject *obj = new RenderObject();
 
 	GLuint	vao;
 	GL (glGenVertexArrays (1, &vao));
@@ -90,5 +91,11 @@ int initialize_buffers(void) {
 	GL (glEnableVertexAttribArray (0));
 	GL (glEnableVertexAttribArray (1));
 
-	return Array_Count(verticies_cube);
+	obj->data = reinterpret_cast<char *>(&verticies_cube);
+	obj->vao = vao;
+	obj->vbo = buffer;
+	obj->size = Array_Count(verticies_cube);
+	obj->program = 0;
+
+	return obj;
 }

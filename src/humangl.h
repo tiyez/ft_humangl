@@ -26,8 +26,16 @@ void input_register_callbacks(GLFWwindow *window);
 
 // GLFW INITIALIZATION
 
-GLFWwindow	*initialize_glfw(WindowUserData&	userdata);
-void		initialize_opengl(void);
-int			initialize_buffers(void);
+struct RenderObject {
+	GLuint vbo;
+	GLuint vao;
+	GLuint program;
+	GLuint size;
+	GLchar *data;
+};
+
+GLFWwindow		*initialize_glfw(WindowUserData&	userdata);
+void			initialize_opengl(void);
+RenderObject	*initialize_buffers(void);
 
 #endif //HUMANGL_H
