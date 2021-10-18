@@ -48,12 +48,7 @@ void initialize_opengl(void) {
 	GL (glDepthFunc (GL_LESS));
 }
 
-struct vertex {
-	float	pos[3];
-	float	color[4];
-};
-
-struct vertex verticies_cube[] = {
+const struct vertex vertices_cube[] = {
 		#define Repos(X) ((X) - 0.5f)
 		#define Quad(x1,y1,z1, x2,y2,z2, x3,y3,z3, x4,y4,z4,  c1,c2,c3) \
 		{ { Repos(x1), Repos(y1), Repos(z1) }, { c1, c2, c3, 1 } }, \
@@ -64,18 +59,17 @@ struct vertex verticies_cube[] = {
 		{ { Repos(x4), Repos(y4), Repos(z4) }, { c1, c2, c3, 1 } }
 
 		Quad (0,0,0, 0,1,0, 1,1,0, 1,0,0,  0,0,1),
-				Quad (0,0,1, 1,0,1, 1,1,1, 0,1,1,  0,0,1),
-				Quad (0,0,0, 0,0,1, 0,1,1, 0,1,0,  1,0,0),
-				Quad (1,0,0, 1,1,0, 1,1,1, 1,0,1,  1,0,0),
-				Quad (0,0,0, 1,0,0, 1,0,1, 0,0,1,  0,1,0),
-				Quad (0,1,0, 0,1,1, 1,1,1, 1,1,0,  0,1,0),
+		Quad (0,0,1, 1,0,1, 1,1,1, 0,1,1,  0,0,1),
+		Quad (0,0,0, 0,0,1, 0,1,1, 0,1,0,  1,0,0),
+		Quad (1,0,0, 1,1,0, 1,1,1, 1,0,1,  1,0,0),
+		Quad (0,0,0, 1,0,0, 1,0,1, 0,0,1,  0,1,0),
+		Quad (0,1,0, 0,1,1, 1,1,1, 1,1,0,  0,1,0),
 
 		#undef Quad
 		#undef Repos
 };
 
-// buffer and vao is not returned because they don't need in program
-RenderObject *initialize_buffers(void) {
+RenderObject *initialize_render_object(void) {
 	RenderObject *obj = new RenderObject();
 
 	GLuint	vao;
@@ -85,17 +79,20 @@ RenderObject *initialize_buffers(void) {
 	GLuint	buffer;
 	GL (glGenBuffers (1, &buffer));
 	GL (glBindBuffer (GL_ARRAY_BUFFER, buffer));
-	GL (glBufferData (GL_ARRAY_BUFFER, sizeof verticies_cube, verticies_cube, GL_STATIC_DRAW));
-	GL (glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, sizeof verticies_cube[0], 0));
-	GL (glVertexAttribPointer (1, 4, GL_FLOAT, GL_FALSE, sizeof verticies_cube[0], Member_Offset (struct vertex, color)));
+	GL (glBufferData (GL_ARRAY_BUFFER, sizeof vertices_cube, NULL, GL_STATIC_DRAW));
+	GL (glBufferSubData (GL_ARRAY_BUFFER, 0, sizeof vertices_cube, vertices_cube));
+	GL (glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, sizeof vertices_cube[0], 0));
+	GL (glVertexAttribPointer (1, 4, GL_FLOAT, GL_FALSE, sizeof vertices_cube[0], Member_Offset (struct vertex, color)));
 	GL (glEnableVertexAttribArray (0));
 	GL (glEnableVertexAttribArray (1));
 
-	obj->data = reinterpret_cast<char *>(&verticies_cube);
 	obj->vao = vao;
 	obj->vbo = buffer;
-	obj->size = Array_Count(verticies_cube);
-	obj->program = 0;
+	obj->verts_count = Array_Count(vertices_cube);
+	obj->program = new_shader_program (get_default_vertex_shader (), get_default_fragment_shader ());
+	obj->mvp_loc = glGetUniformLocation (obj->program, "MVP");
+
+	GL (glUseProgram (obj->program));
 
 	return obj;
 }

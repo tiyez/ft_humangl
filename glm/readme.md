@@ -581,7 +581,7 @@ glm::mat4 camera(float Translate, glm::vec2 const& Rotate)
 - Added Integer types support to GTX_string_cast #249
 - Added vec3 slerp #237
 - Added GTX_common with isdenomal #223
-- Added GLM_FORCE_SIZE_FUNC to replace .length() by .data_size() #245
+- Added GLM_FORCE_SIZE_FUNC to replace .length() by .verts_count() #245
 - Added GLM_FORCE_NO_CTOR_INIT
 - Added 'uninitialize' to explicitly not initialize a GLM type
 - Added GTC_bitfield extension, promoted GTX_bit

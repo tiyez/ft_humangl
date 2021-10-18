@@ -99,5 +99,6 @@ Node *create_human(float slider) {
 			glm::vec3 (0.2f, 1.3f, 0.2f)); /* scale */
 	lower_right_leg->set_parent (right_leg);
 
+	// TODO: cleanup on finishing program
 	return torso;
 }
