@@ -7,7 +7,7 @@ OBJDIR=.obj
 SRCDIR=src
 
 SRC = glad/src/glad.c
-CPPSRC = $(addprefix $(SRCDIR)/, main.cpp shaders.cpp input.cpp initialization.cpp)
+CPPSRC = $(addprefix $(SRCDIR)/, main.cpp shaders.cpp input.cpp initialization.cpp mvp.cpp)
 MSRC = 
 ALL_SRC= $(MSRC) $(CPPSRC) $(SRC)
 

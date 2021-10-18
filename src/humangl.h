@@ -38,4 +38,9 @@ GLFWwindow		*initialize_glfw(WindowUserData&	userdata);
 void			initialize_opengl(void);
 RenderObject	*initialize_buffers(void);
 
+// MVP
+
+glm::mat4	calculate_projection(GLFWwindow *window);
+glm::mat4	calculate_camera(Input *input, float delta);
+
 #endif //HUMANGL_H

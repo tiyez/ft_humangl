@@ -14,14 +14,6 @@
 
 extern GLenum error;
 
-void update_camera() {
-
-}
-
-void update_projection() {
-
-}
-
 int main () {
 	Input			input;
 	WindowUserData	userdata = { &input };
@@ -76,9 +68,6 @@ int main () {
 	GLint	mvp_loc;
 	mvp_loc = glGetUniformLocation (program, "MVP");
 
-	glm::vec3	camera_forward(0, 0, 1), camera_position(0, 0, 2);
-	float		movement_speed = 1.5f, rotation_speed = 0.5f;
-
 	double last_frame_time = glfwGetTime ();
 	double time;
 	float delta;
@@ -100,28 +89,9 @@ int main () {
 		}
 		slider = glm::clamp (slider, 0.f, 1.f);
 
-		// Clip space
-		int width, height;
-		glfwGetFramebufferSize (window, &width, &height);
-		GL (glViewport (0, 0, width, height));
-		GL (glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-		glm::mat4	projection = glm::infinitePerspective (glm::radians (60.f), (float) width / height, 0.1f);
-		// Clip space END
 
-		update_camera();
-		// Camera
-		glm::vec3	camera_right = glm::normalize (glm::cross (glm::vec3 (0, 1, 0), camera_forward));
-		glm::vec3	camera_forward_plane = glm::normalize (glm::cross (camera_right, glm::vec3 (0, 1, 0)));
-		camera_position += camera_forward_plane * (-input.movement_delta.z * delta * movement_speed);
-		camera_position += camera_right * (input.movement_delta.x * delta * movement_speed);
-		camera_position.y += input.movement_delta.y * delta * movement_speed;
-
-		camera_forward = glm::rotateY (camera_forward, -input.mouse_delta.x * delta * rotation_speed);
-		camera_forward = glm::rotate (camera_forward, -input.mouse_delta.y * delta * rotation_speed, camera_right);
-		camera_forward = glm::normalize (camera_forward);
-
-		glm::mat4	camera = glm::lookAt (camera_position, camera_position - camera_forward, glm::vec3 (0, 1, 0));
-		// Camera END
+		glm::mat4 projection = calculate_projection(window);
+		glm::mat4 camera = calculate_camera(userdata.input, delta);
 
 		// Model
 		class MatrixStack {
