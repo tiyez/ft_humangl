@@ -45,7 +45,7 @@ glm::mat4	calculate_camera(Input *input, float delta);
 
 // MODEL
 
-Node	*create_human(float slider, const RenderObject *model);
+Node	*create_human(const RenderObject *model);
 void 	delete_human(Node *node);
 
 // TIME

@@ -18,6 +18,7 @@ int main () {
 	initialize_opengl();
 
 	RenderObject *cube = initialize_render_object();
+	Skeleton human = Skeleton(cube);
 
 	while (!glfwWindowShouldClose (window))
 	{
@@ -27,8 +28,8 @@ int main () {
 		glm::mat4 projection = calculate_projection(window);
 		glm::mat4 camera = calculate_camera(userdata.input, delta);
 
-		Skeleton human = Skeleton(cube, slider); // TODO: add animation choice
-		human.draw(projection * camera);
+		human.Animate(delta);
+		human.Draw(projection * camera);
 
 		memset (&input.mouse_delta, 0, sizeof input.mouse_delta);
 		glfwSwapBuffers (window);

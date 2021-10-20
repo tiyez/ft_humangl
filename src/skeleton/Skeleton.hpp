@@ -5,19 +5,20 @@
 
 class Skeleton {
 public:
-	Skeleton(const RenderObject *model, float slider) {
+	Skeleton(const RenderObject *model) {	// TODO: remove slider
 		_cur_time = 0.f;
-		_anim_time = 5.f;
-		_node_hierarchy = create_human(slider, model);
+		_anim_time = 3.f;
+		_node_hierarchy = create_human(model);
 	}
 
 	~Skeleton();
 
-	void	animate(float delta);
-	void	draw(const glm::mat4 &vp) const;
+	void	Animate(float delta);
+	void	Draw(const glm::mat4 &vp) const;
 
 private:
 	Skeleton() {};
+	void UpdateTime(float delta);
 
 	Node	*_node_hierarchy;
 	float	_cur_time;
