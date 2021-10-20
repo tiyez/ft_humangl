@@ -1,6 +1,7 @@
 #include "MatrixStack.hpp"
 
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 
 glm::mat4	&MatrixStack::push () {
@@ -28,6 +29,10 @@ void	MatrixStack::scale (const glm::vec3 &dim) {
 
 void	MatrixStack::rotate (float angle, const glm::vec3 &axis) {
 	top () *= glm::rotate (angle, axis);
+}
+
+void	MatrixStack::rotate(const glm::quat &rot) {
+	top () *= glm::mat4_cast(rot);
 }
 
 void	MatrixStack::translate (const glm::vec3 &delta) {
