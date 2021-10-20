@@ -5,7 +5,7 @@ OBJDIR=.obj
 SRCDIR=src
 
 SRC = glad/src/glad.c
-CPPSRC = $(addprefix $(SRCDIR)/,main.cpp shaders.cpp input.cpp initialization.cpp mvp.cpp time.cpp skeleton/model.cpp skeleton/Node.cpp skeleton/human.cpp matrix_stack/MatrixStack.cpp render/RenderObject.cpp)
+CPPSRC = $(addprefix $(SRCDIR)/,main.cpp shaders.cpp input.cpp initialization.cpp mvp.cpp time.cpp skeleton/model.cpp skeleton/Node.cpp skeleton/Skeleton.cpp skeleton/human.cpp matrix_stack/MatrixStack.cpp render/RenderObject.cpp)
 MSRC = 
 ALL_SRC= $(MSRC) $(CPPSRC) $(SRC)
 

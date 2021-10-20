@@ -3,8 +3,7 @@
 
 #include "humangl.h"
 
-#include "Node.hpp"
-#include "MatrixStack.hpp"
+#include "Skeleton.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -28,10 +27,8 @@ int main () {
 		glm::mat4 projection = calculate_projection(window);
 		glm::mat4 camera = calculate_camera(userdata.input, delta);
 
-		Node *human = create_human(slider, cube);
-		MatrixStack	stack;
-		draw_hierarchy (stack, *human, projection * camera);
-		delete_human(human);
+		Skeleton human = Skeleton(cube, slider); // TODO: add animation choice
+		human.draw(projection * camera);
 
 		memset (&input.mouse_delta, 0, sizeof input.mouse_delta);
 		glfwSwapBuffers (window);

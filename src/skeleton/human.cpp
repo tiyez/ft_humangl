@@ -1,6 +1,6 @@
 #include "Node.hpp"
 
-Node *create_human(float slider, RenderObject *model) {
+Node *create_human(float slider, const RenderObject *model) {
 
 /* lation */
 /* rotation */
@@ -16,6 +16,8 @@ Node *create_human(float slider, RenderObject *model) {
 			glm::vec3 (0),																					/* self_origin */
 			glm::vec3 (0),																				/* parent_origin */
 			model);																											/* model */
+//	torso->SetRotationFrames();
+
 
 //	class Node	*torso = new Node (
 //			glm::vec3 (0, 1, 0), /* rotation_axis */
@@ -105,8 +107,4 @@ Node *create_human(float slider, RenderObject *model) {
 //	lower_right_leg->SetParent(right_leg);
 
 	return torso;
-}
-
-void delete_human(Node *node) {
-	delete_hierarchy(node);
 }

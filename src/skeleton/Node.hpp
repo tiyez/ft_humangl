@@ -21,7 +21,7 @@ public:
 	glm::vec3	scale;
 	glm::vec3	self_origin;
 	glm::vec3	parent_origin;
-	RenderObject *model; // TODO: use smart ptr??
+	const RenderObject *model; // TODO: use smart ptr??
 	class Node	*parent;
 	std::vector<class Node *>	childs;
 	std::vector<RotationFrame>	rot_frames;
@@ -33,7 +33,7 @@ public:
 			glm::vec3 scale,
 			glm::vec3 self_origin,
 			glm::vec3 parent_origin,
-			RenderObject *model) :
+			const RenderObject *model) :
 				translation(translation),
 				rotation(rotation),
 				scale(scale),

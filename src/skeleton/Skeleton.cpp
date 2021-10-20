@@ -1,7 +1,7 @@
-#include "Node.hpp"
+#include "Skeleton.hpp"
 #include "MatrixStack.hpp"
 
-void draw_hierarchy(class MatrixStack &stack, const class Node &node, const glm::mat4 &vp) {
+static void draw_hierarchy(class MatrixStack &stack, const class Node &node, const glm::mat4 &vp) {
 	stack.push ();
 	if (node.parent) {
 		stack.translate ((node.parent->scale / 2.f) * node.parent_origin);
@@ -18,11 +18,24 @@ void draw_hierarchy(class MatrixStack &stack, const class Node &node, const glm:
 	stack.pop ();
 }
 
-void delete_hierarchy(Node *node) {
+static void delete_hierarchy(Node *node) {
 	if (!node->childs.empty()) {
 		for (auto child : node->childs) {
 			delete_hierarchy(child);
 		}
 	}
 	delete node;
+}
+
+Skeleton::~Skeleton() {
+	delete_hierarchy(_node_hierarchy);
+}
+
+void Skeleton::animate(float delta) {
+
+}
+
+void Skeleton::draw(const glm::mat4 &vp) const {
+	MatrixStack stack;
+	draw_hierarchy(stack, *_node_hierarchy, vp);
 }

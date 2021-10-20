@@ -45,9 +45,7 @@ glm::mat4	calculate_camera(Input *input, float delta);
 
 // MODEL
 
-void	draw_hierarchy(class MatrixStack &stack, const class Node &node, const glm::mat4 &vp);
-void	delete_hierarchy(Node *node);
-Node	*create_human(float slider, RenderObject *model);
+Node	*create_human(float slider, const RenderObject *model);
 void 	delete_human(Node *node);
 
 // TIME
