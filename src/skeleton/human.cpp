@@ -111,6 +111,7 @@ Node *create_human(const RenderObject *model) {
 			glm::vec3 (0),					/* parent_origin */
 			model);												/* model */
 	torso->SetRotationFrames(get_human_torso_rot_frames());
+	torso->color = glm::vec3 (0.6, 0.8, 0.2);
 
 
 	Node *head = new Node (

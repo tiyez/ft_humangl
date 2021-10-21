@@ -34,9 +34,13 @@ const char	*get_default_vertex_shader (void) {
 			"in vec4 v_color;\n"
 			"out vec4 f_color;\n"
 			"uniform mat4 MVP;\n"
+			"uniform vec3 Color;\n"
 
 			"void main () {\n"
-			"f_color = v_color;\n"
+			"if ( Color == vec3(0, 0, 0) )\n"
+			"	f_color = v_color;\n"
+			"else \n"
+			"	f_color = vec4(Color, 1.);\n"
 			"gl_Position = MVP * vec4(v_pos, 1);\n"
 			"}\n"
 			);

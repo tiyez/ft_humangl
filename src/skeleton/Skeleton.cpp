@@ -2,6 +2,8 @@
 #include "MatrixStack.hpp"
 #include "def.h"
 
+// HIERARCHY
+
 static void draw_hierarchy(class MatrixStack &stack, const class Node &node, const glm::mat4 &vp) {	// TODO: move to Node.cpp??
 	stack.push ();
 	if (node.parent) {
@@ -11,7 +13,7 @@ static void draw_hierarchy(class MatrixStack &stack, const class Node &node, con
 	stack.translate (-((node.scale / 2.f) * node.self_origin));
 	stack.push ();
 	stack.scale (node.scale);
-	node.model->Render(vp * stack.top ());
+	node.model->RenderColor(vp * stack.top (), node.color);
 	stack.pop ();
 	for (auto &child : node.childs) {
 		draw_hierarchy (stack, *child, vp);
@@ -63,6 +65,8 @@ static void update_hierarchy(Node *node, float cur_time) {
 	}
 	node->rotation = get_cur_rotation(node->rot_frames, cur_time);
 }
+
+// HIERARCHY END
 
 Skeleton::~Skeleton() {
 	delete_hierarchy(_node_hierarchy);

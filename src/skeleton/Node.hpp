@@ -25,6 +25,7 @@ public:
 	class Node	*parent;
 	std::vector<class Node *>	childs;
 	std::vector<RotationFrame>	rot_frames;
+	glm::vec3	color;
 
 
 
@@ -40,7 +41,8 @@ public:
 				self_origin(self_origin),
 				parent_origin(parent_origin),
 				model(model),
-				parent(nullptr) {}
+				parent(nullptr),
+				color(glm::vec3(0)){}
 
 	void SetParent (class Node *parent);
 	void SetRotationFrames (std::vector<RotationFrame> &&frames);
