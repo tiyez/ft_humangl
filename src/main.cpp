@@ -33,14 +33,23 @@ int main () {
 
 		human.SelectNode(input.node_selected);
 		human.ChangeSizeSelected(input.scale_delta);
+		if (userdata.input->print_selected) {
+			human.PrintSelectedNode();
+		}
 
+		// Draw
 		mstack.push();
 		mstack.transform(projection * camera);
-		human.Animate(delta);
+		if (!userdata.input->animate) {
+			human.Animate(delta);
+		}
 		human.Draw(mstack);
 		mstack.pop();
+		// Draw end
 
 		memset (&input.mouse_delta, 0, sizeof input.mouse_delta);
+		memset (&input.print_selected, 0, sizeof input.print_selected);
+
 		glfwSwapBuffers (window);
 		glfwPollEvents ();
 	}
@@ -49,5 +58,3 @@ int main () {
 	glfwTerminate ();
 	return (0);
 }
-
-

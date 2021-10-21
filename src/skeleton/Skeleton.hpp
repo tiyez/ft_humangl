@@ -19,6 +19,7 @@ public:
 	void	Draw(MatrixStack &mstack) const;
 	void	SelectNode(int node_num) const;
 	void	ChangeSizeSelected(glm::vec3 &scale_delta) const;
+	void	PrintSelectedNode() const;
 
 private:
 	Skeleton() {};

@@ -25,6 +25,10 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 			case GLFW_KEY_H: { input->scale_delta.z += -0.03; } break ;
 			case GLFW_KEY_U: { input->scale_delta.y +=  0.03; } break ;
 			case GLFW_KEY_J: { input->scale_delta.y += -0.03; } break ;
+			// Start/Stop animation
+			case GLFW_KEY_SPACE: { input->animate = !input->animate; } break;
+			// Print Node
+			case GLFW_KEY_P: {input->print_selected = true;} break;
 		}
 	} else if (action == GLFW_RELEASE) {
 		switch (key) {

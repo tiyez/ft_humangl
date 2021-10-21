@@ -2,7 +2,10 @@
 #include "MatrixStack.hpp"
 #include "def.h"
 
-// HIERARCHY TODO: move all *_hierarchy to distinct class??
+#include <iostream>
+
+// HIERARCHY
+// TODO: move all *_hierarchy to distinct class??
 
 static void draw_hierarchy(class MatrixStack &stack, const class Node &node) {	// TODO: move to Node.cpp??
 	stack.push ();
@@ -92,6 +95,35 @@ static void change_scale_selected_hierarchy(Node *node, glm::vec3 &scale_delta) 
 	}
 }
 
+std::ostream &operator<<(std::ostream &o, const glm::vec3 &v) {
+	o << "(" << v.x << ", " << v.y << ", " << v.z << ")";
+	return o;
+}
+
+std::ostream &operator<<(std::ostream &o, const glm::quat &q) {
+	o << "(" << q.x << ", " << q.y << ", " << q.z << ", " << q.w << ")";
+	return o;
+}
+
+std::ostream &operator<<(std::ostream &o, const Node &node) {
+	o << "Scale: " << node.scale << std::endl;
+	o << "Rotation: " << node.rotation << std::endl;
+	o << "Translation: " << node.translation << std::endl;
+	return o;
+}
+
+
+static void print_selected_hierarchy(Node *node) {
+	if (!node->childs.empty()) {
+		for (auto child : node->childs) {
+			print_selected_hierarchy(child);
+		}
+	}
+	if (node->selected) {
+		std::cout << *node << std::endl;
+	}
+}
+
 // HIERARCHY END
 
 Skeleton::~Skeleton() {
@@ -122,4 +154,8 @@ void Skeleton::SelectNode(int node_num) const {
 
 void Skeleton::ChangeSizeSelected(glm::vec3 &scale_delta) const {
 	change_scale_selected_hierarchy(_node_hierarchy, scale_delta);
+}
+
+void Skeleton::PrintSelectedNode() const {
+	print_selected_hierarchy(_node_hierarchy);
 }
