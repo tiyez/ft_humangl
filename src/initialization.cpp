@@ -89,8 +89,9 @@ RenderObject *initialize_render_object(void) {
 	GLint program = new_shader_program (get_default_vertex_shader (), get_default_fragment_shader ());
 	GLint mvp_loc = glGetUniformLocation (program, "MVP");
 	GLint color_loc = glGetUniformLocation (program, "Color");
+	GLint selected_loc = glGetUniformLocation (program, "Selected");
 
-	RenderObject *obj = new RenderObject(buffer, vao, Array_Count(vertices_cube), program, mvp_loc, color_loc); // TODO: cleanup
+	RenderObject *obj = new RenderObject(buffer, vao, Array_Count(vertices_cube), program, mvp_loc, color_loc, selected_loc); // TODO: cleanup
 
 	return obj;
 }

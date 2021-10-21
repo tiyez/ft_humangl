@@ -14,7 +14,7 @@ struct RotationFrame {
 	float		angle;
 };
 
-class Node {
+class Node { // TODO: cleanup this mess
 public:
 	glm::vec3	translation;
 	glm::quat	rotation;
@@ -26,8 +26,7 @@ public:
 	std::vector<class Node *>	childs;
 	std::vector<RotationFrame>	rot_frames;
 	glm::vec3	color;
-
-
+	bool		selected;
 
 	Node(	glm::vec3 translation,
 			glm::quat rotation,
@@ -42,7 +41,8 @@ public:
 				parent_origin(parent_origin),
 				model(model),
 				parent(nullptr),
-				color(glm::vec3(0)){}
+				color(glm::vec3(0)),
+				selected(false){}
 
 	void SetParent (class Node *parent);
 	void SetRotationFrames (std::vector<RotationFrame> &&frames);

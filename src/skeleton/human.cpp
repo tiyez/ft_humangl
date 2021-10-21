@@ -122,6 +122,7 @@ Node *create_human(const RenderObject *model) {
 			glm::vec3 (0, 1, 0),			/* parent_origin */
 			model);												/* model */
 	head->SetRotationFrames(get_human_head_rot_frames());
+	head->selected = true;
 	head->SetParent(torso);
 
 	// hands

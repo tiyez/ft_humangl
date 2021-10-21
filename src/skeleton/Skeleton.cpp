@@ -13,7 +13,7 @@ static void draw_hierarchy(class MatrixStack &stack, const class Node &node, con
 	stack.translate (-((node.scale / 2.f) * node.self_origin));
 	stack.push ();
 	stack.scale (node.scale);
-	node.model->RenderColor(vp * stack.top (), node.color);
+	node.model->RenderColor(vp * stack.top (), node.color, static_cast<GLint>(node.selected));
 	stack.pop ();
 	for (auto &child : node.childs) {
 		draw_hierarchy (stack, *child, vp);
