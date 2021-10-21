@@ -2,6 +2,7 @@
 #define SKELETON_HPP
 
 #include "Node.hpp"
+#include "MatrixStack.hpp"
 
 class Skeleton {
 public:
@@ -14,7 +15,7 @@ public:
 	~Skeleton();
 
 	void	Animate(float delta);
-	void	Draw(const glm::mat4 &vp) const;
+	void	Draw(MatrixStack &mstack) const;
 
 private:
 	Skeleton() {};

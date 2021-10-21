@@ -4,7 +4,7 @@
 
 // HIERARCHY
 
-static void draw_hierarchy(class MatrixStack &stack, const class Node &node, const glm::mat4 &vp) {	// TODO: move to Node.cpp??
+static void draw_hierarchy(class MatrixStack &stack, const class Node &node) {	// TODO: move to Node.cpp??
 	stack.push ();
 	if (node.parent) {
 		stack.translate ((node.parent->scale / 2.f) * node.parent_origin);
@@ -13,10 +13,10 @@ static void draw_hierarchy(class MatrixStack &stack, const class Node &node, con
 	stack.translate (-((node.scale / 2.f) * node.self_origin));
 	stack.push ();
 	stack.scale (node.scale);
-	node.model->RenderColor(vp * stack.top (), node.color, static_cast<GLint>(node.selected));
+	node.model->RenderColor(stack.top (), node.color, static_cast<GLint>(node.selected));
 	stack.pop ();
 	for (auto &child : node.childs) {
-		draw_hierarchy (stack, *child, vp);
+		draw_hierarchy (stack, *child);
 	}
 	stack.pop ();
 }
@@ -84,7 +84,6 @@ void Skeleton::Animate(float delta) {
 	update_hierarchy(_node_hierarchy, _cur_time);
 }
 
-void Skeleton::Draw(const glm::mat4 &vp) const {
-	MatrixStack stack;
-	draw_hierarchy(stack, *_node_hierarchy, vp);
+void Skeleton::Draw(MatrixStack &mstack) const {
+	draw_hierarchy(mstack, *_node_hierarchy);
 }

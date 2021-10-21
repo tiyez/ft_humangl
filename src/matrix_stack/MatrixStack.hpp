@@ -16,6 +16,7 @@ public:
 	void		rotate (float angle, const glm::vec3 &axis);
 	void		rotate (const glm::quat &rot);
 	void		translate (const glm::vec3 &delta);
+	void		transform (const glm::mat4 &mat);
 
 	// TODO: add copy constructor, assingnation op, destructor
 };

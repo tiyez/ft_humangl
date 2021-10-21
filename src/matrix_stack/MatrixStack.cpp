@@ -38,3 +38,7 @@ void	MatrixStack::rotate(const glm::quat &rot) {
 void	MatrixStack::translate (const glm::vec3 &delta) {
 	top () *= glm::translate (delta);
 }
+
+void MatrixStack::transform(const glm::mat4 &mat) {
+	top () *= mat;
+}

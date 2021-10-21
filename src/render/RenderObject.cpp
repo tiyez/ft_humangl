@@ -19,7 +19,7 @@ void RenderObject::Render(const glm::mat4 &&mvp) const {
 	glBindVertexArray(0);
 }
 
-void RenderObject::RenderColor(const glm::mat4 &&mvp, const glm::vec3 &color, bool selected) const {
+void RenderObject::RenderColor(const glm::mat4 &mvp, const glm::vec3 &color, bool selected) const {
 	GL (glUseProgram(_program));
 	glBindVertexArray(_vao);
 	GL (glUniform3fv (_color_loc, 1, glm::value_ptr(color)));

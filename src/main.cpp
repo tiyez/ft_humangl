@@ -4,6 +4,7 @@
 #include "humangl.h"
 
 #include "Skeleton.hpp"
+#include "MatrixStack.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -19,17 +20,20 @@ int main () {
 
 	RenderObject *cube = initialize_render_object();
 	Skeleton human = Skeleton(cube);
+	MatrixStack mstack;
 
 	while (!glfwWindowShouldClose (window))
 	{
 		float delta = get_delta();
-		float slider = get_slider(delta);
 
 		glm::mat4 projection = calculate_projection(window);
 		glm::mat4 camera = calculate_camera(userdata.input, delta);
 
+		mstack.push();
+		mstack.transform(projection * camera);
 		human.Animate(delta);
-		human.Draw(projection * camera);
+		human.Draw(mstack);
+		mstack.pop();
 
 		memset (&input.mouse_delta, 0, sizeof input.mouse_delta);
 		glfwSwapBuffers (window);
