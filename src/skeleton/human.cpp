@@ -1,211 +1,160 @@
 #include "Node.hpp"
+#include "def.h"
 
-static std::vector<RotationFrame> get_human_torso_rot_frames() {
-	std::vector<RotationFrame> rframes;
+struct HardFrame {
+	int		_end;
+	float	time;
+	float	axis[3];
+	float	angle;
+};
 
-	rframes.push_back({ 0.f, glm::vec3 (0, 1, 0), glm::radians(-15.f)});
-	rframes.push_back({0.5f, glm::vec3 (0, 1, 0), glm::radians(15.f)});
-	rframes.push_back({ 3.f, glm::vec3 (0, 1, 0), glm::radians(-15.f)});
+struct HardNode {
+	int					_end;
+	int					parent;
+	float				translation[3];
+	float				rotation_axis[3];
+	float				rotation_angle;
+	float				scale[3];
+	float				self_origin[3];
+	float				parent_origin[3];
+	struct HardFrame	frames[32];
+};
 
-	return rframes;
-}
+#define RADIANS(x) ((x) * (3.1415f / 180.f))
 
-static std::vector<RotationFrame> get_human_head_rot_frames() {
-	std::vector<RotationFrame> rframes;
+const struct HardNode	human_skeleton[] = {
+	{ /* torso 0 */
+		0, -1, { 0 }, { 1 }, 0, { 1.3f, 3.14f, 0.8f }, { 0 }, { 0 },
+		{
+			{ 0, 0.0f, { 0, 1, 0 }, RADIANS (-15.f) },
+			{ 0, 0.5f, { 0, 1, 0 }, RADIANS (15.f) },
+			{ 0, 3.0f, { 0, 1, 0 }, RADIANS (-15.f) },
+			{ 1, 0, {0}, 0 },
+		},
+	},
+	{ /* head 1 */
+		0, 0, { 0 }, { 1 }, 0, { 1, 1, 1 }, { 0, -1, 0 }, { 0, 1, 0 },
+		{
+			{ 0, 0.0f, { 1, 0, 0 }, RADIANS (-15.f) },
+			{ 0, 1.0f, { 1, 0, 0 }, RADIANS (15.f) },
+			{ 0, 3.0f, { 1, 0, 0 }, RADIANS (-15.f) },
+			{ 1, 0, {0}, 0 },
+		},
+	},
+	{ /* left_hand 2 */
+		0, 0, { 0 }, { 1 }, 0, { 0.1f, 1.3f, 0.2f }, { 1, 1, 0 }, { -1, 1, 0 },
+		{
+			{ 0, 0.0f, { 0, 0, 1 }, RADIANS (0.f) },
+			{ 0, 1.0f, { 0, 0, 1 }, RADIANS (-30.f) },
+			{ 0, 3.0f, { 0, 0, 1 }, RADIANS (0.f) },
+			{ 1, 0, {0}, 0 },
+		},
+	},
+	{ /* left_lower_hand 3 */
+		0, 2, { 0 }, { 1 }, 0, { 0.1f, 1.3f, 0.2f }, { 0, 1, 0 }, { 0, -1, 0 },
+		{
+			{ 0, 0.0f, { 1, 0, 0 }, RADIANS (0.f) },
+			{ 0, 1.0f, { 1, 0, 0 }, RADIANS (-120.f) },
+			{ 0, 3.0f, { 1, 0, 0 }, RADIANS (0.f) },
+			{ 1, 0, {0}, 0 },
+		},
+	},
+	{ /* right_hand 4 */
+		0, 0, { 0 }, { 1 }, 0, { 0.1f, 1.3f, 0.2f }, { -1, 1, 0 }, { 1, 1, 0 },
+		{
+			{ 0, 0.0f, { 0, 0, 1 }, RADIANS (0.f) },
+			{ 0, 1.0f, { 0, 0, 1 }, RADIANS (30.f) },
+			{ 0, 3.0f, { 0, 0, 1 }, RADIANS (0.f) },
+			{ 1, 0, {0}, 0 },
+		},
+	},
+	{ /* right_lower_hand 5 */
+		0, 4, { 0 }, { 1 }, 0, { 0.1f, 1.3f, 0.2f }, { 0, 1, 0 }, { 0, -1, 0 },
+		{
+			{ 0, 0.0f, { 1, 0, 0 }, RADIANS (0.0f) },
+			{ 0, 1.0f, { 1, 0, 0 }, RADIANS (-120.0f) },
+			{ 0, 3.0f, { 1, 0, 0 }, RADIANS (0.0f) },
+			{ 1, 0, {0}, 0 },
+		},
+	},
+	{ /* left_leg 6 */
+		0, 0, { 0 }, { 1 }, 0, { 0.1f, 1.3f, 0.2f }, { 0, 1, 0 }, { -1, -1, 0 },
+		{
+			{ 0, 0.0f, { 1, 0, 0 }, RADIANS (0.f) },
+			{ 0, 1.0f, { 1, 0, 0 }, RADIANS (-110.f) },
+			{ 0, 3.0f, { 1, 0, 0 }, RADIANS (0.f) },
+			{ 1, 0, {0}, 0 },
+		},
+	},
+	{ /* right_leg 7 */
+		0, 0, { 0 }, { 1 }, 0, { 0.1f, 1.3f, 0.2f }, { 0, 1, 0 }, { 1, -1, 0 },
+		{
+			{ 0, 0.0f, { 1, 0, 0 }, RADIANS (0.f) },
+			{ 0, 1.0f, { 1, 0, 0 }, RADIANS (-110.f) },
+			{ 0, 3.0f, { 1, 0, 0 }, RADIANS (0.f) },
+			{ 1, 0, {0}, 0 },
+		},
+	},
+	{ /* lower_left_leg 8 */
+		0, 6, { 0 }, { 1 }, 0, { 0.1f, 1.3f, 0.2f }, { 0, 1, 0 }, { 0, -1, 0 },
+		{
+			{ 0, 0.0f, { 1, 0, 0 }, RADIANS (0.f) },
+			{ 0, 1.0f, { 1, 0, 0 }, RADIANS (160.f) },
+			{ 0, 3.0f, { 1, 0, 0 }, RADIANS (0.f) },
+			{ 1, 0, {0}, 0 },
+		},
+	},
+	{ /* lower_right_leg 9 */
+		0, 7, { 0 }, { 1 }, 0, { 0.1f, 1.3f, 0.2f }, { 0, 1, 0 }, { 0, -1, 0 },
+		{
+			{ 0, 0.0f, { 1, 0, 0 }, RADIANS (0.f) },
+			{ 0, 1.0f, { 1, 0, 0 }, RADIANS (160.f) },
+			{ 0, 3.0f, { 1, 0, 0 }, RADIANS (0.f) },
+			{ 1, 0, {0}, 0 },
+		},
+	},
+	{ 1, 0, {0}, {0}, 0, {0}, {0}, {0}, {} },
+};
 
-	rframes.push_back({ 0.f, glm::vec3 (1, 0, 0), glm::radians(-15.f)});
-	rframes.push_back({1.0f, glm::vec3 (1, 0, 0), glm::radians(15.f)});
-	rframes.push_back({ 3.f, glm::vec3 (1, 0, 0), glm::radians(-15.f)});
+#undef RADIANS
 
-	return rframes;
-}
+Node	*create_nodes_from_hardnodes (const RenderObject *model, const struct HardNode *hardnode) {
+	std::vector<class Node *>	nodes;
+	class Node	*root = 0;
 
-static std::vector<RotationFrame> get_human_left_hand_rot_frames() {
-	std::vector<RotationFrame> rframes;
+	while (!hardnode->_end) {
+		std::vector<struct RotationFrame>	frames;
+		const struct HardFrame	*hardframe;
 
-	rframes.push_back({ 0.f, glm::vec3 (0, 0, 1), glm::radians(0.f)});
-	rframes.push_back({1.0f, glm::vec3 (0, 0, 1), glm::radians(-30.f)});
-	rframes.push_back({ 3.f, glm::vec3 (0, 0, 1), glm::radians(0.f)});
-
-	return rframes;
-}
-
-static std::vector<RotationFrame> get_human_right_hand_rot_frames() {
-	std::vector<RotationFrame> rframes;
-
-	rframes.push_back({ 0.f, glm::vec3 (0, 0, 1), glm::radians(0.f)});
-	rframes.push_back({1.0f, glm::vec3 (0, 0, 1), glm::radians(30.f)});
-	rframes.push_back({ 3.f, glm::vec3 (0, 0, 1), glm::radians(0.f)});
-
-	return rframes;
-}
-
-static std::vector<RotationFrame> get_human_lower_left_hand_rot_frames() {
-	std::vector<RotationFrame> rframes;
-
-	rframes.push_back({ 0.f, glm::vec3 (1, 0, 0), glm::radians(0.f)});
-	rframes.push_back({1.0f, glm::vec3 (1, 0, 0), glm::radians(-120.f)});
-	rframes.push_back({ 3.f, glm::vec3 (1, 0, 0), glm::radians(0.f)});
-
-	return rframes;
-}
-
-
-static std::vector<RotationFrame> get_human_lower_right_hand_rot_frames() {
-	std::vector<RotationFrame> rframes;
-
-	rframes.push_back({ 0.f, glm::vec3 (1, 0, 0), glm::radians(0.f)});
-	rframes.push_back({1.0f, glm::vec3 (1, 0, 0), glm::radians(-120.f)});
-	rframes.push_back({ 3.f, glm::vec3 (1, 0, 0), glm::radians(0.f)});
-
-	return rframes;
-}
-
-static std::vector<RotationFrame> get_human_left_leg_rot_frames() {
-	std::vector<RotationFrame> rframes;
-
-	rframes.push_back({ 0.f, glm::vec3 (1, 0, 0), glm::radians(0.f)});
-	rframes.push_back({1.0f, glm::vec3 (1, 0, 0), glm::radians(-110.f)});
-	rframes.push_back({ 3.f, glm::vec3 (1, 0, 0), glm::radians(0.f)});
-
-	return rframes;
-}
-
-static std::vector<RotationFrame> get_human_right_leg_rot_frames() {
-	std::vector<RotationFrame> rframes;
-
-	rframes.push_back({ 0.f, glm::vec3 (1, 0, 0), glm::radians(0.f)});
-	rframes.push_back({1.0f, glm::vec3 (1, 0, 0), glm::radians(-110.f)});
-	rframes.push_back({ 3.f, glm::vec3 (1, 0, 0), glm::radians(0.f)});
-
-	return rframes;
-}
-
-static std::vector<RotationFrame> get_human_lower_left_leg_rot_frames() {
-	std::vector<RotationFrame> rframes;
-
-	rframes.push_back({ 0.f, glm::vec3 (1, 0, 0), glm::radians(0.f)});
-	rframes.push_back({1.0f, glm::vec3 (1, 0, 0), glm::radians(160.f)});
-	rframes.push_back({ 3.f, glm::vec3 (1, 0, 0), glm::radians(0.f)});
-
-	return rframes;
-}
-
-
-static std::vector<RotationFrame> get_human_lower_right_leg_rot_frames() {
-	std::vector<RotationFrame> rframes;
-
-	rframes.push_back({ 0.f, glm::vec3 (1, 0, 0), glm::radians(0.f)});
-	rframes.push_back({1.0f, glm::vec3 (1, 0, 0), glm::radians(160.f)});
-	rframes.push_back({ 3.f, glm::vec3 (1, 0, 0), glm::radians(0.f)});
-
-	return rframes;
+		nodes.push_back (new class Node (
+			glm::vec3 (hardnode->translation[0], hardnode->translation[1], hardnode->translation[2]),
+			glm::angleAxis (hardnode->rotation_angle, glm::vec3 (hardnode->rotation_axis[0], hardnode->rotation_axis[1], hardnode->rotation_axis[2])),
+			glm::vec3 (hardnode->scale[0], hardnode->scale[1], hardnode->scale[2]),
+			glm::vec3 (hardnode->self_origin[0], hardnode->self_origin[1], hardnode->self_origin[2]),
+			glm::vec3 (hardnode->parent_origin[0], hardnode->parent_origin[1], hardnode->parent_origin[2]),
+			model
+			));
+		hardframe = hardnode->frames;
+		while (!hardframe->_end) {
+			frames.push_back ({ hardframe->time, glm::vec3 (hardframe->axis[0], hardframe->axis[1], hardframe->axis[2]), hardframe->angle });
+			hardframe += 1;
+		}
+		nodes.back ()->SetRotationFrames (std::move (frames));
+		if (hardnode->parent >= 0) {
+			nodes.back ()->SetParent (nodes[hardnode->parent]);
+		} else if (root) {
+			Error ("Skeleton has more than one root");
+		} else {
+			root = nodes.back ();
+		}
+		hardnode += 1;
+	}
+	if (!root) {
+		Error ("Skeleton with no root");
+	}
+	return (root);
 }
 
 Node *create_human(const RenderObject *model) {
-	Node *torso = new Node (
-			glm::vec3 (0),						/* translation */
-			glm::quat (),								/* rotation */
-			glm::vec3 (1.3f, 3.14f, 0.8f),		/* scale */
-			glm::vec3 (0),						/* self_origin */
-			glm::vec3 (0),					/* parent_origin */
-			model);												/* model */
-	torso->SetRotationFrames(get_human_torso_rot_frames());
-	torso->color = glm::vec3 (0.6, 0.8, 0.2);
-
-
-	Node *head = new Node (
-			glm::vec3 (0),						/* translation */
-			glm::quat (),								/* rotation */
-			glm::vec3 (1),							/* scale */
-			glm::vec3 (0, -1, 0),			/* self_origin */
-			glm::vec3 (0, 1, 0),			/* parent_origin */
-			model);												/* model */
-	head->SetRotationFrames(get_human_head_rot_frames());
-	head->selected = true;
-	head->SetParent(torso);
-
-	// hands
-	Node *left_hand = new Node (
-			glm::vec3 (0),						/* translation */
-			glm::quat (),								/* rotation */
-			glm::vec3 (0.1f, 1.3f, 0.2f),		/* scale */
-			glm::vec3 (1, 1, 0),			/* self_origin */
-			glm::vec3 (-1, 1, 0),		/* parent_origin */
-			model);
-	left_hand->SetRotationFrames(get_human_left_hand_rot_frames());
-	left_hand->SetParent(torso);
-
-	Node *lower_left_hand = new Node (
-			glm::vec3 (0),						/* translation */
-			glm::quat (),								/* rotation */
-			glm::vec3 (0.1f, 1.3f, 0.2f),		/* scale */
-			glm::vec3 (0, 1, 0),			/* self_origin */
-			glm::vec3 (0, -1, 0),		/* parent_origin */
-			model);
-	lower_left_hand->SetRotationFrames(get_human_lower_left_hand_rot_frames());
-	lower_left_hand->SetParent(left_hand);
-
-	Node *right_hand = new Node (
-			glm::vec3 (0),						/* translation */
-			glm::quat (),								/* rotation */
-			glm::vec3 (0.1f, 1.3f, 0.2f),		/* scale */
-			glm::vec3 (-1, 1, 0),			/* self_origin */
-			glm::vec3 (1, 1, 0),		/* parent_origin */
-			model);
-	right_hand->SetRotationFrames(get_human_right_hand_rot_frames());
-	right_hand->SetParent(torso);
-
-	Node *lower_right_hand = new Node (
-			glm::vec3 (0),						/* translation */
-			glm::quat (),								/* rotation */
-			glm::vec3 (0.1f, 1.3f, 0.2f),		/* scale */
-			glm::vec3 (0, 1, 0),			/* self_origin */
-			glm::vec3 (0, -1, 0),		/* parent_origin */
-			model);
-	lower_right_hand->SetRotationFrames(get_human_lower_right_hand_rot_frames());
-	lower_right_hand->SetParent(right_hand);
-
-	Node *left_leg = new Node (
-			glm::vec3 (0),						/* translation */
-			glm::quat (),								/* rotation */
-			glm::vec3 (0.1f, 1.3f, 0.2f),		/* scale */
-			glm::vec3 (0, 1, 0),			/* self_origin */
-			glm::vec3 (-1, -1, 0),		/* parent_origin */
-			model);
-	left_leg->SetParent(torso);
-	left_leg->SetRotationFrames(get_human_left_leg_rot_frames());
-
-	Node *right_leg = new Node (
-			glm::vec3 (0),						/* translation */
-			glm::quat (),								/* rotation */
-			glm::vec3 (0.1f, 1.3f, 0.2f),		/* scale */
-			glm::vec3 (0, 1, 0),			/* self_origin */
-			glm::vec3 (1, -1, 0),		/* parent_origin */
-			model);
-	right_leg->SetParent(torso);
-	right_leg->SetRotationFrames(get_human_right_leg_rot_frames());
-
-
-	Node *lower_left_leg = new Node (
-			glm::vec3 (0),						/* translation */
-			glm::quat (),								/* rotation */
-			glm::vec3 (0.1f, 1.3f, 0.2f),		/* scale */
-			glm::vec3 (0, 1, 0),			/* self_origin */
-			glm::vec3 (0, -1, 0),		/* parent_origin */
-			model);
-	lower_left_leg->SetParent(left_leg);
-	lower_left_leg->SetRotationFrames(get_human_lower_left_leg_rot_frames());
-
-	Node *lower_right_leg = new Node (
-			glm::vec3 (0),						/* translation */
-			glm::quat (),								/* rotation */
-			glm::vec3 (0.1f, 1.3f, 0.2f),		/* scale */
-			glm::vec3 (0, 1, 0),			/* self_origin */
-			glm::vec3 (0, -1, 0),		/* parent_origin */
-			model);
-	lower_right_leg->SetParent(right_leg);
-	lower_right_leg->SetRotationFrames(get_human_lower_right_leg_rot_frames());
-
-	return torso;
+	return (create_nodes_from_hardnodes (model, human_skeleton));
 }
