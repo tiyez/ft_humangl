@@ -19,6 +19,7 @@ struct Input {
 	glm::vec3	movement_delta;
 	glm::vec2	mouse_position;
 	glm::vec2	mouse_delta;
+	int			node_selected;
 };
 
 struct WindowUserData {

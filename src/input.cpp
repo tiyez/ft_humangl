@@ -26,6 +26,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 			case GLFW_KEY_S: { input->movement_delta.z -= -1; } break ;
 			case GLFW_KEY_E: { input->movement_delta.y -= 1; } break ;
 			case GLFW_KEY_Q: { input->movement_delta.y -= -1; } break ;
+			case GLFW_KEY_N: { input->node_selected++; } break;
+			case GLFW_KEY_P: { input->node_selected--; } break;
 		}
 	}
 }

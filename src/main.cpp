@@ -9,10 +9,12 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <iostream>
+
 extern GLenum error;
 
 int main () {
-	Input			input;
+	Input			input {};
 	WindowUserData	userdata = { &input };
 	GLFWwindow *window = initialize_glfw(userdata);
 	input_register_callbacks(window);
@@ -28,6 +30,8 @@ int main () {
 
 		glm::mat4 projection = calculate_projection(window);
 		glm::mat4 camera = calculate_camera(userdata.input, delta);
+
+		human.SelectNode(input.node_selected);
 
 		mstack.push();
 		mstack.transform(projection * camera);

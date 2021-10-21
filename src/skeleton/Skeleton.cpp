@@ -66,6 +66,21 @@ static void update_hierarchy(Node *node, float cur_time) {
 	node->rotation = get_cur_rotation(node->rot_frames, cur_time);
 }
 
+static void select_node_hierarchy(Node *node, int *node_number) {
+	if (*node_number == 0) {
+		node->selected = true;
+	}
+	else {
+		node->selected = false;
+	}
+	*node_number -= 1;
+	if (!node->childs.empty()) {
+		for (auto child : node->childs) {
+			select_node_hierarchy(child, node_number);
+		}
+	}
+}
+
 // HIERARCHY END
 
 Skeleton::~Skeleton() {
@@ -86,4 +101,10 @@ void Skeleton::Animate(float delta) {
 
 void Skeleton::Draw(MatrixStack &mstack) const {
 	draw_hierarchy(mstack, *_node_hierarchy);
+}
+
+void Skeleton::SelectNode(int node_num) const {
+	node_num = abs(node_num);
+	node_num = node_num % (_nodes_count + 1);
+	select_node_hierarchy(_node_hierarchy, &node_num);
 }
