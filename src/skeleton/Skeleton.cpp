@@ -2,7 +2,7 @@
 #include "MatrixStack.hpp"
 #include "def.h"
 
-// HIERARCHY
+// HIERARCHY TODO: move all *_hierarchy to distinct class??
 
 static void draw_hierarchy(class MatrixStack &stack, const class Node &node) {	// TODO: move to Node.cpp??
 	stack.push ();
@@ -81,6 +81,17 @@ static void select_node_hierarchy(Node *node, int *node_number) {
 	}
 }
 
+static void change_scale_selected_hierarchy(Node *node, glm::vec3 &scale_delta) {
+	if (!node->childs.empty()) {
+		for (auto child : node->childs) {
+			change_scale_selected_hierarchy(child, scale_delta);
+		}
+	}
+	if (node->selected) {
+		node->scale += scale_delta;
+	}
+}
+
 // HIERARCHY END
 
 Skeleton::~Skeleton() {
@@ -104,7 +115,11 @@ void Skeleton::Draw(MatrixStack &mstack) const {
 }
 
 void Skeleton::SelectNode(int node_num) const {
-	node_num = abs(node_num);
+	node_num = abs(node_num) + _nodes_count;
 	node_num = node_num % (_nodes_count + 1);
 	select_node_hierarchy(_node_hierarchy, &node_num);
+}
+
+void Skeleton::ChangeSizeSelected(glm::vec3 &scale_delta) const {
+	change_scale_selected_hierarchy(_node_hierarchy, scale_delta);
 }

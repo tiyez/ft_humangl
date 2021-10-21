@@ -32,6 +32,7 @@ int main () {
 		glm::mat4 camera = calculate_camera(userdata.input, delta);
 
 		human.SelectNode(input.node_selected);
+		human.ChangeSizeSelected(input.scale_delta);
 
 		mstack.push();
 		mstack.transform(projection * camera);
