@@ -26,9 +26,9 @@ const struct HardNode	human_skeleton[] = {
 	{ /* torso 0 */
 		0, -1, { 0 }, { 1 }, 0, { 1.3f, 3.14f, 0.8f }, { 0 }, { 0 },
 		{
-			{ 0, 0.0f, { 0, 1, 0 }, RADIANS (-15.f) },
-			{ 0, 0.5f, { 0, 1, 0 }, RADIANS (15.f) },
-			{ 0, 3.0f, { 0, 1, 0 }, RADIANS (-15.f) },
+			{ 0, 0.0f, { 1, 0, 0 }, RADIANS (0.f) },
+			{ 0, 1.0f, { 1, 0, 0 }, RADIANS (15.f) },
+			{ 0, 3.0f, { 1, 0, 0 }, RADIANS (0.f) },
 			{ 1, 0, {0}, 0 },
 		},
 	},
@@ -120,7 +120,7 @@ const struct HardNode	human_skeleton[] = {
 
 Node	*create_nodes_from_hardnodes (const RenderObject *model, const struct HardNode *hardnode) {
 	std::vector<class Node *>	nodes;
-	class Node	*root = 0;
+	class Node	*root = nullptr;
 
 	while (!hardnode->_end) {
 		std::vector<struct RotationFrame>	frames;
