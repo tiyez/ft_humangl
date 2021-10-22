@@ -6,6 +6,7 @@
 
 class RenderObject;
 class Node;
+struct NodeData;
 
 // SHADERS
 
@@ -50,7 +51,7 @@ glm::mat4	calculate_camera(Input *input, float delta);
 
 // MODEL
 
-Node	*create_human(const RenderObject *model);
+struct NodeData	create_human(const RenderObject *model);
 void 	delete_human(Node *node);
 
 // TIME

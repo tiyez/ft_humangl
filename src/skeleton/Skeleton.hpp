@@ -7,10 +7,13 @@
 class Skeleton {
 public:
 	Skeleton(const RenderObject *model) {	// TODO: remove slider
+		NodeData	data;
+
 		_cur_time = 0.f;
-		_anim_time = 3.f;
-		_nodes_count = 10;
-		_node_hierarchy = create_human(model);
+		data = create_human(model);
+		_anim_time = data.animation_time;
+		_nodes_count = data.nodes_count;
+		_node_hierarchy = data.root;
 	}
 
 	~Skeleton();

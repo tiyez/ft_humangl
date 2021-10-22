@@ -15,6 +15,12 @@ struct RotationFrame {
 	float		angle;
 };
 
+struct NodeData {
+	float		animation_time;
+	size_t		nodes_count;
+	class Node	*root;
+};
+
 class Node { // TODO: cleanup this mess
 public:
 	glm::vec3	translation;
@@ -50,5 +56,6 @@ public:
 
 	// TODO def constructor, destructor, copy constructor, assign operator
 };
+
 
 #endif //NODE_HPP

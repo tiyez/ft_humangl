@@ -4,6 +4,7 @@
 #include "humangl.h"
 
 #include "Skeleton.hpp"
+#include "NodeSerializer.hpp"
 #include "MatrixStack.hpp"
 
 #include <glm/glm.hpp>
@@ -23,6 +24,10 @@ int main () {
 	RenderObject *cube = initialize_render_object();
 	Skeleton human = Skeleton(cube);
 	MatrixStack mstack;
+
+	NodeSerializer	serializer ("human");
+	serializer.serialize_root (create_human (0).root);
+	std::cout << serializer.finalize () << std::endl;
 
 	while (!glfwWindowShouldClose (window))
 	{

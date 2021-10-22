@@ -5,7 +5,20 @@ OBJDIR=.obj
 SRCDIR=src
 
 SRC = glad/src/glad.c
-CPPSRC = $(addprefix $(SRCDIR)/,main.cpp shaders.cpp input.cpp initialization.cpp mvp.cpp time.cpp skeleton/Node.cpp skeleton/Skeleton.cpp skeleton/human.cpp matrix_stack/MatrixStack.cpp render/RenderObject.cpp)
+CPPSRC = $(addprefix $(SRCDIR)/,\
+	main.cpp\
+	shaders.cpp\
+	input.cpp\
+	initialization.cpp\
+	mvp.cpp\
+	time.cpp\
+	skeleton/Node.cpp\
+	skeleton/NodeSerializer.cpp\
+	skeleton/Skeleton.cpp\
+	skeleton/human.cpp\
+	matrix_stack/MatrixStack.cpp\
+	render/RenderObject.cpp\
+	)
 MSRC = 
 ALL_SRC= $(MSRC) $(CPPSRC) $(SRC)
 
@@ -16,7 +29,7 @@ OBJ3=$(OBJ2:.cpp=.cpp.o)
 OBJ=$(addprefix $(OBJDIR)/,$(OBJ3))
 
 WARNINGS_ = -Wno-sizeof-array-argument -Wno-unknown-warning-option -Wno-sizeof-pointer-div -Wno-unneeded-internal-declaration -Wno-unused-parameter -Wno-unused-variable -Wno-unused-private-field
-INCLUDES_ = -Iglfw/include -Iglad/include -Iglm -I./src -I./src/skeleton/ -I./src/matrix_stack/ -I./src/render
+INCLUDES_ = -Iglfw/include -Iglad/include -Iglm -Isrc -Isrc/matrix_stack -Isrc/render -Isrc/skeleton
 #TODO: add relinks managing on header update
 
 CFLAGS += -Wall -Wextra -Werror -pedantic $(WARNINGS_) $(INCLUDES_) -g
@@ -93,7 +106,7 @@ $(DEPDIR)/%.md: ;
 $(DEPDIR)/%.cd: ;
 .PRECIOUS: $(DEPDIR)/%.md $(DEPDIR)/%.cd
 
-include $(wildcard $(DEPDIR)/*.md) $(wildcard $(DEPDIR)/*.cd)
+include $(shell find .dep -type f -name '*.md') $(shell find .dep -type f -name '*.cd')
 
 
 
