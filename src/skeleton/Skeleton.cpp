@@ -95,6 +95,20 @@ static void change_scale_selected_hierarchy(Node *node, glm::vec3 &scale_delta) 
 	}
 }
 
+static void change_color_selected_hierarchy(Node *node, glm::vec3 &color_delta) {
+	if (!node->childs.empty()) {
+		for (auto child : node->childs) {
+			change_color_selected_hierarchy(child, color_delta);
+		}
+	}
+	if (node->selected) {
+		node->color += color_delta;
+		node->color.x = glm::clamp(node->color.x, 0.f, 0.9f);
+		node->color.y = glm::clamp(node->color.y, 0.f, 0.9f);
+		node->color.z = glm::clamp(node->color.z, 0.f, 0.9f);
+	}
+}
+
 std::ostream &operator<<(std::ostream &o, const glm::vec3 &v) {
 	o << "(" << v.x << ", " << v.y << ", " << v.z << ")";
 	return o;
@@ -158,4 +172,8 @@ void Skeleton::ChangeSizeSelected(glm::vec3 &scale_delta) const {
 
 void Skeleton::PrintSelectedNode() const {
 	print_selected_hierarchy(_node_hierarchy);
+}
+
+void Skeleton::ChangeColorSelected(glm::vec3 &color_delta) const {
+	change_color_selected_hierarchy(_node_hierarchy, color_delta);
 }

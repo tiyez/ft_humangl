@@ -21,6 +21,7 @@ struct Input {
 	glm::vec2	mouse_delta;
 	int			node_selected;
 	glm::vec3	scale_delta;
+	glm::vec3	color_delta;
 	bool		print_selected;
 	bool		animate;
 };

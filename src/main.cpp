@@ -33,6 +33,7 @@ int main () {
 
 		human.SelectNode(input.node_selected);
 		human.ChangeSizeSelected(input.scale_delta);
+		human.ChangeColorSelected(input.color_delta);
 		if (userdata.input->print_selected) {
 			human.PrintSelectedNode();
 		}

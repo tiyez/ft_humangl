@@ -5,6 +5,7 @@
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	WindowUserData	*userdata = static_cast<WindowUserData *>(glfwGetWindowUserPointer (window));
 	Input			*input = userdata->input;
+	float			shift = mods && GLFW_MOD_SHIFT ? -1 : 1;
 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
@@ -12,19 +13,20 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	if (action == GLFW_PRESS) {
 		switch (key) {
 			// Movement
-			case GLFW_KEY_D: { input->movement_delta.x += 1; } break ;
-			case GLFW_KEY_A: { input->movement_delta.x += -1; } break ;
-			case GLFW_KEY_W: { input->movement_delta.z += 1; } break ;
-			case GLFW_KEY_S: { input->movement_delta.z += -1; } break ;
-			case GLFW_KEY_E: { input->movement_delta.y += 1; } break ;
-			case GLFW_KEY_Q: { input->movement_delta.y += -1; } break ;
-			// Scale Resize	TODO: make scale resize by shift key??
-			case GLFW_KEY_T: { input->scale_delta.x +=  0.03; } break ;
-			case GLFW_KEY_G: { input->scale_delta.x += -0.03; } break ;
-			case GLFW_KEY_Y: { input->scale_delta.z +=  0.03; } break ;
-			case GLFW_KEY_H: { input->scale_delta.z += -0.03; } break ;
-			case GLFW_KEY_U: { input->scale_delta.y +=  0.03; } break ;
-			case GLFW_KEY_J: { input->scale_delta.y += -0.03; } break ;
+			case GLFW_KEY_D: { input->movement_delta.x +=  2; } break ;
+			case GLFW_KEY_A: { input->movement_delta.x += -2; } break ;
+			case GLFW_KEY_W: { input->movement_delta.z +=  2; } break ;
+			case GLFW_KEY_S: { input->movement_delta.z += -2; } break ;
+			case GLFW_KEY_E: { input->movement_delta.y +=  2; } break ;
+			case GLFW_KEY_Q: { input->movement_delta.y += -2; } break ;
+			// Scale
+			case GLFW_KEY_1: { input->scale_delta.x +=  0.03f * shift; } break ;
+			case GLFW_KEY_2: { input->scale_delta.y +=  0.03f * shift; } break ;
+			case GLFW_KEY_3: { input->scale_delta.z +=  0.03f * shift; } break ;
+			// Color
+			case GLFW_KEY_4: { input->color_delta.x +=  0.03f * shift; } break ;
+			case GLFW_KEY_5: { input->color_delta.y +=  0.03f * shift; } break ;
+			case GLFW_KEY_6: { input->color_delta.z +=  0.03f * shift; } break ;
 			// Start/Stop animation
 			case GLFW_KEY_SPACE: { input->animate = !input->animate; } break;
 			// Print Node
@@ -33,19 +35,20 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	} else if (action == GLFW_RELEASE) {
 		switch (key) {
 			// Movement
-			case GLFW_KEY_D: { input->movement_delta.x -= 1; } break ;
-			case GLFW_KEY_A: { input->movement_delta.x -= -1; } break ;
-			case GLFW_KEY_W: { input->movement_delta.z -= 1; } break ;
-			case GLFW_KEY_S: { input->movement_delta.z -= -1; } break ;
-			case GLFW_KEY_E: { input->movement_delta.y -= 1; } break ;
-			case GLFW_KEY_Q: { input->movement_delta.y -= -1; } break ;
-			// Scale Resize	TODO: make scale resize by shift key??
-			case GLFW_KEY_T: { input->scale_delta.x -=  0.03; } break ;
-			case GLFW_KEY_G: { input->scale_delta.x -= -0.03; } break ;
-			case GLFW_KEY_Y: { input->scale_delta.z -=  0.03; } break ;
-			case GLFW_KEY_H: { input->scale_delta.z -= -0.03; } break ;
-			case GLFW_KEY_U: { input->scale_delta.y -=  0.03; } break ;
-			case GLFW_KEY_J: { input->scale_delta.y -= -0.03; } break ;
+			case GLFW_KEY_D: { input->movement_delta.x -=  2; } break ;
+			case GLFW_KEY_A: { input->movement_delta.x -= -2; } break ;
+			case GLFW_KEY_W: { input->movement_delta.z -=  2; } break ;
+			case GLFW_KEY_S: { input->movement_delta.z -= -2; } break ;
+			case GLFW_KEY_E: { input->movement_delta.y -=  2; } break ;
+			case GLFW_KEY_Q: { input->movement_delta.y -= -2; } break ;
+			// Scale
+			case GLFW_KEY_1: { input->scale_delta.x -=  0.03f * shift; } break ;
+			case GLFW_KEY_2: { input->scale_delta.y -=  0.03f * shift; } break ;
+			case GLFW_KEY_3: { input->scale_delta.z -=  0.03f * shift; } break ;
+			// Color
+			case GLFW_KEY_4: { input->color_delta.x -=  0.03f * shift; } break ;
+			case GLFW_KEY_5: { input->color_delta.y -=  0.03f * shift; } break ;
+			case GLFW_KEY_6: { input->color_delta.z -=  0.03f * shift; } break ;
 			// Select Node
 			case GLFW_KEY_N: { input->node_selected++; } break;
 			case GLFW_KEY_B: { input->node_selected--; } break;
