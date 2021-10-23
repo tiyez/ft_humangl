@@ -45,6 +45,17 @@ struct NodeData	create_nodedata (const RenderObject *model, std::string name) {
 	for (size_t index = 0; hardskeletons[index].name; index += 1) {
 		if (0 == name.compare (hardskeletons[index].name)) {
 			struct NodeData	nodedata = create_nodes_from_hardnodes (model, hardskeletons[index].hardnodes);
+
+			if (hardskeletons[index].hardtranslations) {
+				for (size_t i = 0; i < INT64_MAX; ++i) {
+					if (hardskeletons[index].hardtranslations->_end) {
+						break ;
+					}
+					float const *f = hardskeletons[index].hardtranslations[i].axis;
+					glm::vec3 v = glm::vec3 (*f, *(f + 1), *(f + 2));
+					nodedata.translations.push_back({ hardskeletons[index].hardtranslations[i].time, v });
+				}
+			}
 			nodedata.name = name;
 			return (nodedata);
 		}

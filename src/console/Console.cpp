@@ -142,6 +142,7 @@ bool	Console::listen_command () {
 				}
 			}
 			serializer.serialize_nodes (skeleton._nodes, skeleton._name);
+			serializer.serialize_translations(skeleton._translation_frames, skeleton._name);
 			std::fstream	file("src/skeleton/HardSkeleton_serialized2.cpp", file.out | file.trunc);
 			if (!file.is_open ()) {
 				Error ("cannot open file for serialized data. Outputing to stdout");

@@ -21,4 +21,10 @@ struct HardNode {
 	struct HardFrame	frames[32];
 };
 
+struct HardTranslationFrame {
+	int _end;
+	float time;
+	float axis[3];
+};
+
 #endif /* Hard_Node_Header */

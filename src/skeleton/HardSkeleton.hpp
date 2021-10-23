@@ -11,6 +11,7 @@
 struct HardSkeleton {
 	const char				*name;
 	const struct HardNode	*hardnodes;
+	const struct HardTranslationFrame *hardtranslations;
 };
 
 extern const struct HardSkeleton	hardskeletons[];

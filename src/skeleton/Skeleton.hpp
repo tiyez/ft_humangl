@@ -28,10 +28,12 @@ public:
 	void	RecalcAnimationDuration ();
 
 	friend class Console;
+
+
 private:
 	Skeleton() {};
 	void UpdateTime(float delta);
-
+	std::vector<TranslateFrame> _translation_frames;
 	std::string	_name;
 	std::vector<class Node>	_nodes;
 	size_t	_root_index;
