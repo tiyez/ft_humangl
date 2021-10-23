@@ -2,9 +2,13 @@
 #include "Console.hpp"
 #include <string>
 #include <sstream>
+#include <fstream>
 #include <vector>
 #include <iostream>
 #include "def.h"
+#include "NodeSerializer.hpp"
+#include "HardSkeleton.hpp"
+
 
 // CAUTION!!! copy-pasted from https://stackoverflow.com/questions/236129/how-do-i-iterate-over-the-words-of-a-string
 template <typename Out>
@@ -39,9 +43,9 @@ void	Console::listen_command () {
 		if (0 == words[0].compare ("continue") || 0 == words[0].compare ("c")) {
 			break ;
 		} else if (0 == words[0].compare ("skeleton") || 0 == words[0].compare ("sk")) {
-			if (words.size () <= 0) {
+			if (words.size () <= 1) {
 				std::cout << "usage: skeleton show" << std::endl;
-				std::cout << "usage: skeleton new_frame <time>" << std::endl;
+				std::cout << "usage: skeleton new_frame <start_time>" << std::endl;
 				continue ;
 			}
 			if (0 == words[1].compare ("show") || 0 == words[1].compare ("sh")) {
@@ -60,8 +64,38 @@ void	Console::listen_command () {
 						std::cout << "  " << rot.time << " " << rot.axis << " " << rot.angle << std::endl;
 					}
 				}
-			} else if (0 == words[1].compare ("serialize") || 0 == words[1].compare ("ser")) {
+			} else if (0 == words[1].compare ("new_frame") || 0 == words[1].compare ("newfr")) {
+				if (words.size () <= 2) {
+					std::cout << "usage: skeleton new_frame <start_time>" << std::endl;
+					continue ;
+				}
+				float	start_time = std::strtof (words[2].c_str(), nullptr);
+				if (_node_index >= 0) {
+					skeleton._nodes[_node_index].rot_frames.push_back ({ start_time, glm::vec3 (1, 0, 0), 0.f });
+					_frame_index = skeleton._nodes[_node_index].rot_frames.size () - 1;
+					skeleton.RecalcAnimationDuration ();
+				} else {
+					Error ("no node selected");
+				}
+			} else if (0 == words[1].compare ("new_child") || 0 == words[1].compare ("newch")) {
 				
+			} else if (0 == words[1].compare ("save") || 0 == words[1].compare ("s")) {
+				NodeSerializer	serializer;
+
+				for (size_t index = 0; hardskeletons[index].name; index += 1) {
+					if (0 != skeleton._name.compare (hardskeletons[index].name)) {
+						serializer.serialize_nodedata (create_nodedata (0, hardskeletons[index].name));
+					}
+				}
+				serializer.serialize_nodes (skeleton._nodes, skeleton._name);
+				std::fstream	file("src/skeleton/HardSkeleton_serialized.cpp", file.out | file.trunc);
+				if (!file.is_open ()) {
+					Error ("cannot open file for serialized data. Outputing to stdout");
+					std::cout << serializer.finalize () << std::endl;
+				} else {
+					file << serializer.finalize () << std::endl;
+					std::cout << "saved" << std::endl;
+				}
 			}
 		}
 	}
@@ -100,4 +134,8 @@ void	Console::update (struct Input &input, float delta) {
 	}
 }
 
+
+// 1. Torso movement
+// 2. Add wings
+// 3. Add jump, walk, idle, fly, wings protection
 

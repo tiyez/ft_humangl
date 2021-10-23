@@ -4,6 +4,7 @@
 
 #include <sstream>
 #include <string>
+#include <vector>
 #include <glm/glm.hpp>
 
 #include "Node.hpp"
@@ -11,13 +12,13 @@
 class NodeSerializer {
 	std::stringstream	stream;
 	int					node_counter;
+	std::vector<std::string>	names;
 
 	void	serialize_glmvec3 (const glm::vec3 &vector);
-	void	serialize_node (const std::vector<class Node> &nodes, size_t index, int parent);
 
 public:
-	NodeSerializer (const std::string &name);
-	void		serialize_root (const std::vector<class Node> &nodes, size_t root_index);
+	NodeSerializer ();
+	void		serialize_nodes (const std::vector<class Node> &nodes, const std::string &name);
 	void		serialize_nodedata (const struct NodeData &nodedata);
 	std::string	finalize ();
 };

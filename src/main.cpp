@@ -4,6 +4,7 @@
 #include "humangl.h"
 
 #include "Skeleton.hpp"
+#include "HardSkeleton.hpp"
 #include "NodeSerializer.hpp"
 #include "MatrixStack.hpp"
 #include "Console.hpp"
@@ -23,11 +24,11 @@ int main () {
 	initialize_opengl();
 
 	RenderObject *cube = initialize_render_object();
-	Console	console (Skeleton (create_human (cube)));
+	Console	console (Skeleton (create_nodedata (cube, "human")));
 	MatrixStack mstack;
 
-	NodeSerializer	serializer ("human");
-	serializer.serialize_nodedata (create_human (0));
+	NodeSerializer	serializer;
+	serializer.serialize_nodedata (create_nodedata (cube, "human"));
 	std::cout << serializer.finalize () << std::endl;
 
 

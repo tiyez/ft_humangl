@@ -53,11 +53,6 @@ RenderObject	*initialize_render_object(void);
 glm::mat4	calculate_projection(GLFWwindow *window);
 glm::mat4	calculate_camera(Input *input, float delta);
 
-// MODEL
-
-struct NodeData	create_human(const RenderObject *model);
-void 	delete_human(Node *node);
-
 // TIME
 
 float get_delta();

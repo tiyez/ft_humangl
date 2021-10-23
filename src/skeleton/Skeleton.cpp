@@ -153,6 +153,14 @@ void	Skeleton::RotateNodeFrame (size_t node_index, size_t frame_index, float rot
 	}
 }
 
+void	Skeleton::RecalcAnimationDuration () {
+	_anim_time = 0;
+	for (auto &node : _nodes) {
+		for (auto &frame : node.rot_frames) {
+			_anim_time = glm::max (_anim_time, frame.time);
+		}
+	}
+}
 
 
 

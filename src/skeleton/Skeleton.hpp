@@ -25,6 +25,7 @@ public:
 	void	ChangeNodeColor(size_t index, const glm::vec3 &color_delta);
 	void	RotateNodeFrame(size_t node_index, size_t frame_index, float rotate_x, float rotate_y);
 	void	PrintNode(size_t index) const;
+	void	RecalcAnimationDuration ();
 
 	friend class Console;
 private:
