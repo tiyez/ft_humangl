@@ -13,6 +13,7 @@ public:
 		_root_index = nodedata.root_index;
 		_anim_time = nodedata.animation_time;
 		_name = nodedata.name;
+		_cur_translation = glm::vec3 ();
 		_translation_frames = std::move (nodedata.translations);
 	}
 
@@ -25,6 +26,7 @@ public:
 	void	ChangeNodeSize(size_t index, const glm::vec3 &scale_delta);
 	void	ChangeNodeColor(size_t index, const glm::vec3 &color_delta);
 	void	RotateNodeFrame(size_t node_index, size_t frame_index, glm::vec3 &euler_rot);
+	void	TranslateFrame(size_t frame_index, glm::vec3 &translation);
 	void	PrintNode(size_t index) const;
 	void	RecalcAnimationDuration ();
 
@@ -34,7 +36,8 @@ public:
 private:
 	Skeleton() {};
 	void UpdateTime(float delta);
-	std::vector<TranslateFrame> _translation_frames;
+	glm::vec3 _cur_translation;
+	std::vector<TranslationFrame> _translation_frames;
 	std::string	_name;
 	std::vector<class Node>	_nodes;
 	size_t	_root_index;

@@ -288,11 +288,11 @@ bool	Console::listen_command () {
 			std::cout << "usage: newtf <start_time>" << std::endl;
 			return true;
 		}
-		float	start_time = std::strtof (words[2].c_str(), nullptr);
-		std::vector<TranslateFrame>	&frames = skeleton._translation_frames;
+		float	start_time = std::strtof (words[1].c_str(), nullptr);
+		std::vector<TranslationFrame>	&frames = skeleton._translation_frames;
 		frames.push_back ({ start_time, glm::vec3 (0, 0, 0)});
 		_frame_index = frames.size () - 1;
-		std::sort (frames.begin (), frames.end (), [](const TranslateFrame &left, const TranslateFrame &right) { return left.time < right.time; });
+		std::sort (frames.begin (), frames.end (), [](const TranslationFrame &left, const TranslationFrame &right) { return left.time < right.time; });
 		for (size_t index = 0; index < frames.size (); index += 1) {
 			if (frames[index].time == start_time) {
 				_frame_index = index;
@@ -324,6 +324,10 @@ void	Console::update (struct Input &input, float delta) {
 		if (old_is_rotation_frame != input.is_rotation_frame) {
 			_frame_index = -1;
 			old_is_rotation_frame = input.is_rotation_frame;
+			if (input.is_rotation_frame)
+				Debug("Rotation mode applied");
+			else
+				Debug("Translation mode applied");
 		}
 
 		if (_frame_index + input.select_frame >= 0) {
@@ -346,8 +350,11 @@ void	Console::update (struct Input &input, float delta) {
 		skeleton.HighlightNode (_node_index);
 		skeleton.ChangeNodeSize(_node_index, input.scale_delta);
 		skeleton.ChangeNodeColor(_node_index, input.color_delta);
-		if (_frame_index >= 0) {
+		if (_frame_index >= 0 && input.is_rotation_frame) {
 			skeleton.RotateNodeFrame(_node_index, _frame_index, input.rotate_euler);
+		}
+		if (_frame_index >= 0 && !input.is_rotation_frame) {
+			skeleton.TranslateFrame(_frame_index, input.translate);
 		}
 		static bool old_is_parent_origin = input.is_parent_origin;
 		if (old_is_parent_origin != input.is_parent_origin) {
@@ -374,7 +381,12 @@ void	Console::update (struct Input &input, float delta) {
 		skeleton.Animate(delta);
 	} else {
 		if (_node_index >= 0 && _frame_index >= 0) {
-			skeleton.SetAnimationTime (skeleton._nodes[_node_index].rot_frames[_frame_index].time);
+			if (input.is_rotation_frame) {
+				skeleton.SetAnimationTime (skeleton._nodes[_node_index].rot_frames[_frame_index].time);
+			}
+			else {
+				skeleton.SetAnimationTime(skeleton._translation_frames[_frame_index].time);
+			}
 			skeleton.Animate(0);
 		}
 	}

@@ -18,7 +18,7 @@ class NodeSerializer {
 
 public:
 	NodeSerializer ();
-	void		serialize_translations (const std::vector<TranslateFrame> &translatinos, const std::string &name);
+	void		serialize_translations (const std::vector<TranslationFrame> &translatinos, const std::string &name);
 	void		serialize_nodes (const std::vector<class Node> &nodes, const std::string &name);
 	void		serialize_nodedata (const struct NodeData &nodedata);
 	std::string	finalize ();

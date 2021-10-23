@@ -16,7 +16,7 @@ struct RotationFrame {
 	float		angle;
 };
 
-struct TranslateFrame {
+struct TranslationFrame {
 	float time;
 	glm::vec3 translate;
 };
@@ -24,7 +24,7 @@ struct TranslateFrame {
 struct NodeData {
 	float		animation_time;
 	size_t		nodes_count;
-	std::vector<TranslateFrame> translations;
+	std::vector<TranslationFrame> translations;
 	std::vector<class Node>	nodes;
 	int			root_index;
 	std::string	name;

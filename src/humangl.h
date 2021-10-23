@@ -20,6 +20,7 @@ struct Input {
 	glm::vec3	movement_delta;
 	glm::vec2	mouse_position;
 	glm::vec2	mouse_delta;
+	glm::vec3	translate;
 	int			select_node;
 	int			select_frame;
 	glm::vec3	scale_delta;

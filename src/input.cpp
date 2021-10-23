@@ -31,6 +31,10 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 			case GLFW_KEY_7: { input->rotate_euler.x += glm::radians (0.5f * shift); } break ;
 			case GLFW_KEY_8: { input->rotate_euler.y += glm::radians (0.5f * shift); } break ;
 			case GLFW_KEY_9: { input->rotate_euler.z += glm::radians (0.5f * shift); } break ;
+			// Translate
+			case GLFW_KEY_U: { input->translate.x +=  0.03f * shift; } break ;
+			case GLFW_KEY_I: { input->translate.y +=  0.03f * shift; } break ;
+			case GLFW_KEY_O: { input->translate.z +=  0.03f * shift; } break ;
 			// Start/Stop animation
 			case GLFW_KEY_SPACE: { input->animate = !input->animate; } break;
 			// Print Node
@@ -71,6 +75,10 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 			case GLFW_KEY_7: { input->rotate_euler.x -= glm::radians (0.5f * shift); } break ;
 			case GLFW_KEY_8: { input->rotate_euler.y -= glm::radians (0.5f * shift); } break ;
 			case GLFW_KEY_9: { input->rotate_euler.z -= glm::radians (0.5f * shift); } break ;
+			// Translate
+			case GLFW_KEY_U: { input->translate.x -=  0.03f * shift; } break ;
+			case GLFW_KEY_I: { input->translate.y -=  0.03f * shift; } break ;
+			case GLFW_KEY_O: { input->translate.z -=  0.03f * shift; } break ;
 			// Origin
 			case GLFW_KEY_RIGHT: { input->origin_delta.x -=  1; } break ;
 			case GLFW_KEY_LEFT: { input->origin_delta.x -= -1; } break ;

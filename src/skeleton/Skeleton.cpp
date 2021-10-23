@@ -44,7 +44,39 @@ static glm::quat get_cur_rotation(std::vector<RotationFrame> &frames, float cur_
 					mixed_time);
 }
 
+static glm::vec3 get_cur_translation(std::vector<TranslationFrame> &frames, float cur_time) {
 
+	if (frames.size () == 0) {
+		return (glm::vec3());
+	} else if (frames.size () == 1) {
+		return (frames[0].translate);
+	}
+
+	int		begin_index = -1;
+	int		end_index = -1;
+
+	for (size_t index = 0; index < frames.size (); index += 1) {
+		if (frames[index].time < cur_time) {
+			begin_index = index;
+		} else {
+			end_index = index;
+			break ;
+		}
+	}
+
+	if (begin_index < 0) {
+		return (frames[0].translate);
+	} else if (end_index < 0) {
+		return (frames[begin_index].translate);
+	}
+
+	TranslationFrame	*begin = &frames[begin_index];
+	TranslationFrame	*end = &frames[end_index];
+
+	float mixed_time = (cur_time - begin->time) / (end->time - begin->time);
+
+	return glm::mix(begin->translate, end->translate, mixed_time);
+}
 
 
 
@@ -69,6 +101,7 @@ static void update_hierarchy(std::vector<class Node> &nodes, size_t index, float
 
 void Skeleton::Animate(float delta) {
 	UpdateTime(delta);
+	_cur_translation = get_cur_translation(_translation_frames, _cur_time);
 	update_hierarchy(_nodes, _root_index, _cur_time);
 }
 
@@ -92,11 +125,14 @@ static void draw_hierarchy(class MatrixStack &stack, const std::vector<class Nod
 }
 
 void Skeleton::Draw(MatrixStack &mstack) const {
+	mstack.push();
+	mstack.translate(_cur_translation);
 	if (_highlighted_index < _nodes.size ()) {
 		draw_hierarchy(mstack, _nodes, _root_index, _highlighted_index);
 	} else {
 		draw_hierarchy(mstack, _nodes, _root_index, -1);
 	}
+	mstack.pop();
 }
 
 void Skeleton::ChangeNodeSize(size_t index, const glm::vec3 &scale_delta) {
@@ -153,6 +189,15 @@ void	Skeleton::RotateNodeFrame (size_t node_index, size_t frame_index, glm::vec3
 	}
 }
 
+void Skeleton::TranslateFrame(size_t frame_index, glm::vec3 &translation) {
+	if (frame_index < _translation_frames.size()) {
+		_translation_frames[frame_index].translate += translation;
+	}
+	else {
+		Error ("invalid frame_index (frame_index: %zu; nodes count: %zu)", frame_index, _translation_frames.size ());
+	}
+}
+
 void	Skeleton::RecalcAnimationDuration () {
 	_anim_time = 0;
 	for (auto &node : _nodes) {
@@ -164,12 +209,6 @@ void	Skeleton::RecalcAnimationDuration () {
 		_anim_time = glm::max (_anim_time, trans.time);
 	}
 }
-
-
-
-
-
-
 
 std::ostream &operator<<(std::ostream &o, const glm::vec3 &v) {
 	o << "(" << v.x << ", " << v.y << ", " << v.z << ")";

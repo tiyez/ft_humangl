@@ -9,7 +9,7 @@ void	NodeSerializer::serialize_glmvec3 (const glm::vec3 &vector) {
 	stream << "{ " << vector.x << ", " << vector.y << ", " << vector.z << ", }, ";
 }
 
-void	NodeSerializer::serialize_translations (const std::vector<TranslateFrame> &translatinos, const std::string &name) {
+void	NodeSerializer::serialize_translations (const std::vector<TranslationFrame> &translatinos, const std::string &name) {
 	stream << "const struct HardTranslationFrame\tskeleton_translations_" << name << "[] = {" << std::endl;
 
 	for (size_t index = 0; index < translatinos.size(); ++index ) {
