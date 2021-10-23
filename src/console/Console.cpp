@@ -283,6 +283,23 @@ bool	Console::listen_command () {
 			Error ("unknown '%s' skeleton's command", words[1].c_str ());
 			sk_help ();
 		}
+	} else if (0 == words[0].compare ("new_transl") || 0 == words[0].compare ("newtf")) {
+		if (words.size () <= 1) {
+			std::cout << "usage: newtf <start_time>" << std::endl;
+			return true;
+		}
+		float	start_time = std::strtof (words[2].c_str(), nullptr);
+		std::vector<TranslateFrame>	&frames = skeleton._translation_frames;
+		frames.push_back ({ start_time, glm::vec3 (0, 0, 0)});
+		_frame_index = frames.size () - 1;
+		std::sort (frames.begin (), frames.end (), [](const TranslateFrame &left, const TranslateFrame &right) { return left.time < right.time; });
+		for (size_t index = 0; index < frames.size (); index += 1) {
+			if (frames[index].time == start_time) {
+				_frame_index = index;
+				break ;
+			}
+		}
+		skeleton.RecalcAnimationDuration ();
 	}
 	else {
 		std::cout << "Unknown command." << std::endl;
@@ -302,10 +319,20 @@ void	Console::update (struct Input &input, float delta) {
 		}
 	}
 	if (input.select_frame && _node_index >= 0) {
+		static bool old_is_rotation_frame = input.is_rotation_frame;
+
+		if (old_is_rotation_frame != input.is_rotation_frame) {
+			_frame_index = -1;
+			old_is_rotation_frame = input.is_rotation_frame;
+		}
+
 		if (_frame_index + input.select_frame >= 0) {
 			_frame_index += input.select_frame;
-			if (skeleton._nodes[_node_index].rot_frames.size ()) {
+			if (skeleton._nodes[_node_index].rot_frames.size () && input.is_rotation_frame) {
 				_frame_index %= skeleton._nodes[_node_index].rot_frames.size ();
+			}
+			else if (skeleton._translation_frames.size() && !input.is_rotation_frame) {
+				_frame_index %= skeleton._translation_frames.size();
 			}
 			else {
 				_frame_index = -1;

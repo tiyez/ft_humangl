@@ -160,6 +160,9 @@ void	Skeleton::RecalcAnimationDuration () {
 			_anim_time = glm::max (_anim_time, frame.time);
 		}
 	}
+	for (auto &trans : _translation_frames) {
+		_anim_time = glm::max (_anim_time, trans.time);
+	}
 }
 
 

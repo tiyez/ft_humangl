@@ -30,6 +30,7 @@ struct Input {
 	bool		console;
 	glm::vec3	origin_delta;
 	bool		is_parent_origin;
+	bool		is_rotation_frame;
 };
 
 struct WindowUserData {

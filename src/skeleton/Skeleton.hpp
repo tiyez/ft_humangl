@@ -13,6 +13,7 @@ public:
 		_root_index = nodedata.root_index;
 		_anim_time = nodedata.animation_time;
 		_name = nodedata.name;
+		_translation_frames = std::move (nodedata.translations);
 	}
 
 	~Skeleton();

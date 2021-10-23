@@ -46,7 +46,9 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 			case GLFW_KEY_UP: { (shift > 0 ? input->origin_delta.z : input->origin_delta.y) +=  1; } break ;
 			case GLFW_KEY_DOWN: { (shift > 0 ? input->origin_delta.z : input->origin_delta.y) += -1; } break ;
 			// is_parent_origin
-			case GLFW_KEY_X: { input->is_parent_origin = !input->is_parent_origin; }
+			case GLFW_KEY_X: { input->is_parent_origin = !input->is_parent_origin; }  break ;
+			// Rotation_translation index change
+			case GLFW_KEY_Z: { input->is_rotation_frame = !input->is_rotation_frame; }  break ;
 		}
 	} else if (action == GLFW_RELEASE) {
 		switch (key) {

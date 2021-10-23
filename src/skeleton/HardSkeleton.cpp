@@ -48,7 +48,7 @@ struct NodeData	create_nodedata (const RenderObject *model, std::string name) {
 
 			if (hardskeletons[index].hardtranslations) {
 				for (size_t i = 0; i < INT64_MAX; ++i) {
-					if (hardskeletons[index].hardtranslations->_end) {
+					if (hardskeletons[index].hardtranslations[i]._end) {
 						break ;
 					}
 					float const *f = hardskeletons[index].hardtranslations[i].axis;
