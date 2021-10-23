@@ -28,17 +28,25 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 			case GLFW_KEY_5: { input->color_delta.y +=  0.03f * shift; } break ;
 			case GLFW_KEY_6: { input->color_delta.z +=  0.03f * shift; } break ;
 			// Rotate
-			case GLFW_KEY_7: { input->rotate_x += glm::radians (5.f * shift); } break ;
-			case GLFW_KEY_8: { input->rotate_y += glm::radians (5.f * shift); } break ;
+			case GLFW_KEY_7: { input->rotate_euler.x += glm::radians (0.5f * shift); } break ;
+			case GLFW_KEY_8: { input->rotate_euler.y += glm::radians (0.5f * shift); } break ;
+			case GLFW_KEY_9: { input->rotate_euler.z += glm::radians (0.5f * shift); } break ;
 			// Start/Stop animation
 			case GLFW_KEY_SPACE: { input->animate = !input->animate; } break;
 			// Print Node
 			case GLFW_KEY_P: {input->print_selected = true;} break;
 			// Console
-			case GLFW_KEY_Z: { input->console = true; } break ;
+			case GLFW_KEY_C: { input->console = true; } break ;
 			// Select
 			case GLFW_KEY_N: { (shift > 0 ? input->select_node : input->select_frame) += 1; } break;
 			case GLFW_KEY_B: { (shift > 0 ? input->select_node : input->select_frame) += -1; } break;
+			// Origin
+			case GLFW_KEY_RIGHT: { input->origin_delta.x +=  1; } break ;
+			case GLFW_KEY_LEFT: { input->origin_delta.x += -1; } break ;
+			case GLFW_KEY_UP: { (shift > 0 ? input->origin_delta.z : input->origin_delta.y) +=  1; } break ;
+			case GLFW_KEY_DOWN: { (shift > 0 ? input->origin_delta.z : input->origin_delta.y) += -1; } break ;
+			// is_parent_origin
+			case GLFW_KEY_X: { input->is_parent_origin = !input->is_parent_origin; }
 		}
 	} else if (action == GLFW_RELEASE) {
 		switch (key) {
@@ -57,8 +65,15 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 			case GLFW_KEY_4: { input->color_delta.x -=  0.03f * shift; } break ;
 			case GLFW_KEY_5: { input->color_delta.y -=  0.03f * shift; } break ;
 			case GLFW_KEY_6: { input->color_delta.z -=  0.03f * shift; } break ;
-			// Console
-			case GLFW_KEY_Z: { input->console = false; } break ;
+			// Rotate
+			case GLFW_KEY_7: { input->rotate_euler.x -= glm::radians (0.5f * shift); } break ;
+			case GLFW_KEY_8: { input->rotate_euler.y -= glm::radians (0.5f * shift); } break ;
+			case GLFW_KEY_9: { input->rotate_euler.z -= glm::radians (0.5f * shift); } break ;
+			// Origin
+			case GLFW_KEY_RIGHT: { input->origin_delta.x -=  1; } break ;
+			case GLFW_KEY_LEFT: { input->origin_delta.x -= -1; } break ;
+			case GLFW_KEY_UP: { (shift > 0 ? input->origin_delta.z : input->origin_delta.y) -=  1; } break ;
+			case GLFW_KEY_DOWN: { (shift > 0 ? input->origin_delta.z : input->origin_delta.y) -= -1; } break ;
 		}
 	}
 }

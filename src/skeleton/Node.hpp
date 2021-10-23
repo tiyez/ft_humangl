@@ -53,6 +53,16 @@ public:
 				, parent_index(-1)
 				, color(glm::vec3(0))
 	{ }
+	Node (const RenderObject *model)
+		: translation(glm::vec3 (0))
+		, rotation(glm::angleAxis (0.f, glm::vec3 (1, 0, 0)))
+		, scale(glm::vec3 (1))
+		, self_origin(glm::vec3 (0))
+		, parent_origin(glm::vec3 (0))
+		, model(model)
+		, parent_index(-1)
+		, color(glm::vec3(0))
+	{ }
 
 	// TODO def constructor, destructor, copy constructor, assign operator
 };

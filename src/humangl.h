@@ -26,9 +26,10 @@ struct Input {
 	glm::vec3	color_delta;
 	bool		print_selected;
 	bool		animate;
-	float		rotate_x;
-	float		rotate_y;
+	glm::vec3	rotate_euler;
 	bool		console;
+	glm::vec3	origin_delta;
+	bool		is_parent_origin;
 };
 
 struct WindowUserData {

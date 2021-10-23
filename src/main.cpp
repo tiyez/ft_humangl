@@ -24,7 +24,7 @@ int main () {
 	initialize_opengl();
 
 	RenderObject *cube = initialize_render_object();
-	Console	console (Skeleton (create_nodedata (cube, "human")));
+	Console	console (cube);
 	MatrixStack mstack;
 
 	NodeSerializer	serializer;
@@ -37,7 +37,7 @@ int main () {
 		float delta = get_delta();
 
 		if (input.console) {
-			console.listen_command ();
+			input.console = console.listen_command ();
 			get_delta ();
 		}
 		console.update (input, delta);
@@ -58,8 +58,6 @@ int main () {
 		memset (&input.print_selected, 0, sizeof input.print_selected);
 		memset (&input.select_node, 0, sizeof input.select_node);
 		memset (&input.select_frame, 0, sizeof input.select_frame);
-		memset (&input.rotate_x, 0, sizeof input.rotate_x);
-		memset (&input.rotate_y, 0, sizeof input.rotate_y);
 
 		glfwSwapBuffers (window);
 		glfwPollEvents ();
