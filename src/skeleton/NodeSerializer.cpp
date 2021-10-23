@@ -9,7 +9,9 @@ void	NodeSerializer::serialize_glmvec3 (const glm::vec3 &vector) {
 	stream << "{ " << vector.x << ", " << vector.y << ", " << vector.z << ", }, ";
 }
 
-void	NodeSerializer::serialize_node (class Node *node, int parent) {
+void	NodeSerializer::serialize_node (const std::vector<class Node> &nodes, size_t index, int parent) {
+	const class Node	*node = &nodes[index];
+
 	stream << "\t{" << std::endl;
 	stream << "\t\t0, " << parent << ", ";
 	serialize_glmvec3 (node->translation);
@@ -29,12 +31,16 @@ void	NodeSerializer::serialize_node (class Node *node, int parent) {
 	parent = node_counter;
 	node_counter += 1;
 	for (auto &child : node->childs) {
-		serialize_node (child, parent);
+		serialize_node (nodes, child, parent);
 	}
 }
 
-void	NodeSerializer::serialize_root (class Node *root) {
-	serialize_node (root, -1);
+void	NodeSerializer::serialize_nodedata (const struct NodeData &nodedata) {
+	serialize_node (nodedata.nodes, nodedata.root_index, -1);
+}
+
+void	NodeSerializer::serialize_root (const std::vector<class Node> &nodes, size_t root_index) {
+	serialize_node (nodes, root_index, -1);
 }
 
 std::string	NodeSerializer::finalize () {

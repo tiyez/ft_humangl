@@ -13,11 +13,12 @@ class NodeSerializer {
 	int					node_counter;
 
 	void	serialize_glmvec3 (const glm::vec3 &vector);
-	void	serialize_node (class Node *node, int parent);
+	void	serialize_node (const std::vector<class Node> &nodes, size_t index, int parent);
 
 public:
 	NodeSerializer (const std::string &name);
-	void		serialize_root (class Node *root);
+	void		serialize_root (const std::vector<class Node> &nodes, size_t root_index);
+	void		serialize_nodedata (const struct NodeData &nodedata);
 	std::string	finalize ();
 };
 

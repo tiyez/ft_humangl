@@ -18,8 +18,8 @@ glm::mat4 calculate_projection(GLFWwindow *window) {
 }
 
 glm::mat4 calculate_camera(Input *input, float delta) {
-	const float			movement_speed = 1.5f;
-	const float			rotation_speed = 0.5f;
+	const float			movement_speed = 3.0f;
+	const float			rotation_speed = 0.1f;
 	static glm::vec3	camera_forward(0, 0, 1);
 	static glm::vec3	camera_position(0, 0, 2);
 

@@ -6,6 +6,7 @@
 #include "Skeleton.hpp"
 #include "NodeSerializer.hpp"
 #include "MatrixStack.hpp"
+#include "Console.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -22,39 +23,42 @@ int main () {
 	initialize_opengl();
 
 	RenderObject *cube = initialize_render_object();
-	Skeleton human = Skeleton(cube);
+	Console	console (Skeleton (create_human (cube)));
 	MatrixStack mstack;
 
 	NodeSerializer	serializer ("human");
-	serializer.serialize_root (create_human (0).root);
+	serializer.serialize_nodedata (create_human (0));
 	std::cout << serializer.finalize () << std::endl;
+
 
 	while (!glfwWindowShouldClose (window))
 	{
 		float delta = get_delta();
 
+		if (input.console) {
+			console.listen_command ();
+			get_delta ();
+		}
+		console.update (input, delta);
+
 		glm::mat4 projection = calculate_projection(window);
 		glm::mat4 camera = calculate_camera(userdata.input, delta);
 
-		human.SelectNode(input.node_selected);
-		human.ChangeSizeSelected(input.scale_delta);
-		human.ChangeColorSelected(input.color_delta);
-		if (userdata.input->print_selected) {
-			human.PrintSelectedNode();
-		}
+		Skeleton	&skeleton = console.get_skeleton ();
 
 		// Draw
 		mstack.push();
 		mstack.transform(projection * camera);
-		if (!userdata.input->animate) {
-			human.Animate(delta);
-		}
-		human.Draw(mstack);
+		skeleton.Draw(mstack);
 		mstack.pop();
 		// Draw end
 
 		memset (&input.mouse_delta, 0, sizeof input.mouse_delta);
 		memset (&input.print_selected, 0, sizeof input.print_selected);
+		memset (&input.select_node, 0, sizeof input.select_node);
+		memset (&input.select_frame, 0, sizeof input.select_frame);
+		memset (&input.rotate_x, 0, sizeof input.rotate_x);
+		memset (&input.rotate_y, 0, sizeof input.rotate_y);
 
 		glfwSwapBuffers (window);
 		glfwPollEvents ();

@@ -97,15 +97,14 @@ const struct HardNode	human_skeleton[] = {
 };
 
 struct NodeData	create_nodes_from_hardnodes (const RenderObject *model, const struct HardNode *hardnode) {
-	std::vector<class Node *>	nodes;
-	class Node	*root = nullptr;
-	struct NodeData	data = { 0, 0, 0 };
+	struct NodeData	data {};
 
+	data.root_index = -1;
 	while (!hardnode->_end) {
 		std::vector<struct RotationFrame>	frames;
 		const struct HardFrame	*hardframe;
 
-		nodes.push_back (new class Node (
+		data.nodes.push_back (Node (
 			glm::vec3 (hardnode->translation[0], hardnode->translation[1], hardnode->translation[2]),
 			glm::angleAxis (hardnode->rotation_angle, glm::vec3 (hardnode->rotation_axis[0], hardnode->rotation_axis[1], hardnode->rotation_axis[2])),
 			glm::vec3 (hardnode->scale[0], hardnode->scale[1], hardnode->scale[2]),
@@ -119,24 +118,25 @@ struct NodeData	create_nodes_from_hardnodes (const RenderObject *model, const st
 			data.animation_time = glm::max (data.animation_time, hardframe->time);
 			hardframe += 1;
 		}
-		nodes.back ()->SetRotationFrames (std::move (frames));
+		data.nodes.back ().rot_frames = std::move (frames);
 		if (hardnode->parent >= 0) {
-			nodes.back ()->SetParent (nodes[hardnode->parent]);
-		} else if (root) {
+			data.nodes.back ().parent_index = hardnode->parent;
+			data.nodes[hardnode->parent].childs.push_back (data.nodes.size () - 1);
+		} else if (data.root_index >= 0) {
 			Error ("Skeleton has more than one root");
 		} else {
-			root = nodes.back ();
+			data.root_index = data.nodes.size () - 1;
 		}
-		data.nodes_count += 1;
 		hardnode += 1;
 	}
-	if (!root) {
+	if (data.root_index < 0) {
 		Error ("Skeleton with no root");
 	}
-	data.root = root;
 	return (data);
 }
 
 struct NodeData create_human(const RenderObject *model) {
-	return (create_nodes_from_hardnodes (model, human_skeleton));
+	struct NodeData	nodedata = create_nodes_from_hardnodes (model, human_skeleton);
+	nodedata.name = "human";
+	return (nodedata);
 }

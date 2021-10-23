@@ -20,11 +20,15 @@ struct Input {
 	glm::vec3	movement_delta;
 	glm::vec2	mouse_position;
 	glm::vec2	mouse_delta;
-	int			node_selected;
+	int			select_node;
+	int			select_frame;
 	glm::vec3	scale_delta;
 	glm::vec3	color_delta;
 	bool		print_selected;
 	bool		animate;
+	float		rotate_x;
+	float		rotate_y;
+	bool		console;
 };
 
 struct WindowUserData {
