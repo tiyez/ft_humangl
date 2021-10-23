@@ -50,12 +50,13 @@ bool	Console::listen_command () {
 			std::cout << "usage: skeleton new_child" << std::endl;
 			std::cout << "usage: skeleton save" << std::endl;
 			std::cout << "usage: skeleton select [<name>]" << std::endl;
+			std::cout << "usage: skeleton new <name> [<clone_name>]" << std::endl;
 			std::cout << "usage: skeleton node <index>" << std::endl;
 			std::cout << "usage: skeleton frame <index>" << std::endl;
 			std::cout << "usage: skeleton set self_origin <x> <y> <z>" << std::endl;
 			std::cout << "usage: skeleton set parent_origin <x> <y> <z>" << std::endl;
 			std::cout << "usage: skeleton set scale <x> <y> <z>" << std::endl;
-			std::cout << "usage: skeleton set frame_angle <x> <y> 0" << std::endl;
+			std::cout << "usage: skeleton set rot <x> <y> <z>" << std::endl;
 			std::cout << "usage: skeleton clear frames" << std::endl;
 		};
 
@@ -182,6 +183,7 @@ bool	Console::listen_command () {
 			} else {
 				_node_index = index % skeleton._nodes.size ();
 			}
+			_frame_index = -1;
 		} else if (0 == words[1].compare ("frame") || 0 == words[1].compare ("f")) {
 			if (_node_index < 0) {
 				Error ("no node selected");
@@ -202,7 +204,8 @@ bool	Console::listen_command () {
 				std::cout << "usage: skeleton set self_origin <x> <y> <z>" << std::endl;
 				std::cout << "usage: skeleton set parent_origin <x> <y> <z>" << std::endl;
 				std::cout << "usage: skeleton set scale <x> <y> <z>" << std::endl;
-				std::cout << "usage: skeleton set rot <x> <y> 0" << std::endl;
+				std::cout << "usage: skeleton set rot <x> <y> <z>" << std::endl;
+				std::cout << "usage: skeleton set rotaxis <axis_x> <axis_y> <axis_z> <angle>" << std::endl;
 				return true;
 			}
 			if (0 == words[2].compare ("self_origin")) {
@@ -244,11 +247,24 @@ bool	Console::listen_command () {
 				} else {
 					Error ("no node or frame selected");
 				}
+			} else if (0 == words[2].compare ("rotaxis")) {
+				float axis_x = std::strtof (words[3].c_str(), nullptr);
+				float axis_y = std::strtof (words[4].c_str(), nullptr);
+				float axis_z = std::strtof (words[5].c_str(), nullptr);
+				float angle = std::strtof (words[6].c_str(), nullptr);
+
+				if (_node_index >= 0 && _frame_index >= 0) {
+					RotationFrame	&frame = skeleton._nodes[_node_index].rot_frames[_frame_index];
+					frame.axis = glm::vec3 (axis_x, axis_y, axis_z);
+					frame.angle = angle;
+				} else {
+					Error ("no node or frame selected");
+				}
 			} else {
 				std::cout << "usage: skeleton set self_origin <x> <y> <z>" << std::endl;
 				std::cout << "usage: skeleton set parent_origin <x> <y> <z>" << std::endl;
 				std::cout << "usage: skeleton set scale <x> <y> <z>" << std::endl;
-				std::cout << "usage: skeleton set frame_angle <x> <y> 0" << std::endl;
+				std::cout << "usage: skeleton set rot <x> <y> <z>" << std::endl;
 				return true;
 			}
 		} else if (0 == words[1].compare ("clear")) {
@@ -330,5 +346,5 @@ void	Console::update (struct Input &input, float delta) {
 
 // 1. Torso movement
 // 2. Add wings
-// 3. Add jump, walk, idle, fly, wings protection
+// 3. Add jump, walk, idle, fly
 

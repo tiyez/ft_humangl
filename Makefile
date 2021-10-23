@@ -44,6 +44,9 @@ LINKER = g++
 
 all: $(OBJDIR) $(DEPDIR) $(NAME)
 
+run: $(OBJDIR) $(DEPDIR) $(NAME)
+	./$(NAME)
+
 $(OBJDIR):
 	mkdir $(OBJDIR)
 
