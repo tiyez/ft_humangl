@@ -142,7 +142,7 @@ bool	Console::listen_command () {
 				}
 			}
 			serializer.serialize_nodes (skeleton._nodes, skeleton._name);
-			std::fstream	file("src/skeleton/HardSkeleton_serialized.cpp", file.out | file.trunc);
+			std::fstream	file("src/skeleton/HardSkeleton_serialized2.cpp", file.out | file.trunc);
 			if (!file.is_open ()) {
 				Error ("cannot open file for serialized data. Outputing to stdout");
 				std::cout << serializer.finalize () << std::endl;
@@ -273,6 +273,7 @@ bool	Console::listen_command () {
 				return true;
 			}
 			if (0 == words[2].compare ("frames")) {
+				_frame_index = -1;
 				for (auto &node : skeleton._nodes) {
 					node.rot_frames.clear ();
 				}
@@ -281,6 +282,9 @@ bool	Console::listen_command () {
 			Error ("unknown '%s' skeleton's command", words[1].c_str ());
 			sk_help ();
 		}
+	}
+	else {
+		std::cout << "Unknown command." << std::endl;
 	}
 	return true;
 }
@@ -299,7 +303,12 @@ void	Console::update (struct Input &input, float delta) {
 	if (input.select_frame && _node_index >= 0) {
 		if (_frame_index + input.select_frame >= 0) {
 			_frame_index += input.select_frame;
-			_frame_index %= skeleton._nodes[_node_index].rot_frames.size ();
+			if (skeleton._nodes[_node_index].rot_frames.size ()) {
+				_frame_index %= skeleton._nodes[_node_index].rot_frames.size ();
+			}
+			else {
+				_frame_index = -1;
+			}
 			Debug ("frame index: %d", _frame_index);
 		} else {
 			_frame_index = -1;
@@ -310,7 +319,7 @@ void	Console::update (struct Input &input, float delta) {
 		skeleton.ChangeNodeSize(_node_index, input.scale_delta);
 		skeleton.ChangeNodeColor(_node_index, input.color_delta);
 		if (_frame_index >= 0) {
-			skeleton.RotateNodeFrame(_node_index, _frame_index, input.rotate_euler.x, input.rotate_euler.y);
+			skeleton.RotateNodeFrame(_node_index, _frame_index, input.rotate_euler);
 		}
 		static bool old_is_parent_origin = input.is_parent_origin;
 		if (old_is_parent_origin != input.is_parent_origin) {

@@ -16,7 +16,7 @@ CPPSRC = $(addprefix $(SRCDIR)/,\
 	skeleton/NodeSerializer.cpp\
 	skeleton/Skeleton.cpp\
 	skeleton/HardSkeleton.cpp\
-	skeleton/HardSkeleton_serialized.cpp\
+	skeleton/HardSkeleton_serialized2.cpp\
 	matrix_stack/MatrixStack.cpp\
 	render/RenderObject.cpp\
 	console/Console.cpp\

@@ -134,7 +134,7 @@ void	Skeleton::HighlightNode(int index) {
 	}
 }
 
-void	Skeleton::RotateNodeFrame (size_t node_index, size_t frame_index, float rotate_x, float rotate_y) {
+void	Skeleton::RotateNodeFrame (size_t node_index, size_t frame_index, glm::vec3 &euler_rot) {
 	if (node_index < _nodes.size ()) {
 		class Node	*node = &_nodes[node_index];
 
@@ -142,7 +142,7 @@ void	Skeleton::RotateNodeFrame (size_t node_index, size_t frame_index, float rot
 			struct RotationFrame	&frame = node->rot_frames[frame_index];
 			glm::quat	quat = glm::angleAxis (frame.angle, frame.axis);
 
-			quat *= glm::angleAxis (rotate_x, glm::vec3 (0, 1, 0)) * glm::angleAxis (rotate_y, glm::vec3 (1, 0, 0));
+			quat *= glm::angleAxis (euler_rot.x, glm::vec3 (0, 1, 0)) * glm::angleAxis (euler_rot.y, glm::vec3 (1, 0, 0)) * glm::angleAxis(euler_rot.z, glm::vec3 (0, 0, 1));
 			frame.axis = glm::axis (quat);
 			frame.angle = glm::angle (quat);
 		} else {

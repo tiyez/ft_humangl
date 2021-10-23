@@ -78,9 +78,27 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 	}
 }
 
+static bool g_is_mouse_pushed = false;
+
+static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+		g_is_mouse_pushed = true;
+	}
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
+		g_is_mouse_pushed = false;
+	}
+}
+
 static void	mouse_pos_callback (GLFWwindow *window, double x, double y) {
 	WindowUserData	*userdata = static_cast<WindowUserData *>(glfwGetWindowUserPointer (window));
 	Input			*input = userdata->input;
+
+	if (!g_is_mouse_pushed) {
+		input->mouse_position.x = x;
+		input->mouse_position.y = y;
+		return ;
+	}
 
 	if (glm::abs (x - input->mouse_position.x) < 100 && glm::abs (y - input->mouse_position.y) < 100) {
 		input->mouse_delta.x = x - input->mouse_position.x;
@@ -94,7 +112,8 @@ static void	mouse_pos_callback (GLFWwindow *window, double x, double y) {
 }
 
 void input_register_callbacks(GLFWwindow *window) {
-	glfwSetInputMode (window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	glfwSetKeyCallback (window, key_callback);
 	glfwSetCursorPosCallback (window, mouse_pos_callback);
+	glfwSetMouseButtonCallback (window, mouse_button_callback);
 }
