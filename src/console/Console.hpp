@@ -9,6 +9,7 @@ class Console {
 	Skeleton	skeleton;
 	int			_frame_index;
 	int			_node_index;
+	bool		_is_rotation_frame;
 	const RenderObject *model;
 
 public:

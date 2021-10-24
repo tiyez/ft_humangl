@@ -198,7 +198,11 @@ bool	Console::listen_command () {
 			if (index < 0) {
 				_frame_index = -1;
 			} else {
-				_frame_index = index % skeleton._nodes[_node_index].rot_frames.size ();
+				if (_is_rotation_frame) {
+					_frame_index = index % skeleton._nodes[_node_index].rot_frames.size ();
+				} else {
+					_frame_index = index % skeleton._translation_frames.size ();
+				}
 			}
 		} else if (0 == words[1].compare ("set")) {
 			if (words.size () <= 2 + 3) {
@@ -319,23 +323,20 @@ void	Console::update (struct Input &input, float delta) {
 		}
 	}
 	if (input.select_frame && _node_index >= 0) {
-		static bool old_is_rotation_frame = input.is_rotation_frame;
-
-		if (old_is_rotation_frame != input.is_rotation_frame) {
+		if (_is_rotation_frame != input.is_rotation_frame) {
 			_frame_index = -1;
-			old_is_rotation_frame = input.is_rotation_frame;
+			_is_rotation_frame = input.is_rotation_frame;
 			if (input.is_rotation_frame)
 				Debug("Rotation mode applied");
 			else
 				Debug("Translation mode applied");
 		}
-
 		if (_frame_index + input.select_frame >= 0) {
 			_frame_index += input.select_frame;
-			if (skeleton._nodes[_node_index].rot_frames.size () && input.is_rotation_frame) {
+			if (skeleton._nodes[_node_index].rot_frames.size () && _is_rotation_frame) {
 				_frame_index %= skeleton._nodes[_node_index].rot_frames.size ();
 			}
-			else if (skeleton._translation_frames.size() && !input.is_rotation_frame) {
+			else if (skeleton._translation_frames.size() && !_is_rotation_frame) {
 				_frame_index %= skeleton._translation_frames.size();
 			}
 			else {
@@ -381,7 +382,7 @@ void	Console::update (struct Input &input, float delta) {
 		skeleton.Animate(delta);
 	} else {
 		if (_node_index >= 0 && _frame_index >= 0) {
-			if (input.is_rotation_frame) {
+			if (_is_rotation_frame) {
 				skeleton.SetAnimationTime (skeleton._nodes[_node_index].rot_frames[_frame_index].time);
 			}
 			else {
