@@ -1,6 +1,8 @@
 #ifndef VEC3_HPP
 #define VEC3_HPP
 
+#include <glm/glm.hpp>
+
 template <typename T>
 struct Vec4 {
 	Vec4() : x(T()), y(T()), z(T()), w(T()) {};
@@ -10,6 +12,10 @@ struct Vec4 {
 	Vec4(const Vec4<T> &&o)  noexcept : x(o.x), y(o.y), z(o.z), w(o.w) {};
 	Vec4 & operator=(const Vec4 &o) = default;
 	Vec4 operator*(const T &scalar) const { x *= scalar; y *= scalar; z *= scalar; w *= scalar; return *this; };
+
+	explicit operator glm::vec4() {
+		return glm::vec4 (x, y, z, w);
+	}
 	T x;
 	T y;
 	T z;

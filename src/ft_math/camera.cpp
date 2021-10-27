@@ -15,13 +15,13 @@ ftm::mat4 ftm::infinitePerspective(float fov, float aspect, float znear) {
 	float zfar = (float)std::numeric_limits<int>::max();
 
 	float frustumDepth = zfar - znear;
-	float oneOverDepth = 1 / frustumDepth;
+	float oneOverDepth = 1 / -frustumDepth;
 
-	res.c1.y = 1 / tanf(0.5f * fov);
-	res.c0.x = res.c1.y / aspect;
-	res.c2.z = zfar	* oneOverDepth;
-	res.c2.w = (-zfar * znear) * oneOverDepth;
-	res.c3.z = 1;
+	res.r1.y = 1 / tanf(0.5f * fov);
+	res.r0.x = res.r1.y / aspect;
+	res.r2.z = zfar * oneOverDepth;
+	res.r2.w = -1;
+	res.r3.z = (zfar * znear) * oneOverDepth;
 
 	return res;
 }
@@ -34,10 +34,10 @@ ftm::mat4 ftm::lookAt(const ftm::vec3 &cam_pos, const ftm::vec3 &cam_dir, const 
 	ftm::vec3 up = ftm::normalize(up_dir);
 	ftm::vec3 right = ftm::cross(forward, up); // TODO: check
 
-	cam_translation.c3 = ftm::vec4 (-cam_pos.x, -cam_pos.y, -cam_pos.z, 1);
-	cam_rotation.c0 = ftm::vec4 (right.x, up.x, forward.x, 0);
-	cam_rotation.c1 = ftm::vec4 (right.y, up.y, forward.y, 0);
-	cam_rotation.c2 = ftm::vec4 (right.z, up.z, forward.z, 0);
+	cam_translation.r3 = ftm::vec4 (-cam_pos.x, -cam_pos.y, -cam_pos.z, 1);
+	cam_rotation.r0 = ftm::vec4 (right.x, up.x, forward.x, 0);
+	cam_rotation.r1 = ftm::vec4 (right.y, up.y, forward.y, 0);
+	cam_rotation.r2 = ftm::vec4 (right.z, up.z, forward.z, 0);
 
 	return cam_rotation * cam_translation;
 }

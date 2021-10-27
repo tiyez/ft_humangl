@@ -2,6 +2,7 @@
 #define HUMANGL_H
 
 #include <glm/glm.hpp>
+#include "ftm.hpp"
 #include <GLFW/glfw3.h>
 
 class RenderObject;
@@ -53,7 +54,7 @@ RenderObject	*initialize_render_object(void);
 
 // MVP
 
-glm::mat4	calculate_projection(GLFWwindow *window);
+ftm::mat4	calculate_projection(GLFWwindow *window);
 glm::mat4	calculate_camera(Input *input, float delta);
 
 // TIME

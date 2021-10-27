@@ -47,7 +47,11 @@ private:
 	// TODO: add constructor, destructor, copy const, assingn
 };
 
+// TODO: move output to other file
+
 std::ostream &operator<<(std::ostream &o, const glm::vec3 &v);
+std::ostream &operator<<(std::ostream &o, const glm::vec4 &v);
+std::ostream &operator<<(std::ostream &o, const glm::mat4 &mat);
 std::ostream &operator<<(std::ostream &o, const glm::quat &q);
 std::ostream &operator<<(std::ostream &o, const Node &node);
 

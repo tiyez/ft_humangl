@@ -3,6 +3,7 @@
 #include "def.h"
 
 #include <iostream>
+#include <glm/gtc/type_ptr.hpp>
 
 // HIERARCHY
 // TODO: move all *_hierarchy to distinct class?? (Note(viktor): no, lets leave all node related operation in one place)
@@ -210,8 +211,24 @@ void	Skeleton::RecalcAnimationDuration () {
 	}
 }
 
+std::ostream &operator<<(std::ostream &o, const glm::vec4 &v) {
+	o << "(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
+	return o;
+}
+
 std::ostream &operator<<(std::ostream &o, const glm::vec3 &v) {
 	o << "(" << v.x << ", " << v.y << ", " << v.z << ")";
+	return o;
+}
+
+std::ostream &operator<<(std::ostream &o, const glm::mat4 &mat) {
+	float const *matptr = glm::value_ptr(mat);
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j ) {
+			o << matptr[4 * i + j] << " ";
+		}
+		o << std::endl;
+	}
 	return o;
 }
 

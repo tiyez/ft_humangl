@@ -3,18 +3,19 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/rotate_vector.hpp>
+#include "ftm.hpp"
 
 #include "def.h"
 #include "humangl.h"
 
 extern GLenum error;
 
-glm::mat4 calculate_projection(GLFWwindow *window) {
+ftm::mat4 calculate_projection(GLFWwindow *window) {
 	int width, height;
 	glfwGetFramebufferSize (window, &width, &height);
 	GL (glViewport (0, 0, width, height));
 	GL (glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-	return glm::infinitePerspective (glm::radians (60.f), (float) width / height, 0.1f);
+	return ftm::infinitePerspective (ftm::radians (60.f), (float) width / height, 0.1f);
 }
 
 glm::mat4 calculate_camera(Input *input, float delta) {

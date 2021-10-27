@@ -48,9 +48,9 @@ namespace ftm {
 		mat4 rotation = ftm::rotate(angle_rad, axis);
 		mat3 res;
 
-		res.c0 = Vec3<T> (rotation.c0.x, rotation.c0.y, rotation.c0.z);
-		res.c1 = Vec3<T> (rotation.c1.x, rotation.c1.y, rotation.c1.z);
-		res.c2 = Vec3<T> (rotation.c2.x, rotation.c2.y, rotation.c2.z);
+		res.c0 = Vec3<T> (rotation.r0.x, rotation.r0.y, rotation.r0.z);
+		res.c1 = Vec3<T> (rotation.r1.x, rotation.r1.y, rotation.r1.z);
+		res.c2 = Vec3<T> (rotation.r2.x, rotation.r2.y, rotation.r2.z);
 
 		return res * vec;
 	}
@@ -119,10 +119,10 @@ namespace ftm {
 	Mat4<T> mat4_cast(const Quat<T> &q) {
 		Mat4<T> rotation (1.f);
 
-		rotation.c0 = Vec4<T> (1 - 2  * (q.j * q.j + q.k * q.k), 2 * (q.i * q.j + q.k * q.w), 2 * (q.i * q.k - q.j * q.w), 0);
-		rotation.c1 = Vec4<T> (2 * (q.i * q.j - q.k * q.w), 1 - 2 * (q.i * q.i + q.k * q.k), 2 * (q.j * q.k + q.i * q.w), 0);
-		rotation.c2 = Vec4<T> (2 * (q.i * q.k + q.j * q.w), 2 * (q.j * q.k - q.i * q.w), 1 - 2 * (q.i * q.i + q.j * q.j), 0);
-		rotation.c3 = Vec4<T> (0, 0, 0, 1);
+		rotation.r0 = Vec4<T> (1 - 2 * (q.j * q.j + q.k * q.k), 2 * (q.i * q.j + q.k * q.w), 2 * (q.i * q.k - q.j * q.w), 0);
+		rotation.r1 = Vec4<T> (2 * (q.i * q.j - q.k * q.w), 1 - 2 * (q.i * q.i + q.k * q.k), 2 * (q.j * q.k + q.i * q.w), 0);
+		rotation.r2 = Vec4<T> (2 * (q.i * q.k + q.j * q.w), 2 * (q.j * q.k - q.i * q.w), 1 - 2 * (q.i * q.i + q.j * q.j), 0);
+		rotation.r3 = Vec4<T> (0, 0, 0, 1);
 		return rotation;
 	}
 
