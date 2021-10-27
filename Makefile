@@ -1,5 +1,7 @@
 NAME=humangl
 
+UNAME_S := $(shell uname -s)
+
 DEPDIR=.dep
 OBJDIR=.obj
 SRCDIR=src
@@ -20,6 +22,10 @@ CPPSRC = $(addprefix $(SRCDIR)/,\
 	matrix_stack/MatrixStack.cpp\
 	render/RenderObject.cpp\
 	console/Console.cpp\
+	ft_math/utils.cpp\
+	ft_math/camera.cpp\
+	ft_math/matrix.cpp\
+	\
 	)
 MSRC = 
 ALL_SRC= $(MSRC) $(CPPSRC) $(SRC)
@@ -31,10 +37,16 @@ OBJ3=$(OBJ2:.cpp=.cpp.o)
 OBJ=$(addprefix $(OBJDIR)/,$(OBJ3))
 
 WARNINGS_ = -Wno-sizeof-array-argument -Wno-unknown-warning-option -Wno-sizeof-pointer-div -Wno-unneeded-internal-declaration -Wno-unused-parameter -Wno-unused-variable -Wno-unused-private-field
-INCLUDES_ = -Iglfw/include -Iglad/include -Iglm -Isrc -Isrc/matrix_stack -Isrc/render -Isrc/skeleton -Isrc/Console
+ifeq ($(UNAME_S),Linux)
+	INCLUDES_ = -Iglfw/include -Iglad/include -Iglm -Isrc -Isrc/matrix_stack -Isrc/render -Isrc/skeleton -Isrc/console -Isrc/ft_math
+endif
+ifeq ($(UNAME_S),Darwin)
+	INCLUDES_ = -Iglfw/glfw-3.3.4/include -Iglad/include -Iglm -Isrc -Isrc/matrix_stack -Isrc/render -Isrc/skeleton -Isrc/console -Isrc/ft_math
+endif
 
-CFLAGS += -Wall -Wextra -Werror -pedantic $(WARNINGS_) $(INCLUDES_) -g
-CPPFLAGS += -Wall -Wextra -Werror -pedantic $(WARNINGS_) $(INCLUDES_) -std=c++11 -g
+
+CFLAGS += -Wall -Wextra -Werror $(WARNINGS_) $(INCLUDES_) -g
+CPPFLAGS += -Wall -Wextra -Werror $(WARNINGS_) $(INCLUDES_) -std=c++11 -g
 MFLAGS += -g
 
 CC = gcc
@@ -53,15 +65,18 @@ $(OBJDIR):
 $(DEPDIR):
 	mkdir $(DEPDIR)
 
-
 $(NAME): $(OBJ)
-#     Linux
-# 	$(LINKER) $(OBJ) -o $(NAME) -lGL -ldl -lm -lX11 -lasound -lXi -lXcursor
-#     MacOS
+ifeq ($(UNAME_S),Linux)
+	cd glfw && cd glfw-3.3.4 && cmake . && make --silent
+	$(LINKER) $(OBJ) -L./glfw/glfw-3.3.4/src -lglfw3 -pthread -lGL -ldl -lm -lXi -lXcursor -lX11 -o $(NAME)
+endif
+ifeq ($(UNAME_S),Darwin)
 # 	OpenGL
-	$(LINKER) -framework Cocoa -framework OpenGL -framework QuartzCore -framework IOKit -Lglfw/lib-universal -lglfw3 $(OBJ) -o $(NAME)
+#	$(LINKER) -framework Cocoa -framework OpenGL -framework QuartzCore -framework IOKit -Lglfw/lib-universal -lglfw3 $(OBJ) -o $(NAME)
 # 	Metal
 # 	$(LINKER) -framework Cocoa -framework Metal -framework MetalKit -framework QuartzCore $(OBJ) -o $(NAME) -I. -g
+endif
+
 
 clean:
 	rm -rf $(OBJDIR)

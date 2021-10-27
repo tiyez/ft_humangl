@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include "def.h"
 #include "NodeSerializer.hpp"
 #include "HardSkeleton.hpp"

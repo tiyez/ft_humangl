@@ -23,7 +23,7 @@ float get_slider(float delta) {
 	static float		slider;
 
 	slider += (float) slider_direction * slider_speed * delta;
-	if (slider_direction > 0 & slider > 1) {
+	if (slider_direction > 0 && slider > 1) {
 		slider_direction = -1;
 	} else if (slider_direction < 0 && slider < 0) {
 		slider_direction = 1;
