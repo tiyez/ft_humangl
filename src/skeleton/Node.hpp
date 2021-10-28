@@ -1,13 +1,10 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
-#include <glm/glm.hpp>
-#include <glm/gtc/quaternion.hpp>
-#include <glm/gtx/quaternion.hpp>
+#include "ftm.hpp"
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <string>
-#include "ftm.hpp"
 
 #include "RenderObject.hpp"
 
@@ -31,7 +28,7 @@ struct NodeData {
 	std::string	name;
 };
 
-// Note(viktor): seems like it should be struct. It doesn't have behaviour, only data.
+// TODO Note(viktor): seems like it should be struct. It doesn't have behaviour, only data.
 class Node { // TODO: cleanup this mess
 public:
 	ftm::vec3	translation;

@@ -6,7 +6,6 @@
 #include "ftm.hpp"
 #include <string>
 
-
 class Skeleton {
 public:
 	Skeleton(NodeData &&nodedata) {
@@ -34,7 +33,6 @@ public:
 
 	friend class Console;
 
-
 private:
 	Skeleton() {};
 	void UpdateTime(float delta);
@@ -50,16 +48,17 @@ private:
 };
 
 // TODO: move output to other file
-
 std::ostream &operator<<(std::ostream &o, const ftm::vec3 &v);
 std::ostream &operator<<(std::ostream &o, const ftm::vec4 &v);
 std::ostream &operator<<(std::ostream &o, const ftm::mat4 &mat);
 std::ostream &operator<<(std::ostream &o, const ftm::quat &q);
 
-std::ostream &operator<<(std::ostream &o, const glm::vec3 &v);
-std::ostream &operator<<(std::ostream &o, const glm::vec4 &v);
-std::ostream &operator<<(std::ostream &o, const glm::mat4 &mat);
-std::ostream &operator<<(std::ostream &o, const glm::quat &q);
+// Realization for glm types
+//std::ostream &operator<<(std::ostream &o, const glm::vec3 &v);
+//std::ostream &operator<<(std::ostream &o, const glm::vec4 &v);
+//std::ostream &operator<<(std::ostream &o, const glm::mat4 &mat);
+//std::ostream &operator<<(std::ostream &o, const glm::quat &q);
+
 std::ostream &operator<<(std::ostream &o, const Node &node);
 
 #endif //SKELETON_HPP

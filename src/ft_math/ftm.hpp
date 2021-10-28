@@ -30,7 +30,7 @@ namespace ftm {
 	}
 
 
-	template <typename T>		// TODO: correct by cam
+	template <typename T>
 	Vec3<T> rotateY(const Vec3<T> &vec, float angle_rad) {
 		Mat3<float> rotY_mat(1);
 
@@ -43,7 +43,7 @@ namespace ftm {
 		return rotY_mat * vec;
 	}
 
-	template <typename T> // TODO: correct by cam
+	template <typename T>
 	Vec3<T> rotate(const Vec3<T> &vec, float angle_rad, const Vec3<T> &axis) {
 		mat4 rotation = ftm::rotate(angle_rad, axis);
 		mat3 res;
@@ -55,7 +55,7 @@ namespace ftm {
 		return res * vec;
 	}
 
-	template <typename T> // TODO: correct by cam
+	template <typename T>
 	Vec3<T> normalize(const Vec3<T> &v) {
 		T mag = magnitude(v);
 		if (fabs(mag) < std::numeric_limits<T>::epsilon()) {
@@ -65,25 +65,25 @@ namespace ftm {
 		return {v.x / mag, v.y / mag, v.z / mag};
 	}
 
-	template <typename T> // TODO: correct by cam
+	template <typename T>
 	Vec3<T> normalize(const Vec3<T> &&v) {
 		return normalize(v);
 	}
 
-	template <typename T> // TODO: correct by cam
+	template <typename T>
 	Vec3<T> cross(const Vec3<T> &u, const Vec3<T> &v) {
 		return {u.y * v.z - u.z * v.y, u.z * v.x - u.x * v.z, u.x * v.y - u.y * v.x};
 	}
 
-	template <typename T> // TODO: correct by cam
+	template <typename T>
 	Vec3<T> cross(const Vec3<T> &&u, const Vec3<T> &&v) {
 		return cross(u, v);
 	}
 
 	// Camera
-	mat4 infinitePerspective(float fov, float aspect, float znear); // TODO: correct by cam
+	mat4 infinitePerspective(float fov, float aspect, float znear);
 
-	mat4 lookAt(const ftm::vec3 &cam_pos, const ftm::vec3 &cam_dir, const ftm::vec3 &up_dir); // TODO: correct by cam
+	mat4 lookAt(const ftm::vec3 &cam_pos, const ftm::vec3 &cam_dir, const ftm::vec3 &up_dir);
 
 	// Quaternion
 	template <typename T>
@@ -177,7 +177,7 @@ namespace ftm {
 		return val;
 	}
 
-	float radians(float deg); // TODO: correct by cam
+	float radians(float deg);
 }
 
 #endif //FTM_HPP

@@ -1,8 +1,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "ftm.hpp"
 
 #include "def.h"
+#include "ftm.hpp"
 #include "humangl.h"
 
 extern GLenum error;
@@ -19,9 +19,7 @@ ftm::mat4 calculate_camera(Input *input, float delta) {
 	const float			movement_speed = 3.0f;
 	const float			rotation_speed = 0.1f;
 	static ftm::vec3	camera_forward(0, 0, 1);
-	static glm::vec3	camera_forward_g(0, 0, 1);
 	static ftm::vec3	camera_position(0, 0, 2);
-	static glm::vec3	camera_position_g(0, 0, 2);
 
 	ftm::vec3	camera_right = ftm::normalize (ftm::cross (ftm::vec3 (0, 1, 0), camera_forward));
 	ftm::vec3	camera_forward_plane = ftm::normalize (ftm::cross (camera_right, ftm::vec3 (0, 1, 0)));

@@ -1,4 +1,3 @@
-
 #include "HardSkeleton.hpp"
 
 const struct HardNode	skeleton_human_walk[] = {

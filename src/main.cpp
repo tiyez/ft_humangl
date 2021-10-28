@@ -9,15 +9,13 @@
 #include "MatrixStack.hpp"
 #include "Console.hpp"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 #include <iostream>
+#include <cstring>
 
 extern GLenum error;
 
 // TODO: make normal camera location ))
-// TODO: remove redundant output
+// TODO: remove redundant output at start of program
 int main () {
 	Input			input {};
 	WindowUserData	userdata = { &input };
@@ -44,18 +42,14 @@ int main () {
 		}
 		console.update (input, delta);
 
-		// TODO: remove glm
-		ftm::mat4 projection_t = calculate_projection(window);
-//		glm::mat4 projection = (glm::mat4)projection_t;
-
-		ftm::mat4 camera_t = calculate_camera(userdata.input, delta);
-//		glm::mat4 camera = (glm::mat4)camera_t;
+		ftm::mat4 projection = calculate_projection(window);
+		ftm::mat4 camera = calculate_camera(userdata.input, delta);
 
 		Skeleton	&skeleton = console.get_skeleton ();
 
 		// Draw
 		mstack.push();
-		mstack.transform(projection_t * camera_t);
+		mstack.transform(projection * camera);
 		skeleton.Draw(mstack);
 		mstack.pop();
 		// Draw end

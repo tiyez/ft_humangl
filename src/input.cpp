@@ -28,9 +28,9 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 			case GLFW_KEY_5: { input->color_delta.y +=  0.03f * shift; } break ;
 			case GLFW_KEY_6: { input->color_delta.z +=  0.03f * shift; } break ;
 			// Rotate
-			case GLFW_KEY_7: { input->rotate_euler.x += glm::radians (0.5f * shift); } break ;
-			case GLFW_KEY_8: { input->rotate_euler.y += glm::radians (0.5f * shift); } break ;
-			case GLFW_KEY_9: { input->rotate_euler.z += glm::radians (0.5f * shift); } break ;
+			case GLFW_KEY_7: { input->rotate_euler.x += ftm::radians (0.5f * shift); } break ;
+			case GLFW_KEY_8: { input->rotate_euler.y += ftm::radians (0.5f * shift); } break ;
+			case GLFW_KEY_9: { input->rotate_euler.z += ftm::radians (0.5f * shift); } break ;
 			// Translate
 			case GLFW_KEY_U: { input->translate.x +=  0.03f * shift; } break ;
 			case GLFW_KEY_I: { input->translate.y +=  0.03f * shift; } break ;
@@ -72,9 +72,9 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 			case GLFW_KEY_5: { input->color_delta.y -=  0.03f * shift; } break ;
 			case GLFW_KEY_6: { input->color_delta.z -=  0.03f * shift; } break ;
 			// Rotate
-			case GLFW_KEY_7: { input->rotate_euler.x -= glm::radians (0.5f * shift); } break ;
-			case GLFW_KEY_8: { input->rotate_euler.y -= glm::radians (0.5f * shift); } break ;
-			case GLFW_KEY_9: { input->rotate_euler.z -= glm::radians (0.5f * shift); } break ;
+			case GLFW_KEY_7: { input->rotate_euler.x -= ftm::radians (0.5f * shift); } break ;
+			case GLFW_KEY_8: { input->rotate_euler.y -= ftm::radians (0.5f * shift); } break ;
+			case GLFW_KEY_9: { input->rotate_euler.z -= ftm::radians (0.5f * shift); } break ;
 			// Translate
 			case GLFW_KEY_U: { input->translate.x -=  0.03f * shift; } break ;
 			case GLFW_KEY_I: { input->translate.y -=  0.03f * shift; } break ;
@@ -110,7 +110,7 @@ static void	mouse_pos_callback (GLFWwindow *window, double x, double y) {
 		return ;
 	}
 
-	if (glm::abs (x - input->mouse_position.x) < 100 && glm::abs (y - input->mouse_position.y) < 100) {
+	if (ftm::abs (x - input->mouse_position.x) < 100 && ftm::abs (y - input->mouse_position.y) < 100) {
 		input->mouse_delta.x = x - input->mouse_position.x;
 		input->mouse_delta.y = y - input->mouse_position.y;
 	} else {

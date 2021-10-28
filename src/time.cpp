@@ -1,5 +1,5 @@
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
+#include "ftm.hpp"
 
 float get_delta() {
 	static double time;
@@ -28,5 +28,5 @@ float get_slider(float delta) {
 	} else if (slider_direction < 0 && slider < 0) {
 		slider_direction = 1;
 	}
-	return glm::clamp (slider, 0.f, 1.f);
+	return ftm::clamp (slider, 0.f, 1.f);
 }

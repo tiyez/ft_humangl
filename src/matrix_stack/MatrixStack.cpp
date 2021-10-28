@@ -1,8 +1,5 @@
 #include "MatrixStack.hpp"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/quaternion.hpp>
-#include <glm/gtx/rotate_vector.hpp>
 #include "ftm.hpp"
 
 ftm::mat4	&MatrixStack::push () {

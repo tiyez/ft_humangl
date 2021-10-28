@@ -1,7 +1,6 @@
 #ifndef HUMANGL_H
 #define HUMANGL_H
 
-#include <glm/glm.hpp>
 #include "ftm.hpp"
 #include <GLFW/glfw3.h>
 

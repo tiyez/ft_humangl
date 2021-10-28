@@ -1,7 +1,6 @@
 #ifndef MATRIXSTACK_HPP
 #define MATRIXSTACK_HPP
 
-#include <glm/glm.hpp>
 #include "ftm.hpp"
 
 class MatrixStack {

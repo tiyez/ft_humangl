@@ -3,7 +3,6 @@
 #include "def.h"
 
 #include <iostream>
-#include <glm/gtc/type_ptr.hpp>
 #include "ftm.hpp"
 
 static ftm::quat get_cur_rotation(std::vector<RotationFrame> &frames, float cur_time) {
@@ -205,17 +204,15 @@ void	Skeleton::RecalcAnimationDuration () {
 	}
 }
 
+/* Output glm types */
+/*
+
 std::ostream &operator<<(std::ostream &o, const glm::vec4 &v) {
 	o << "(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
 	return o;
 }
 
 std::ostream &operator<<(std::ostream &o, const glm::vec3 &v) {
-	o << "(" << v.x << ", " << v.y << ", " << v.z << ")";
-	return o;
-}
-
-std::ostream &operator<<(std::ostream &o, const ftm::vec3 &v) {
 	o << "(" << v.x << ", " << v.y << ", " << v.z << ")";
 	return o;
 }
@@ -231,6 +228,17 @@ std::ostream &operator<<(std::ostream &o, const glm::mat4 &mat) {
 	return o;
 }
 
+std::ostream &operator<<(std::ostream &o, const glm::quat &q) {
+	o << "(" << q.x << ", " << q.y << ", " << q.z << ", " << q.w << ")";
+	return o;
+}
+*/
+
+std::ostream &operator<<(std::ostream &o, const ftm::vec3 &v) {
+	o << "(" << v.x << ", " << v.y << ", " << v.z << ")";
+	return o;
+}
+
 std::ostream &operator<<(std::ostream &o, const ftm::mat4 &mat) {
 	float const *matptr = (float*)&mat;
 	for (int i = 0; i < 4; ++i) {
@@ -239,11 +247,6 @@ std::ostream &operator<<(std::ostream &o, const ftm::mat4 &mat) {
 		}
 		o << std::endl;
 	}
-	return o;
-}
-
-std::ostream &operator<<(std::ostream &o, const glm::quat &q) {
-	o << "(" << q.x << ", " << q.y << ", " << q.z << ", " << q.w << ")";
 	return o;
 }
 

@@ -1,4 +1,3 @@
-#include <vector>
 #include <glad/glad.h>
 
 #include "def.h"

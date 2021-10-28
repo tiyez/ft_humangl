@@ -1,4 +1,3 @@
-
 #ifndef Hard_Node_Header
 #define Hard_Node_Header
 

@@ -5,7 +5,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include <glm/glm.hpp>
 #include "ftm.hpp"
 
 #include "Node.hpp"
@@ -23,6 +22,7 @@ public:
 	void		serialize_nodes (const std::vector<class Node> &nodes, const std::string &name);
 	void		serialize_nodedata (const struct NodeData &nodedata);
 	std::string	finalize ();
+	// TODO: coplien
 };
 
 #endif /* Node_Serializer_Header */

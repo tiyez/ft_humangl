@@ -2,14 +2,8 @@
 #define MAT_HPP
 
 #include "vector.hpp"
-#include <glm/glm.hpp>
 #include <algorithm>
 #include <iostream>
-#include <glm/gtc/type_ptr.hpp>
-
-//#include "Skeleton.hpp"
-// TODO: remove before evaluation
-//std::ostream &operator<<(std::ostream &o, const glm::vec4 &v);
 
 template <typename T>
 struct Mat4 {
@@ -54,6 +48,8 @@ struct Mat4 {
 		*this = *this * mat;	// TODO: which order should be here?? )))
 		return *this;
 	};
+/* Operator for glm cast */
+/*
 	explicit operator glm::mat4() {
 		glm::mat4 res;
 
@@ -74,6 +70,7 @@ struct Mat4 {
 
 		return res;
 	}
+*/
 	Vec4<T> r0;
 	Vec4<T> r1;
 	Vec4<T> r2;
@@ -126,6 +123,5 @@ struct Mat3 {
 	Vec3<T> r1;
 	Vec3<T> r2;
 };
-
 
 #endif //MAT_HPP

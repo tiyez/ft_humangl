@@ -1,4 +1,3 @@
-
 #include "HardSkeleton.hpp"
 #include "def.h"
 
@@ -21,7 +20,7 @@ struct NodeData	create_nodes_from_hardnodes (const RenderObject *model, const st
 		hardframe = hardnode->frames;
 		while (!hardframe->_end) {
 			frames.push_back ({ hardframe->time, ftm::vec3 (hardframe->axis[0], hardframe->axis[1], hardframe->axis[2]), hardframe->angle });
-			data.animation_time = glm::max (data.animation_time, hardframe->time);
+			data.animation_time = ftm::max (data.animation_time, hardframe->time);
 			hardframe += 1;
 		}
 		data.nodes.back ().rot_frames = std::move (frames);

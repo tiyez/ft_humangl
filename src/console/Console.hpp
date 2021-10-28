@@ -1,4 +1,3 @@
-
 #ifndef Console_Header
 #define Console_Header
 
@@ -19,11 +18,5 @@ public:
 
 	Skeleton	&get_skeleton () { return skeleton; }
 };
-
-
-
-
-
-
 
 #endif /* Console_Header */
