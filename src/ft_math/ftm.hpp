@@ -119,10 +119,11 @@ namespace ftm {
 	Mat4<T> mat4_cast(const Quat<T> &q) {
 		Mat4<T> rotation (1.f);
 
-		rotation.r0 = Vec4<T> (1 - 2 * (q.j * q.j + q.k * q.k),	2 * (q.i * q.j - q.k * q.w),		2 * (q.i * q.k + q.j * q.w),		0);
-		rotation.r1 = Vec4<T> (2 * (q.i * q.j + q.k * q.w),		1 - 2 * (q.i * q.i + q.k * q.k),	2 * (q.j * q.k - q.i * q.w),		0);
-		rotation.r2 = Vec4<T> (2 * (q.i * q.k - q.j * q.w),		2 * (q.j * q.k + q.i * q.w),		1 - 2 * (q.i * q.i + q.j * q.j),	0);
+		rotation.r0 = Vec4<T> (1 - 2 * (q.j * q.j + q.k * q.k),	2 * (q.i * q.j + q.k * q.w),		2 * (q.i * q.k - q.j * q.w),		0);
+		rotation.r1 = Vec4<T> (	2 * (q.i * q.j - q.k * q.w),		1 - 2 * (q.i * q.i + q.k * q.k),	2 * (q.j * q.k + q.i * q.w),		0);
+		rotation.r2 = Vec4<T> (2 * (q.i * q.k + q.j * q.w),		2 * (q.j * q.k - q.i * q.w),		1 - 2 * (q.i * q.i + q.j * q.j),	0);
 		rotation.r3 = Vec4<T> (0, 0, 0, 1);
+
 		return rotation;
 	}
 
