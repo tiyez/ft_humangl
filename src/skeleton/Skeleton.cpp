@@ -6,41 +6,41 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "ftm.hpp"
 
-//static ftm::quat get_cur_rotation(std::vector<RotationFrame> &frames, float cur_time) {
-//
-//	if (frames.size () == 0) {
-//		return (ftm::angleAxis (0.f, ftm::vec3 (1, 0, 0)));
-//	} else if (frames.size () == 1) {
-//		return (ftm::angleAxis (frames[0].angle, frames[0].axis));
-//	}
-//
-//	int		begin_index = -1;
-//	int		end_index = -1;
-//
-//	for (size_t index = 0; index < frames.size (); index += 1) {
-//		if (frames[index].time < cur_time) {
-//			begin_index = index;
-//		} else {
-//			end_index = index;
-//			break ;
-//		}
-//	}
-//
-//	if (begin_index < 0) {
-//		return (ftm::angleAxis (frames[0].angle, frames[0].axis));
-//	} else if (end_index < 0) {
-//		return (ftm::angleAxis (frames[begin_index].angle, frames[begin_index].axis));
-//	}
-//
-//	RotationFrame	*begin = &frames[begin_index];
-//	RotationFrame	*end = &frames[end_index];
-//
-//	float mixed_time = (cur_time - begin->time) / (end->time - begin->time);
-//
-//	return ftm::mix(ftm::angleAxis(begin->angle, begin->axis),
-//					ftm::angleAxis(end->angle, end->axis),
-//					mixed_time);
-//}
+static ftm::quat get_cur_rotation(std::vector<RotationFrame> &frames, float cur_time) {
+
+	if (frames.size () == 0) {
+		return (ftm::angleAxis (0.f, ftm::vec3 (1, 0, 0)));
+	} else if (frames.size () == 1) {
+		return (ftm::angleAxis (frames[0].angle, frames[0].axis));
+	}
+
+	int		begin_index = -1;
+	int		end_index = -1;
+
+	for (size_t index = 0; index < frames.size (); index += 1) {
+		if (frames[index].time < cur_time) {
+			begin_index = index;
+		} else {
+			end_index = index;
+			break ;
+		}
+	}
+
+	if (begin_index < 0) {
+		return (ftm::angleAxis (frames[0].angle, frames[0].axis));
+	} else if (end_index < 0) {
+		return (ftm::angleAxis (frames[begin_index].angle, frames[begin_index].axis));
+	}
+
+	RotationFrame	*begin = &frames[begin_index];
+	RotationFrame	*end = &frames[end_index];
+
+	float mixed_time = (cur_time - begin->time) / (end->time - begin->time);
+
+	return ftm::mix(ftm::angleAxis(begin->angle, begin->axis),
+					ftm::angleAxis(end->angle, end->axis),
+					mixed_time);
+}
 
 static ftm::vec3 get_cur_translation(std::vector<TranslationFrame> &frames, float cur_time) {
 
@@ -90,7 +90,7 @@ static void update_hierarchy(std::vector<class Node> &nodes, size_t index, float
 	for (auto child : nodes[index].childs) {
 		update_hierarchy(nodes, child, cur_time);
 	}
-//	nodes[index].rotation = get_cur_rotation(nodes[index].rot_frames, cur_time);
+	nodes[index].rotation = get_cur_rotation(nodes[index].rot_frames, cur_time);
 }
 
 void Skeleton::Animate(float delta) {
@@ -104,26 +104,22 @@ static void draw_hierarchy(class MatrixStack &stack, const std::vector<class Nod
 
 	stack.push ();
 	if (node->parent_index >= 0) {
-//		stack.translate ((nodes[node->parent_index].scale / 2.f) + node->parent_origin);
+		stack.translate ((nodes[node->parent_index].scale / 2.f) * node->parent_origin);
 	}
-//	stack.rotate (node->rotation);	// TODO: is it possible always rotate by quat without errors? (Note(viktor): its guaranteed by glm) (Note(Vitalii): but if its our own quat?:D)
-//	stack.translate (-((node->scale / 2.f) + node->self_origin));
+	stack.rotate (node->rotation);	// TODO: is it possible always rotate by quat without errors? (Note(viktor): its guaranteed by glm) (Note(Vitalii): but if its our own quat?:D)
+	stack.translate (-((node->scale / 2.f) * node->self_origin));
 	stack.push ();
-//	stack.scale (node->scale);
+	stack.scale (node->scale);
 	node->model->RenderColor(stack.top (), node->color, (int) index == highlighted_index);
 	stack.pop ();
 	for (auto &child : node->childs) {
-//		draw_hierarchy (stack, nodes, child, highlighted_index);
+		draw_hierarchy (stack, nodes, child, highlighted_index);
 	}
 	stack.pop ();
 }
 
 void Skeleton::Draw(MatrixStack &mstack) const {
 	mstack.push();
-
-//	_nodes[0].model->RenderColor(mstack.top(), _nodes[0].color, false);
-//	mstack.pop();
-//	return;
 
 	mstack.translate(_cur_translation);
 	if (_highlighted_index < _nodes.size ()) {

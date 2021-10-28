@@ -38,6 +38,7 @@ struct Vec3 {
 	Vec3 operator*(const T &&scalar) const { Vec3<T> n_vec(*this); n_vec.x *= scalar; n_vec.y *= scalar; n_vec.z *= scalar; return n_vec; };
 	Vec3 operator/(const T &&scalar) const { Vec3<T> n_vec(*this); n_vec.x /= scalar; n_vec.y /= scalar; n_vec.z /= scalar; return n_vec; };
 
+	Vec3 operator*(const Vec3<T> &v) const { Vec3<T> n_vec(*this); n_vec.x *= v.x; n_vec.y *= v.y; n_vec.z *= v.z; return n_vec; }
 	Vec3 operator+(const Vec3<T> &v) const { Vec3<T> n_vec(*this); n_vec.x += v.x; n_vec.y += v.y; n_vec.z += v.z; return n_vec; }
 	Vec3 & operator+=(const Vec3<T> &rhs) { x += rhs.x; y += rhs.y; z += rhs.z; return *this; };
 	Vec3 operator-(const Vec3<T> &rhs) const { Vec3<T> n_vec(*this); n_vec.x -= rhs.x; n_vec.y -= rhs.y; n_vec.z -= rhs.z; return n_vec; }
