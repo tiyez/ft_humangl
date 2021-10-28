@@ -50,6 +50,7 @@ private:
 // TODO: move output to other file
 
 std::ostream &operator<<(std::ostream &o, const glm::vec3 &v);
+std::ostream &operator<<(std::ostream &o, const ftm::vec3 &v);
 std::ostream &operator<<(std::ostream &o, const glm::vec4 &v);
 std::ostream &operator<<(std::ostream &o, const glm::mat4 &mat);
 std::ostream &operator<<(std::ostream &o, const glm::quat &q);

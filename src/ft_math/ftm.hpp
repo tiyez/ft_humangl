@@ -37,8 +37,8 @@ namespace ftm {
 		float c = cosf(angle_rad);
 		float s = sinf(angle_rad);
 
-		rotY_mat.c0 = Vec3<float> (c, 0, -s);
-		rotY_mat.c2 = Vec3<float> (s, 0, c);
+		rotY_mat.r0 = Vec3<float> (c, 0, s);
+		rotY_mat.r2 = Vec3<float> (-s, 0, c);
 
 		return rotY_mat * vec;
 	}
@@ -48,9 +48,9 @@ namespace ftm {
 		mat4 rotation = ftm::rotate(angle_rad, axis);
 		mat3 res;
 
-		res.c0 = Vec3<T> (rotation.r0.x, rotation.r0.y, rotation.r0.z);
-		res.c1 = Vec3<T> (rotation.r1.x, rotation.r1.y, rotation.r1.z);
-		res.c2 = Vec3<T> (rotation.r2.x, rotation.r2.y, rotation.r2.z);
+		res.r0 = Vec3<T> (rotation.r0.x, rotation.r0.y, rotation.r0.z);
+		res.r1 = Vec3<T> (rotation.r1.x, rotation.r1.y, rotation.r1.z);
+		res.r2 = Vec3<T> (rotation.r2.x, rotation.r2.y, rotation.r2.z);
 
 		return res * vec;
 	}

@@ -47,9 +47,11 @@ int main () {
 		ftm::mat4 projection_t = calculate_projection(window);
 //		std::cout << projection_t << std::endl;
 		glm::mat4 projection = (glm::mat4)projection_t;
-		std::cout << projection << std::endl;
 
-		glm::mat4 camera = calculate_camera(userdata.input, delta);
+		ftm::mat4 camera_t = calculate_camera(userdata.input, delta);
+		glm::mat4 camera = (glm::mat4)camera_t;
+//		std::cout << camera << std::endl;
+
 
 		Skeleton	&skeleton = console.get_skeleton ();
 

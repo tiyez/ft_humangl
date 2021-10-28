@@ -17,12 +17,12 @@ Mat4<float> ftm::scale(const Vec3<float> &v) {
 Mat4<float> ftm::rotate(float angle_rad, const Vec3<float> &a) {
 	Mat4<float> rotation(1);
 
-	float c = sinf(angle_rad);
-	float s = cosf(angle_rad);
+	float c = cosf(angle_rad);
+	float s = sinf(angle_rad);
 
-	rotation.r0 = Vec4<float> (c + (1 - c) * a.x * a.x, (1 - c) * a.y * a.x + s * a.z, (1 - c) * a.z * a.x - s * a.y, 0);
-	rotation.r1 = Vec4<float> ((1 - c) * a.x * a.y - s * a.z, c + (1 - c) * a.y * a.y, (1 - c) * a.z * a.y + s * a.x, 0);
-	rotation.r2 = Vec4<float> ((1 - c) * a.x * a.z + s * a.y, (1 - c) * a.y * a.z - s * a.x, c + (1 - c) * a.z * a.z, 0);
+	rotation.r0 = Vec4<float> (c + (1 - c) * a.x * a.x, (1 - c) * a.x * a.y - s * a.z, (1 - c) * a.x * a.z + s * a.y, 0);
+	rotation.r1 = Vec4<float> ((1 - c) * a.y * a.x + s * a.z, c + (1 - c) * a.y * a.y, (1 - c) * a.y * a.z - s * a.x, 0);
+	rotation.r2 = Vec4<float> ((1 - c) * a.z * a.x - s * a.y, (1 - c) * a.z * a.y + s * a.x, c + (1 - c) * a.z * a.z, 0);
 	rotation.r3 = Vec4<float> (0, 0, 0, 1);
 	return rotation;
 }

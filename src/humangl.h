@@ -55,7 +55,7 @@ RenderObject	*initialize_render_object(void);
 // MVP
 
 ftm::mat4	calculate_projection(GLFWwindow *window);
-glm::mat4	calculate_camera(Input *input, float delta);
+ftm::mat4	calculate_camera(Input *input, float delta);
 
 // TIME
 
