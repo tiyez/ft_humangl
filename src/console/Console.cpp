@@ -91,7 +91,7 @@ bool	Console::listen_command () {
 			float	start_time = std::strtof (words[2].c_str(), nullptr);
 			if (_node_index >= 0) {
 				std::vector<RotationFrame>	&frames = skeleton._nodes[_node_index].rot_frames;
-				frames.push_back ({ start_time, glm::vec3 (1, 0, 0), 0.f });
+				frames.push_back ({ start_time, ftm::vec3 (1, 0, 0), 0.f });
 				_frame_index = frames.size () - 1;
 				std::sort (frames.begin (), frames.end (), [](const RotationFrame &left, const RotationFrame &right) { return left.time < right.time; });
 				for (size_t index = 0; index < frames.size (); index += 1) {
@@ -215,7 +215,7 @@ bool	Console::listen_command () {
 				return true;
 			}
 			if (0 == words[2].compare ("self_origin")) {
-				glm::vec3	value (std::strtof (words[3].c_str(), nullptr), std::strtof (words[4].c_str(), nullptr), std::strtof (words[5].c_str(), nullptr));
+				ftm::vec3	value (std::strtof (words[3].c_str(), nullptr), std::strtof (words[4].c_str(), nullptr), std::strtof (words[5].c_str(), nullptr));
 
 				if (_node_index >= 0) {
 					skeleton._nodes[_node_index].self_origin = value;
@@ -223,7 +223,7 @@ bool	Console::listen_command () {
 					Error ("no node selected");
 				}
 			} else if (0 == words[2].compare ("parent_origin")) {
-				glm::vec3	value (std::strtof (words[3].c_str(), nullptr), std::strtof (words[4].c_str(), nullptr), std::strtof (words[5].c_str(), nullptr));
+				ftm::vec3	value (std::strtof (words[3].c_str(), nullptr), std::strtof (words[4].c_str(), nullptr), std::strtof (words[5].c_str(), nullptr));
 
 				if (_node_index >= 0) {
 					skeleton._nodes[_node_index].parent_origin = value;
@@ -231,7 +231,7 @@ bool	Console::listen_command () {
 					Error ("no node selected");
 				}
 			} else if (0 == words[2].compare ("scale")) {
-				glm::vec3	value (std::strtof (words[3].c_str(), nullptr), std::strtof (words[4].c_str(), nullptr), std::strtof (words[5].c_str(), nullptr));
+				ftm::vec3	value (std::strtof (words[3].c_str(), nullptr), std::strtof (words[4].c_str(), nullptr), std::strtof (words[5].c_str(), nullptr));
 
 				if (_node_index >= 0) {
 					skeleton._nodes[_node_index].scale = value;
@@ -239,17 +239,17 @@ bool	Console::listen_command () {
 					Error ("no node selected");
 				}
 			} else if (0 == words[2].compare ("rot")) {
-				float angle_x = glm::radians (std::strtof (words[3].c_str(), nullptr));
-				float angle_y = glm::radians (std::strtof (words[4].c_str(), nullptr));
-				float angle_z = glm::radians (std::strtof (words[5].c_str(), nullptr));
+				float angle_x = ftm::radians (std::strtof (words[3].c_str(), nullptr));
+				float angle_y = ftm::radians (std::strtof (words[4].c_str(), nullptr));
+				float angle_z = ftm::radians (std::strtof (words[5].c_str(), nullptr));
 
 				if (_node_index >= 0 && _frame_index >= 0) {
 					struct RotationFrame	&frame = skeleton._nodes[_node_index].rot_frames[_frame_index];
-					glm::quat	quat;
+					ftm::quat	quat;
 
-					quat = glm::angleAxis (angle_x, glm::vec3 (0, 1, 0)) * glm::angleAxis (angle_y, glm::vec3 (1, 0, 0)) * glm::angleAxis (angle_z, glm::vec3 (0, 0, 1));
-					frame.axis = glm::axis (quat);
-					frame.angle = glm::angle (quat);
+					quat = ftm::angleAxis (angle_x, ftm::vec3 (0, 1, 0)) * ftm::angleAxis (angle_y, ftm::vec3 (1, 0, 0)) * ftm::angleAxis (angle_z, ftm::vec3 (0, 0, 1));
+					frame.axis = ftm::axis (quat);
+					frame.angle = ftm::angle (quat);
 				} else {
 					Error ("no node or frame selected");
 				}
@@ -261,7 +261,7 @@ bool	Console::listen_command () {
 
 				if (_node_index >= 0 && _frame_index >= 0) {
 					RotationFrame	&frame = skeleton._nodes[_node_index].rot_frames[_frame_index];
-					frame.axis = glm::vec3 (axis_x, axis_y, axis_z);
+					frame.axis = ftm::vec3 (axis_x, axis_y, axis_z);
 					frame.angle = angle;
 				} else {
 					Error ("no node or frame selected");
@@ -295,7 +295,7 @@ bool	Console::listen_command () {
 		}
 		float	start_time = std::strtof (words[1].c_str(), nullptr);
 		std::vector<TranslationFrame>	&frames = skeleton._translation_frames;
-		frames.push_back ({ start_time, glm::vec3 (0, 0, 0)});
+		frames.push_back ({ start_time, ftm::vec3 (0, 0, 0)});
 		_frame_index = frames.size () - 1;
 		std::sort (frames.begin (), frames.end (), [](const TranslationFrame &left, const TranslationFrame &right) { return left.time < right.time; });
 		for (size_t index = 0; index < frames.size (); index += 1) {
@@ -372,9 +372,9 @@ void	Console::update (struct Input &input, float delta) {
 			old_is_parent_origin = input.is_parent_origin;
 		}
 		if (input.is_parent_origin) {
-			skeleton._nodes[_node_index].parent_origin += 0.1f * input.origin_delta;
+			skeleton._nodes[_node_index].parent_origin += input.origin_delta * 0.1f;
 		} else {
-			skeleton._nodes[_node_index].self_origin += 0.1f * input.origin_delta;
+			skeleton._nodes[_node_index].self_origin += input.origin_delta * 0.1f;
 		}
 	} else {
 		skeleton.HighlightNode (-1);
@@ -393,9 +393,3 @@ void	Console::update (struct Input &input, float delta) {
 		}
 	}
 }
-
-
-// 1. Torso movement
-// 2. Add wings
-// 3. Add jump, walk, idle, fly
-

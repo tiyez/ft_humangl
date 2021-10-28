@@ -30,7 +30,7 @@ namespace ftm {
 	}
 
 
-	template <typename T>
+	template <typename T>		// TODO: correct by cam
 	Vec3<T> rotateY(const Vec3<T> &vec, float angle_rad) {
 		Mat3<float> rotY_mat(1);
 
@@ -43,7 +43,7 @@ namespace ftm {
 		return rotY_mat * vec;
 	}
 
-	template <typename T>
+	template <typename T> // TODO: correct by cam
 	Vec3<T> rotate(const Vec3<T> &vec, float angle_rad, const Vec3<T> &axis) {
 		mat4 rotation = ftm::rotate(angle_rad, axis);
 		mat3 res;
@@ -55,7 +55,7 @@ namespace ftm {
 		return res * vec;
 	}
 
-	template <typename T>
+	template <typename T> // TODO: correct by cam
 	Vec3<T> normalize(const Vec3<T> &v) {
 		T mag = magnitude(v);
 		if (fabs(mag) < std::numeric_limits<T>::epsilon()) {
@@ -65,25 +65,25 @@ namespace ftm {
 		return {v.x / mag, v.y / mag, v.z / mag};
 	}
 
-	template <typename T>
+	template <typename T> // TODO: correct by cam
 	Vec3<T> normalize(const Vec3<T> &&v) {
 		return normalize(v);
 	}
 
-	template <typename T>
+	template <typename T> // TODO: correct by cam
 	Vec3<T> cross(const Vec3<T> &u, const Vec3<T> &v) {
 		return {u.y * v.z - u.z * v.y, u.z * v.x - u.x * v.z, u.x * v.y - u.y * v.x};
 	}
 
-	template <typename T>
+	template <typename T> // TODO: correct by cam
 	Vec3<T> cross(const Vec3<T> &&u, const Vec3<T> &&v) {
 		return cross(u, v);
 	}
 
 	// Camera
-	mat4 infinitePerspective(float fov, float aspect, float znear);
+	mat4 infinitePerspective(float fov, float aspect, float znear); // TODO: correct by cam
 
-	mat4 lookAt(const ftm::vec3 &cam_pos, const ftm::vec3 &cam_dir, const ftm::vec3 &up_dir);
+	mat4 lookAt(const ftm::vec3 &cam_pos, const ftm::vec3 &cam_dir, const ftm::vec3 &up_dir); // TODO: correct by cam
 
 	// Quaternion
 	template <typename T>
@@ -104,24 +104,24 @@ namespace ftm {
 	}
 
 	template <typename T>
-	float angle(const Quat<T>& quaternion) {	// Note(Vitalii) if not working apply https://ru.abcdef.wiki/wiki/Quaternions_and_spatial_rotation
-		return acos(quaternion.w) * 2;
+	float angle(const Quat<T>& q) {	// Note(Vitalii): https://ru.abcdef.wiki/wiki/Quaternions_and_spatial_rotation
+		float quat_mag = sqrtf(q.i * q.i + q.j * q.j + q.k * q.k);
+		return 2 * atan2(quat_mag, q.w);
 	}
 
 	template <typename T>
-	Vec3<T> axis(const Quat<T>& quaternion) {	// Note(Vitalii) if not working apply https://ru.abcdef.wiki/wiki/Quaternions_and_spatial_rotation
-		float rad = angle(quaternion);
-		float s = sinf(rad / 2);
-		return Vec3<T> (quaternion.i / s, quaternion.j / s, quaternion.k / s);
+	Vec3<T> axis(const Quat<T>& q) {
+		float quat_mag = sqrtf(q.i * q.i + q.j * q.j + q.k * q.k);
+		return Vec3<T> (q.i / quat_mag, q.j / quat_mag, q.k / quat_mag);
 	}
 
 	template <typename T>
 	Mat4<T> mat4_cast(const Quat<T> &q) {
 		Mat4<T> rotation (1.f);
 
-		rotation.r0 = Vec4<T> (1 - 2 * (q.j * q.j + q.k * q.k), 2 * (q.i * q.j + q.k * q.w), 2 * (q.i * q.k - q.j * q.w), 0);
-		rotation.r1 = Vec4<T> (2 * (q.i * q.j - q.k * q.w), 1 - 2 * (q.i * q.i + q.k * q.k), 2 * (q.j * q.k + q.i * q.w), 0);
-		rotation.r2 = Vec4<T> (2 * (q.i * q.k + q.j * q.w), 2 * (q.j * q.k - q.i * q.w), 1 - 2 * (q.i * q.i + q.j * q.j), 0);
+		rotation.r0 = Vec4<T> (1 - 2 * (q.j * q.j + q.k * q.k),	2 * (q.i * q.j - q.k * q.w),		2 * (q.i * q.k + q.j * q.w),		0);
+		rotation.r1 = Vec4<T> (2 * (q.i * q.j + q.k * q.w),		1 - 2 * (q.i * q.i + q.k * q.k),	2 * (q.j * q.k - q.i * q.w),		0);
+		rotation.r2 = Vec4<T> (2 * (q.i * q.k - q.j * q.w),		2 * (q.j * q.k + q.i * q.w),		1 - 2 * (q.i * q.i + q.j * q.j),	0);
 		rotation.r3 = Vec4<T> (0, 0, 0, 1);
 		return rotation;
 	}
@@ -176,7 +176,7 @@ namespace ftm {
 		return val;
 	}
 
-	float radians(float deg);
+	float radians(float deg); // TODO: correct by cam
 }
 
 #endif //FTM_HPP

@@ -39,5 +39,5 @@ ftm::mat4 ftm::lookAt(const ftm::vec3 &cam_pos, const ftm::vec3 &cam_dir, const 
 	cam_rotation.r2 = ftm::vec4 (xaxis.z, yaxis.z, zaxis.z, 0);
 
 	cam_translation.r3 = ftm::vec4 (-cam_pos.x, -cam_pos.y, -cam_pos.z, 1);
-	return cam_translation * cam_rotation;
+	return cam_rotation * cam_translation;
 }

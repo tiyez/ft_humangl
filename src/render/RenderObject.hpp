@@ -2,14 +2,15 @@
 #define RENDEROBJECT_HPP
 
 #include "humangl.h"
+#include "ftm.hpp"
 
 class RenderObject {
 public:	// TODO: add def constructor, copy constructor, assingnation, destructor
 
 	RenderObject(GLuint vbo, GLuint vao, GLint verts_count, GLuint program, GLint mvp_loc, GLint color_loc, GLint selected_loc);
 
-	void Render(const glm::mat4 &&mvp) const;
-	void RenderColor(const glm::mat4 &mvp, const glm::vec3 &color, bool selected) const;
+	void Render(const ftm::mat4 &&mvp) const;
+	void RenderColor(const ftm::mat4 &mvp, const ftm::vec3 &color, bool selected) const;
 
 private:
 

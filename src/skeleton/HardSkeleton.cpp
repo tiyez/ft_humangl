@@ -11,16 +11,16 @@ struct NodeData	create_nodes_from_hardnodes (const RenderObject *model, const st
 		const struct HardFrame	*hardframe;
 
 		data.nodes.push_back (Node (
-			glm::vec3 (hardnode->translation[0], hardnode->translation[1], hardnode->translation[2]),
-			glm::angleAxis (hardnode->rotation_angle, glm::vec3 (hardnode->rotation_axis[0], hardnode->rotation_axis[1], hardnode->rotation_axis[2])),
-			glm::vec3 (hardnode->scale[0], hardnode->scale[1], hardnode->scale[2]),
-			glm::vec3 (hardnode->self_origin[0], hardnode->self_origin[1], hardnode->self_origin[2]),
-			glm::vec3 (hardnode->parent_origin[0], hardnode->parent_origin[1], hardnode->parent_origin[2]),
+			ftm::vec3 (hardnode->translation[0], hardnode->translation[1], hardnode->translation[2]),
+			ftm::angleAxis (hardnode->rotation_angle, ftm::vec3 (hardnode->rotation_axis[0], hardnode->rotation_axis[1], hardnode->rotation_axis[2])),
+			ftm::vec3 (hardnode->scale[0], hardnode->scale[1], hardnode->scale[2]),
+			ftm::vec3 (hardnode->self_origin[0], hardnode->self_origin[1], hardnode->self_origin[2]),
+			ftm::vec3 (hardnode->parent_origin[0], hardnode->parent_origin[1], hardnode->parent_origin[2]),
 			model
 			));
 		hardframe = hardnode->frames;
 		while (!hardframe->_end) {
-			frames.push_back ({ hardframe->time, glm::vec3 (hardframe->axis[0], hardframe->axis[1], hardframe->axis[2]), hardframe->angle });
+			frames.push_back ({ hardframe->time, ftm::vec3 (hardframe->axis[0], hardframe->axis[1], hardframe->axis[2]), hardframe->angle });
 			data.animation_time = glm::max (data.animation_time, hardframe->time);
 			hardframe += 1;
 		}
@@ -52,7 +52,7 @@ struct NodeData	create_nodedata (const RenderObject *model, std::string name) {
 						break ;
 					}
 					float const *f = hardskeletons[index].hardtranslations[i].axis;
-					glm::vec3 v = glm::vec3 (*f, *(f + 1), *(f + 2));
+					ftm::vec3 v = ftm::vec3 (*f, *(f + 1), *(f + 2));
 					nodedata.translations.push_back({ hardskeletons[index].hardtranslations[i].time, v });
 				}
 			}

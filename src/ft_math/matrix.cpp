@@ -30,7 +30,9 @@ Mat4<float> ftm::rotate(float angle_rad, const Vec3<float> &a) {
 Mat4<float> ftm::translate(const Vec3<float> &v) {
 	Mat4<float> translation(1);
 
-	translation.r3 = Vec4<float> (v.x, v.y, v.z, 1);
+	translation.r3.x = v.x;
+	translation.r3.y = v.y;
+	translation.r3.z = v.z;
 
 	return translation;
 }

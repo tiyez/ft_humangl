@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <glm/glm.hpp>
+#include "ftm.hpp"
 
 #include "Node.hpp"
 
@@ -14,7 +15,7 @@ class NodeSerializer {
 	int					node_counter;
 	std::vector<std::string>	names;
 
-	void	serialize_glmvec3 (const glm::vec3 &vector);
+	void	serialize_ftmvec3 (const ftm::vec3 &vector);
 
 public:
 	NodeSerializer ();

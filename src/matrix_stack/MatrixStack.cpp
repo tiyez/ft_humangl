@@ -3,10 +3,11 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/rotate_vector.hpp>
+#include "ftm.hpp"
 
-glm::mat4	&MatrixStack::push () {
+ftm::mat4	&MatrixStack::push () {
 	if (matricies_count <= 0) {
-		matricies[matricies_count] = glm::mat4 (1);
+		matricies[matricies_count] = ftm::mat4 (1);
 	} else {
 		matricies[matricies_count] = top ();
 	}
@@ -14,31 +15,31 @@ glm::mat4	&MatrixStack::push () {
 	return (top ());
 }
 
-glm::mat4	&MatrixStack::pop () {
+ftm::mat4	&MatrixStack::pop () {
 	matricies_count -= 1;
 	return (top ());
 }
 
-glm::mat4	&MatrixStack::top () {
+ftm::mat4	&MatrixStack::top () {
 	return (matricies[matricies_count - 1]);
 }
 
-void	MatrixStack::scale (const glm::vec3 &dim) {
-	top () *= glm::scale (dim);
+void	MatrixStack::scale (const ftm::vec3 &dim) {
+	top () *= ftm::scale (dim);
 }
 
-void	MatrixStack::rotate (float angle, const glm::vec3 &axis) {
-	top () *= glm::rotate (angle, axis);
+void	MatrixStack::rotate (float angle, const ftm::vec3 &axis) {
+	top () *= ftm::rotate (angle, axis);
 }
 
-void	MatrixStack::rotate(const glm::quat &rot) {
-	top () *= glm::mat4_cast(rot);
+void	MatrixStack::rotate(const ftm::quat &rot) {
+	top () *= ftm::mat4_cast(rot);
 }
 
-void	MatrixStack::translate (const glm::vec3 &delta) {
-	top () *= glm::translate (delta);
+void	MatrixStack::translate (const ftm::vec3 &delta) {
+	top () *= ftm::translate (delta);
 }
 
-void MatrixStack::transform(const glm::mat4 &mat) {
+void MatrixStack::transform(const ftm::mat4 &mat) {
 	top () *= mat;
 }

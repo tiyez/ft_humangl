@@ -3,7 +3,9 @@
 
 #include "Node.hpp"
 #include "MatrixStack.hpp"
+#include "ftm.hpp"
 #include <string>
+
 
 class Skeleton {
 public:
@@ -13,7 +15,7 @@ public:
 		_root_index = nodedata.root_index;
 		_anim_time = nodedata.animation_time;
 		_name = nodedata.name;
-		_cur_translation = glm::vec3 ();
+		_cur_translation = ftm::vec3 ();
 		_translation_frames = std::move (nodedata.translations);
 	}
 
@@ -23,10 +25,10 @@ public:
 	void	SetAnimationTime(float time) { _cur_time = time; }
 	void	Draw(MatrixStack &mstack) const;
 	void	HighlightNode(int index);
-	void	ChangeNodeSize(size_t index, const glm::vec3 &scale_delta);
-	void	ChangeNodeColor(size_t index, const glm::vec3 &color_delta);
-	void	RotateNodeFrame(size_t node_index, size_t frame_index, glm::vec3 &euler_rot);
-	void	TranslateFrame(size_t frame_index, glm::vec3 &translation);
+	void	ChangeNodeSize(size_t index, const ftm::vec3 &scale_delta);
+	void	ChangeNodeColor(size_t index, const ftm::vec3 &color_delta);
+	void	RotateNodeFrame(size_t node_index, size_t frame_index, ftm::vec3 &euler_rot);
+	void	TranslateFrame(size_t frame_index, ftm::vec3 &translation);
 	void	PrintNode(size_t index) const;
 	void	RecalcAnimationDuration ();
 
@@ -36,7 +38,7 @@ public:
 private:
 	Skeleton() {};
 	void UpdateTime(float delta);
-	glm::vec3 _cur_translation;
+	ftm::vec3 _cur_translation;
 	std::vector<TranslationFrame> _translation_frames;
 	std::string	_name;
 	std::vector<class Node>	_nodes;
@@ -49,8 +51,12 @@ private:
 
 // TODO: move output to other file
 
-std::ostream &operator<<(std::ostream &o, const glm::vec3 &v);
 std::ostream &operator<<(std::ostream &o, const ftm::vec3 &v);
+std::ostream &operator<<(std::ostream &o, const ftm::vec4 &v);
+std::ostream &operator<<(std::ostream &o, const ftm::mat4 &mat);
+std::ostream &operator<<(std::ostream &o, const ftm::quat &q);
+
+std::ostream &operator<<(std::ostream &o, const glm::vec3 &v);
 std::ostream &operator<<(std::ostream &o, const glm::vec4 &v);
 std::ostream &operator<<(std::ostream &o, const glm::mat4 &mat);
 std::ostream &operator<<(std::ostream &o, const glm::quat &q);

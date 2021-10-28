@@ -46,24 +46,24 @@ int main () {
 
 		// TODO: remove glm
 		ftm::mat4 projection_t = calculate_projection(window);
-		glm::mat4 projection = (glm::mat4)projection_t;
+//		glm::mat4 projection = (glm::mat4)projection_t;
 
 		ftm::mat4 camera_t = calculate_camera(userdata.input, delta);
-		glm::mat4 camera = (glm::mat4)camera_t;
+//		glm::mat4 camera = (glm::mat4)camera_t;
 
 		Skeleton	&skeleton = console.get_skeleton ();
 
 		// Draw
 		mstack.push();
-		mstack.transform(projection * camera);
+		mstack.transform(projection_t * camera_t);
 		skeleton.Draw(mstack);
 		mstack.pop();
 		// Draw end
 
-		memset (&input.mouse_delta, 0, sizeof input.mouse_delta);
-		memset (&input.print_selected, 0, sizeof input.print_selected);
-		memset (&input.select_node, 0, sizeof input.select_node);
-		memset (&input.select_frame, 0, sizeof input.select_frame);
+		bzero (&input.mouse_delta, sizeof input.mouse_delta);
+		bzero (&input.print_selected, sizeof input.print_selected);
+		bzero (&input.select_node, sizeof input.select_node);
+		bzero (&input.select_frame, sizeof input.select_frame);
 
 		glfwSwapBuffers (window);
 		glfwPollEvents ();

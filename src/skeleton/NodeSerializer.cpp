@@ -1,11 +1,10 @@
-
 #include "NodeSerializer.hpp"
 
 NodeSerializer::NodeSerializer (): node_counter (0) {
 	stream << std::endl << "#include \"HardSkeleton.hpp\"" << std::endl << std::endl;
 }
 
-void	NodeSerializer::serialize_glmvec3 (const glm::vec3 &vector) {
+void	NodeSerializer::serialize_ftmvec3 (const ftm::vec3 &vector) {
 	stream << "{ " << vector.x << ", " << vector.y << ", " << vector.z << ", }, ";
 }
 
@@ -14,7 +13,7 @@ void	NodeSerializer::serialize_translations (const std::vector<TranslationFrame>
 
 	for (size_t index = 0; index < translatinos.size(); ++index ) {
 		stream << "\t{ 0, " << translatinos[index].time << ", ";
-		serialize_glmvec3(translatinos[index].translate);
+		serialize_ftmvec3(translatinos[index].translate);
 		stream << "},";
 	}
 	stream << "\t{1, 0, {0, 0, 0}}" << std::endl << "};" << std::endl;
@@ -29,16 +28,16 @@ void	NodeSerializer::serialize_nodes (const std::vector<class Node> &nodes, cons
 
 		stream << "\t{" << std::endl;
 		stream << "\t\t0, " << node->parent_index << ", ";
-		serialize_glmvec3 (node->translation);
-		serialize_glmvec3 (glm::axis (node->rotation));
-		stream << glm::angle (node->rotation) << ", ";
-		serialize_glmvec3 (node->scale);
-		serialize_glmvec3 (node->self_origin);
-		serialize_glmvec3 (node->parent_origin);
+		serialize_ftmvec3(node->translation);
+		serialize_ftmvec3(ftm::axis(node->rotation));
+		stream << ftm::angle (node->rotation) << ", ";
+		serialize_ftmvec3(node->scale);
+		serialize_ftmvec3(node->self_origin);
+		serialize_ftmvec3(node->parent_origin);
 		stream << std::endl << "\t\t{" << std::endl;
 		for (auto &rot : node->rot_frames) {
 			stream << "\t\t\t{ 0, " << rot.time << ", ";
-			serialize_glmvec3 (rot.axis);
+			serialize_ftmvec3(rot.axis);
 			stream << rot.angle << ", }," << std::endl;
 		}
 		stream << "\t\t\t{ 1, 0, {0}, 0 }," << std::endl << "\t\t}," << std::endl;

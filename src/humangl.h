@@ -18,19 +18,19 @@ GLuint	new_shader_program (const char *vertex_source, const char *fragment_sourc
 // INPUT
 
 struct Input {
-	glm::vec3	movement_delta;
-	glm::vec2	mouse_position;
-	glm::vec2	mouse_delta;
-	glm::vec3	translate;
+	ftm::vec3	movement_delta;
+	ftm::vec2	mouse_position;
+	ftm::vec2	mouse_delta;
+	ftm::vec3	translate;
 	int			select_node;
 	int			select_frame;
-	glm::vec3	scale_delta;
-	glm::vec3	color_delta;
+	ftm::vec3	scale_delta;
+	ftm::vec3	color_delta;
 	bool		print_selected;
 	bool		animate;
-	glm::vec3	rotate_euler;
+	ftm::vec3	rotate_euler;
 	bool		console;
-	glm::vec3	origin_delta;
+	ftm::vec3	origin_delta;
 	bool		is_parent_origin;
 	bool		is_rotation_frame;
 };

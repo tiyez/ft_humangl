@@ -28,50 +28,30 @@ struct Mat4 {
 	Mat4 operator*(const Mat4<T> &mat) const {
 		Mat4 res;
 
-		res.r0.x = r0.x * mat.r0.x + r0.y * mat.r1.x + r0.z * mat.r2.x + r0.w * mat.r3.x;
-		res.r0.y = r0.x * mat.r0.y + r0.y * mat.r1.y + r0.z * mat.r2.y + r0.w * mat.r3.y;
-		res.r0.z = r0.x * mat.r0.z + r0.y * mat.r1.z + r0.z * mat.r2.z + r0.w * mat.r3.z;
-		res.r0.w = r0.x * mat.r0.w + r0.y * mat.r1.w + r0.z * mat.r2.w + r0.w * mat.r3.w;
+		res.r0.x = mat.r0.x * r0.x + mat.r0.y * r1.x + mat.r0.z * r2.x + mat.r0.w * r3.x;
+		res.r0.y = mat.r0.x * r0.y + mat.r0.y * r1.y + mat.r0.z * r2.y + mat.r0.w * r3.y;
+		res.r0.z = mat.r0.x * r0.z + mat.r0.y * r1.z + mat.r0.z * r2.z + mat.r0.w * r3.z;
+		res.r0.w = mat.r0.x * r0.w + mat.r0.y * r1.w + mat.r0.z * r2.w + mat.r0.w * r3.w;
 
-		res.r1.x = r1.x * mat.r0.x + r1.y * mat.r1.x + r1.z * mat.r2.x + r1.w * mat.r3.x;
-		res.r1.y = r1.x * mat.r0.y + r1.y * mat.r1.y + r1.z * mat.r2.y + r1.w * mat.r3.y;
-		res.r1.z = r1.x * mat.r0.z + r1.y * mat.r1.z + r1.z * mat.r2.z + r1.w * mat.r3.z;
-		res.r1.w = r1.x * mat.r0.w + r1.y * mat.r1.w + r1.z * mat.r2.w + r1.w * mat.r3.w;
+		res.r1.x = mat.r1.x * r0.x + mat.r1.y * r1.x + mat.r1.z * r2.x + mat.r1.w * r3.x;
+		res.r1.y = mat.r1.x * r0.y + mat.r1.y * r1.y + mat.r1.z * r2.y + mat.r1.w * r3.y;
+		res.r1.z = mat.r1.x * r0.z + mat.r1.y * r1.z + mat.r1.z * r2.z + mat.r1.w * r3.z;
+		res.r1.w = mat.r1.x * r0.w + mat.r1.y * r1.w + mat.r1.z * r2.w + mat.r1.w * r3.w;
 
-		res.r2.x = r2.x * mat.r0.x + r2.y * mat.r1.x + r2.z * mat.r2.x + r2.w * mat.r3.x;
-		res.r2.y = r2.x * mat.r0.y + r2.y * mat.r1.y + r2.z * mat.r2.y + r2.w * mat.r3.y;
-		res.r2.z = r2.x * mat.r0.z + r2.y * mat.r1.z + r2.z * mat.r2.z + r2.w * mat.r3.z;
-		res.r2.w = r2.x * mat.r0.w + r2.y * mat.r1.w + r2.z * mat.r2.w + r2.w * mat.r3.w;
+		res.r2.x = mat.r2.x * r0.x + mat.r2.y * r1.x + mat.r2.z * r2.x + mat.r2.w * r3.x;
+		res.r2.y = mat.r2.x * r0.y + mat.r2.y * r1.y + mat.r2.z * r2.y + mat.r2.w * r3.y;
+		res.r2.z = mat.r2.x * r0.z + mat.r2.y * r1.z + mat.r2.z * r2.z + mat.r2.w * r3.z;
+		res.r2.w = mat.r2.x * r0.w + mat.r2.y * r1.w + mat.r2.z * r2.w + mat.r2.w * r3.w;
 
-		res.r3.x = r3.x * mat.r0.x + r3.y * mat.r1.x + r3.z * mat.r2.x + r3.w * mat.r3.x;
-		res.r3.y = r3.x * mat.r0.y + r3.y * mat.r1.y + r3.z * mat.r2.y + r3.w * mat.r3.y;
-		res.r3.z = r3.x * mat.r0.z + r3.y * mat.r1.z + r3.z * mat.r2.z + r3.w * mat.r3.z;
-		res.r3.w = r3.x * mat.r0.w + r3.y * mat.r1.w + r3.z * mat.r2.w + r3.w * mat.r3.w;
-
-//		res.r0.x = mat.r0.x * r0.x + mat.r1.x * r0.y + mat.r2.x * r0.z + mat.r3.x * r0.w;
-//		res.r0.y = mat.r0.y * r0.x + mat.r1.y * r0.y + mat.r2.y * r0.z + mat.r3.y * r0.w;
-//		res.r0.z = mat.r0.z * r0.x + mat.r1.z * r0.y + mat.r2.z * r0.z + mat.r3.z * r0.w;
-//		res.r0.w = mat.r0.w * r0.x + mat.r1.w * r0.y + mat.r2.w * r0.z + mat.r3.w * r0.w;
-//
-//		res.r1.x = mat.r0.x * r1.x + mat.r1.x * r1.y + mat.r2.x * r1.z + mat.r3.x * r1.w;
-//		res.r1.y = mat.r0.y * r1.x + mat.r1.y * r1.y + mat.r2.y * r1.z + mat.r3.y * r1.w;
-//		res.r1.z = mat.r0.z * r1.x + mat.r1.z * r1.y + mat.r2.z * r1.z + mat.r3.z * r1.w;
-//		res.r1.w = mat.r0.w * r1.x + mat.r1.w * r1.y + mat.r2.w * r1.z + mat.r3.w * r1.w;
-//
-//		res.r2.x = mat.r0.x * r2.x + mat.r1.x * r2.y + mat.r2.x * r2.z + mat.r3.x * r2.w;
-//		res.r2.y = mat.r0.y * r2.x + mat.r1.y * r2.y + mat.r2.y * r2.z + mat.r3.y * r2.w;
-//		res.r2.z = mat.r0.z * r2.x + mat.r1.z * r2.y + mat.r2.z * r2.z + mat.r3.z * r2.w;
-//		res.r2.w = mat.r0.w * r2.x + mat.r1.w * r2.y + mat.r2.w * r2.z + mat.r3.w * r2.w;
-//
-//		res.r3.x = mat.r0.x * r3.x + mat.r1.x * r3.y + mat.r2.x * r3.z + mat.r3.x * r3.w;
-//		res.r3.y = mat.r0.y * r3.x + mat.r1.y * r3.y + mat.r2.y * r3.z + mat.r3.y * r3.w;
-//		res.r3.z = mat.r0.z * r3.x + mat.r1.z * r3.y + mat.r2.z * r3.z + mat.r3.z * r3.w;
-//		res.r3.w = mat.r0.w * r3.x + mat.r1.w * r3.y + mat.r2.w * r3.z + mat.r3.w * r3.w;
+		res.r3.x = mat.r3.x * r0.x + mat.r3.y * r1.x + mat.r3.z * r2.x + mat.r3.w * r3.x;
+		res.r3.y = mat.r3.x * r0.y + mat.r3.y * r1.y + mat.r3.z * r2.y + mat.r3.w * r3.y;
+		res.r3.z = mat.r3.x * r0.z + mat.r3.y * r1.z + mat.r3.z * r2.z + mat.r3.w * r3.z;
+		res.r3.w = mat.r3.x * r0.w + mat.r3.y * r1.w + mat.r3.z * r2.w + mat.r3.w * r3.w;
 
 		return res;
 	};
 	Mat4 & operator*=(const Mat4<T> &mat) {
-		*this = *this * mat;
+		*this = *this * mat;	// TODO: which order should be here?? )))
 		return *this;
 	};
 	explicit operator glm::mat4() {
@@ -115,17 +95,17 @@ struct Mat3 {
 	Mat3 operator*(const Mat3<T> &mat) const {	// TODO: check
 		Mat3 res;
 
-		res.r0.x = r0.x * mat.r0.x + r1.x * mat.r0.y + r2.x * mat.r0.z;
-		res.r0.y = r0.y * mat.r0.x + r1.y * mat.r0.y + r2.y * mat.r0.z;
-		res.r0.z = r0.z * mat.r0.x + r1.z * mat.r0.y + r2.z * mat.r0.z;
+		res.r0.x = r0.x * mat.r0.x + r0.y * mat.r1.x + r0.z * mat.r2.x;
+		res.r0.y = r0.x * mat.r0.y + r0.y * mat.r1.y + r0.z * mat.r2.y;
+		res.r0.z = r0.x * mat.r0.z + r0.y * mat.r1.z + r0.z * mat.r2.z;
 
-		res.r1.x = r0.x * mat.r1.x + r1.x * mat.r1.y + r2.x * mat.r1.z;
-		res.r1.y = r0.y * mat.r1.x + r1.y * mat.r1.y + r2.y * mat.r1.z;
-		res.r1.z = r0.z * mat.r1.x + r1.z * mat.r1.y + r2.z * mat.r1.z;
+		res.r1.x = r1.x * mat.r0.x + r1.y * mat.r1.x + r1.z * mat.r2.x;
+		res.r1.y = r1.x * mat.r0.y + r1.y * mat.r1.y + r1.z * mat.r2.y;
+		res.r1.z = r1.x * mat.r0.z + r1.y * mat.r1.z + r1.z * mat.r2.z;
 
-		res.r2.x = r0.x * mat.r2.x + r1.x * mat.r2.y + r2.x * mat.r2.z;
-		res.r2.y = r0.y * mat.r2.x + r1.y * mat.r2.y + r2.y * mat.r2.z;
-		res.r2.z = r0.z * mat.r2.x + r1.z * mat.r2.y + r2.z * mat.r2.z;
+		res.r2.x = r2.x * mat.r0.x + r2.y * mat.r1.x + r2.z * mat.r2.x;
+		res.r2.y = r2.x * mat.r0.y + r2.y * mat.r1.y + r2.z * mat.r2.y;
+		res.r2.z = r2.x * mat.r0.z + r2.y * mat.r1.z + r2.z * mat.r2.z;
 
 		return res;
 	};
