@@ -133,12 +133,6 @@ namespace ftm {
 		return (a * (1 - t) + b * t);
 	}
 
-	template<>
-	Vec3<float> ftm::mix(const Vec3<float> &a, const Vec3<float> &b, float t);
-
-	template<>
-	Quat<float> ftm::mix(const Quat<float> &a, const Quat<float> &b, float t);
-
 	template <typename T>
 	const T & max(const T& a, const T& b) {
 		if (a > b)

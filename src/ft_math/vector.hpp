@@ -9,7 +9,14 @@ struct Vec4 {
 	Vec4(const Vec4<T> &o) : x(o.x), y(o.y), z(o.z), w(o.w) {};
 	Vec4(const Vec4<T> &&o)  noexcept : x(o.x), y(o.y), z(o.z), w(o.w) {};
 	Vec4 & operator=(const Vec4 &o) = default;
-	Vec4 operator*(const T &scalar) const { x *= scalar; y *= scalar; z *= scalar; w *= scalar; return *this; };
+	Vec4 operator*(const T &scalar) const {
+		Vec4	result;
+		result.x = x * scalar;
+		result.y = y * scalar;
+		result.z = z * scalar;
+		result.w = w * scalar;
+		return *this;
+	};
 
 /* Operator for glm cast */
 /*
@@ -35,8 +42,7 @@ struct Vec3 {
 
 	Vec3 & operator=(const Vec3 &o) = default;
 
-	Vec3 operator*(T &&scalar) const { Vec3<T> n_vec(*this); n_vec.x *= scalar; n_vec.y *= scalar; n_vec.z *= scalar; return n_vec; };
-	Vec3 operator*(const T &&scalar) const { Vec3<T> n_vec(*this); n_vec.x *= scalar; n_vec.y *= scalar; n_vec.z *= scalar; return n_vec; };
+	Vec3 operator*(const T scalar) const { Vec3<T> n_vec(*this); n_vec.x *= scalar; n_vec.y *= scalar; n_vec.z *= scalar; return n_vec; };
 	Vec3 operator/(const T &&scalar) const { Vec3<T> n_vec(*this); n_vec.x /= scalar; n_vec.y /= scalar; n_vec.z /= scalar; return n_vec; };
 
 	Vec3 operator*(const Vec3<T> &v) const { Vec3<T> n_vec(*this); n_vec.x *= v.x; n_vec.y *= v.y; n_vec.z *= v.z; return n_vec; }
