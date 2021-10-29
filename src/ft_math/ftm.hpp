@@ -25,20 +25,25 @@ namespace ftm {
 
 	// Vector
 	template <typename T>
-	float magnitude(const Vec3<T> &v) {
+	T magnitude(const Vec3<T> &v) {
 		return sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+	}
+
+	template <typename T>
+	T magnitude(const Quat<T> &v) {
+		return sqrtf(v.i * v.i + v.j * v.j + v.k * v.k + v.w * v.w);
 	}
 
 
 	template <typename T>
-	Vec3<T> rotateY(const Vec3<T> &vec, float angle_rad) {
-		Mat3<float> rotY_mat(1);
+	Vec3<T> rotateY(const Vec3<T> &vec, T angle_rad) {
+		Mat3<T> rotY_mat(1);
 
-		float c = cosf(angle_rad);
-		float s = sinf(angle_rad);
+		T c = cosf(angle_rad);
+		T s = sinf(angle_rad);
 
-		rotY_mat.r0 = Vec3<float> (c, 0, s);
-		rotY_mat.r2 = Vec3<float> (-s, 0, c);
+		rotY_mat.r0 = Vec3<T> (c, 0, s);
+		rotY_mat.r2 = Vec3<T> (-s, 0, c);
 
 		return rotY_mat * vec;
 	}
@@ -68,6 +73,17 @@ namespace ftm {
 	template <typename T>
 	Vec3<T> normalize(const Vec3<T> &&v) {
 		return normalize(v);
+	}
+
+
+	template <typename T>
+	Quat<T> normalize(const Quat<T> &v) {
+		T mag = magnitude(v);
+		if (fabs(mag) < std::numeric_limits<T>::epsilon()) {
+			return v;
+		}
+
+		return {v.i / mag, v.j / mag, v.k / mag, v.w / mag};
 	}
 
 	template <typename T>
@@ -128,10 +144,6 @@ namespace ftm {
 	}
 
 	// Utils
-	template <typename T>
-	T mix(const T& a, const T& b, float t) {
-		return (a * (1 - t) + b * t);
-	}
 
 	template <typename T>
 	const T & max(const T& a, const T& b) {
@@ -169,6 +181,11 @@ namespace ftm {
 			return -val;
 		}
 		return val;
+	}
+
+	template <typename T>
+	T mix(const T& a, const T& b, float t) {
+		return (a + (b - a) * t);
 	}
 
 	float radians(float deg);

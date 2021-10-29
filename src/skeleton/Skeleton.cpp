@@ -36,9 +36,9 @@ static ftm::quat get_cur_rotation(std::vector<RotationFrame> &frames, float cur_
 
 	float mixed_time = (cur_time - begin->time) / (end->time - begin->time);
 
-	return ftm::mix(ftm::angleAxis(begin->angle, begin->axis),
+	return ftm::normalize(ftm::mix(ftm::angleAxis(begin->angle, begin->axis),
 					ftm::angleAxis(end->angle, end->axis),
-					mixed_time);
+					mixed_time));
 }
 
 static ftm::vec3 get_cur_translation(std::vector<TranslationFrame> &frames, float cur_time) {

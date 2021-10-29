@@ -27,6 +27,14 @@ struct Quat {
 		result.w = w + rhs.w;
 		return *this;
 	};
+	Quat operator-(const Quat<T> &rhs) const {
+		Quat	result;
+		result.i = i - rhs.i;
+		result.j = j - rhs.j;
+		result.k = k - rhs.k;
+		result.w = w - rhs.w;
+		return *this;
+	};
 	Quat & operator*=(const Quat<T> &rhs) {
 		*this = *this * rhs;
 		return *this;
