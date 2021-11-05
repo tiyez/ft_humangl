@@ -42,6 +42,88 @@ bool	Console::listen_command () {
 		return false;
 	} else if (0 == words[0].compare ("quit")) {
 		exit (0);
+	} else if (0 == words[0].compare ("help") || 0 == words[0].compare ("h")) {
+		std::cout << std::endl << "    HumanGL skeletal animation software" << std::endl << std::endl;
+		std::cout << "  Controls:" << std::endl;
+		std::cout << "   Movement:" << std::endl;
+		std::cout << "     A - move camera left" << std::endl;
+		std::cout << "     D - move camera right" << std::endl;
+		std::cout << "     W - move camera forward" << std::endl;
+		std::cout << "     S - move camera backward" << std::endl;
+		std::cout << "     E - move camera up" << std::endl;
+		std::cout << "     Q - move camera down" << std::endl;
+		std::cout << "   Animation:" << std::endl;
+		std::cout << "     Space - stop/play animation" << std::endl;
+		std::cout << "   Console:" << std::endl;
+		std::cout << "     C - toggle console mode" << std::endl;
+		std::cout << "   Object selection:" << std::endl;
+		std::cout << "     N - select next object" << std::endl;
+		std::cout << "     B - select previous object" << std::endl;
+		std::cout << "   Object scale manipulation:" << std::endl;
+		std::cout << "     1         - increase scale of object towards X axis" << std::endl;
+		std::cout << "     2         - increase scale of object towards Y axis" << std::endl;
+		std::cout << "     3         - increase scale of object towards Z axis" << std::endl;
+		std::cout << "     Shift + 1 - decrease scale of object towards X axis" << std::endl;
+		std::cout << "     Shift + 2 - decrease scale of object towards Y axis" << std::endl;
+		std::cout << "     Shift + 3 - decrease scale of object towards Z axis" << std::endl;
+		std::cout << "   Object color manipulation:" << std::endl;
+		std::cout << "     4         - increase red channel of object's color" << std::endl;
+		std::cout << "     5         - increase green channel of object's color" << std::endl;
+		std::cout << "     6         - increase blue channel of object's color" << std::endl;
+		std::cout << "     Shift + 4 - decrease red channel of object's color" << std::endl;
+		std::cout << "     Shift + 5 - decrease green channel of object's color" << std::endl;
+		std::cout << "     Shift + 6 - decrease blue channel of object's color" << std::endl;
+		std::cout << "   Object rotation:" << std::endl;
+		std::cout << "     7         - rotate object around X axis" << std::endl;
+		std::cout << "     8         - rotate object around Y axis" << std::endl;
+		std::cout << "     9         - rotate object around Z axis" << std::endl;
+		std::cout << "     Shift + 7 - rotate object around -X axis" << std::endl;
+		std::cout << "     Shift + 8 - rotate object around -Y axis" << std::endl;
+		std::cout << "     Shift + 9 - rotate object around -Z axis" << std::endl;
+		std::cout << "   Object translation:" << std::endl;
+		std::cout << "     U         - translate object towards X axis" << std::endl;
+		std::cout << "     I         - translate object towards Y axis" << std::endl;
+		std::cout << "     O         - translate object towards Z axis" << std::endl;
+		std::cout << "     Shift + U - translate object towards -X axis" << std::endl;
+		std::cout << "     Shift + I - translate object towards -Y axis" << std::endl;
+		std::cout << "     Shift + O - translate object towards -Z axis" << std::endl;
+		std::cout << "   Object's origin translation:" << std::endl;
+		std::cout << "     RIGHT        - translate object's origin towards X axis" << std::endl;
+		std::cout << "     LEFT         - translate object's origin towards -X axis" << std::endl;
+		std::cout << "     UP           - translate object's origin towards Y axis" << std::endl;
+		std::cout << "     DOWN         - translate object's origin towards -Y axis" << std::endl;
+		std::cout << "     Shift + UP   - translate object's origin towards Z axis" << std::endl;
+		std::cout << "     Shift + DOWN - translate object's origin towards -Z axis" << std::endl;
+		std::cout << "   Object's origin translation mode:" << std::endl;
+		std::cout << "     X - toggle self/parent origin mode" << std::endl;
+		std::cout << "   Animation keyframe control:" << std::endl;
+		std::cout << "     Z - toggle translation/rotation keyframe control" << std::endl;
+		std::cout << std::endl << "  Commands:" << std::endl;
+		std::cout << "   Main commands:" << std::endl;
+		std::cout << "     continue (c)  - come back to visual mode" << std::endl;
+		std::cout << "     quit          - close the application" << std::endl;
+		std::cout << "     help (h)      - show this help manual" << std::endl;
+		std::cout << "   Skeleton control commands:" << std::endl;
+		std::cout << "     skeleton show (sk sh)         - show current skeleton's node information" << std::endl;
+		std::cout << "     skeleton new_frame <start_time> (sk newfr <start_time>) - create new animation rotation frame" << std::endl;
+		std::cout << "     skeleton new_child (sk newch) - create new child of current node" << std::endl;
+		std::cout << "     skeleton save (sk s)          - save current skeleton to source file" << std::endl;
+		std::cout << "     skeleton select (sk sel)      - show all available skeletons" << std::endl;
+		std::cout << "     skeleton select <name> (sk sel <name>) - make specified skeleton to be current" << std::endl;
+		std::cout << "     skeleton new <name> (sk new <name>)    - make new empty skeleton with 'name' name" << std::endl;
+		std::cout << "     skeleton new <name> <clone> (sk new <name> <clone>) - make new copy of 'clone' skeleton with 'name' name" << std::endl;
+		std::cout << "     skeleton node <index> (sk n <index>)   - make node of skeleton to be current" << std::endl;
+		std::cout << "     skeleton frame <index> (sk f <index>)  - make frame of skeleton to be current" << std::endl;
+		std::cout << "     skeleton set self_origin <x> <y> <z>   - set self origin of current node" << std::endl;
+		std::cout << "     skeleton set parent_origin <x> <y> <z> - set parent origin of current node" << std::endl;
+		std::cout << "     skeleton set parent_origin <x> <y> <z> - set parent origin of current node" << std::endl;
+		std::cout << "     skeleton set scale <x> <y> <z>         - set scale of current node" << std::endl;
+		std::cout << "     skeleton set rot <x> <y> <z>           - set euler angles in degrees of current frame of current node" << std::endl;
+		std::cout << "     skeleton set rotaxis <x> <y> <z> <angle> - set axis and angle in radians for current frame of current node" << std::endl;
+		std::cout << "     skeleton clear frames                  - clear all frames of all current skeleton's nodes" << std::endl;
+		std::cout << "     new_transl <start_time> (newtf <start_time>) - make new animation translation frame" << std::endl;
+		std::cout << std::endl << std::endl << std::endl;
+
 	} else if (0 == words[0].compare ("skeleton") || 0 == words[0].compare ("sk")) {
 		auto sk_help = []() {
 			std::cout << "usage: skeleton show" << std::endl;
@@ -269,6 +351,7 @@ bool	Console::listen_command () {
 				std::cout << "usage: skeleton set parent_origin <x> <y> <z>" << std::endl;
 				std::cout << "usage: skeleton set scale <x> <y> <z>" << std::endl;
 				std::cout << "usage: skeleton set rot <x> <y> <z>" << std::endl;
+				std::cout << "usage: skeleton set rotaxis <x> <y> <z> <angle>" << std::endl;
 				return true;
 			}
 		} else if (0 == words[1].compare ("clear")) {
@@ -283,7 +366,7 @@ bool	Console::listen_command () {
 				}
 			}
 		} else {
-			Error ("unknown '%s' skeleton's command", words[1].c_str ());
+			Error ("unknown '%s' skeleton's command. Try 'help'", words[1].c_str ());
 			sk_help ();
 		}
 	} else if (0 == words[0].compare ("new_transl") || 0 == words[0].compare ("newtf")) {
@@ -305,7 +388,7 @@ bool	Console::listen_command () {
 		skeleton.RecalcAnimationDuration ();
 	}
 	else {
-		std::cout << "Unknown command." << std::endl;
+		std::cout << "Unknown command. Try 'help'" << std::endl;
 	}
 	return true;
 }
