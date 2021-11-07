@@ -17,7 +17,7 @@ struct Quat {
 		result.j = j * scalar;
 		result.k = k * scalar;
 		result.w = w * scalar;
-		return *this;
+		return result;
 	};
 	Quat operator+(const Quat<T> &rhs) const {
 		Quat	result;
@@ -25,7 +25,7 @@ struct Quat {
 		result.j = j + rhs.j;
 		result.k = k + rhs.k;
 		result.w = w + rhs.w;
-		return *this;
+		return result;
 	};
 	Quat operator-(const Quat<T> &rhs) const {
 		Quat	result;
@@ -33,7 +33,7 @@ struct Quat {
 		result.j = j - rhs.j;
 		result.k = k - rhs.k;
 		result.w = w - rhs.w;
-		return *this;
+		return result;
 	};
 	Quat & operator*=(const Quat<T> &rhs) {
 		*this = *this * rhs;

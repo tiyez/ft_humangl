@@ -27,10 +27,7 @@ int main () {
 	Console	console (cube);
 	MatrixStack mstack;
 
-	NodeSerializer	serializer;
-	serializer.serialize_nodedata (create_nodedata (cube, "human"));
-	std::cout << serializer.finalize () << std::endl;
-
+	console.print_help ();
 
 	while (!glfwWindowShouldClose (window))
 	{

@@ -3,22 +3,22 @@
 #include "ftm.hpp"
 
 ftm::mat4	&MatrixStack::push () {
-	if (matricies_count <= 0) {
-		matricies[matricies_count] = ftm::mat4 (1);
+	if (matricies.size () <= 0) {
+		matricies.push_back (ftm::mat4 (1));
 	} else {
-		matricies[matricies_count] = top ();
+		matricies.push_back (top ());
 	}
-	matricies_count += 1;
 	return (top ());
 }
 
-ftm::mat4	&MatrixStack::pop () {
-	matricies_count -= 1;
-	return (top ());
+void	MatrixStack::pop () {
+	if (matricies.size () > 0) {
+		matricies.pop_back ();
+	}
 }
 
 ftm::mat4	&MatrixStack::top () {
-	return (matricies[matricies_count - 1]);
+	return (matricies.back ());
 }
 
 void	MatrixStack::scale (const ftm::vec3 &dim) {
