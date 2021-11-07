@@ -4,7 +4,7 @@
 #include "ftm.hpp"
 
 class MatrixStack {
-	ftm::mat4	matricies[8];		// TODO: static on evaluation, really? )
+	ftm::mat4	matricies[8]; // TODO list
 	size_t		matricies_count;
 
 public:
@@ -18,7 +18,9 @@ public:
 	void		translate (const ftm::vec3 &delta);
 	void		transform (const ftm::mat4 &mat);
 
-	// TODO: add copy constructor, assingnation op, destructor
+private:
+	MatrixStack(const MatrixStack &other) {};
+	MatrixStack & operator=(const MatrixStack &other) { return *this; };
 };
 
 #endif //MATRIXSTACK_HPP

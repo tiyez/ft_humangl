@@ -91,7 +91,7 @@ RenderObject *initialize_render_object(void) {
 	GLint color_loc = glGetUniformLocation (program, "Color");
 	GLint selected_loc = glGetUniformLocation (program, "Selected");
 
-	RenderObject *obj = new RenderObject(buffer, vao, Array_Count(vertices_cube), program, mvp_loc, color_loc, selected_loc); // TODO: cleanup
+	RenderObject *obj = new RenderObject(buffer, vao, Array_Count(vertices_cube), program, mvp_loc, color_loc, selected_loc);
 
 	return obj;
 }

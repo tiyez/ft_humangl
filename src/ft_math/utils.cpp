@@ -10,7 +10,7 @@ Vec3<float> ftm::mix(const Vec3<float> &a, const Vec3<float> &b, float t) {
 	return res;
 }
 
-template<>	// TODO: (vitalii) not sure that this is correct
+template<>
 Quat<float> ftm::mix(const Quat<float> &a, const Quat<float> &b, float t) {
 	Quat<float> res;
 

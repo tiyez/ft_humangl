@@ -105,7 +105,7 @@ static void draw_hierarchy(class MatrixStack &stack, const std::vector<class Nod
 	if (node->parent_index >= 0) {
 		stack.translate ((nodes[node->parent_index].scale / 2.f) * node->parent_origin);
 	}
-	stack.rotate (node->rotation);	// TODO: is it possible always rotate by quat without errors? (Note(viktor): its guaranteed by glm) (Note(Vitalii): but if its our own quat?:D)
+	stack.rotate (node->rotation);
 	stack.translate (-((node->scale / 2.f) * node->self_origin));
 	stack.push ();
 	stack.scale (node->scale);

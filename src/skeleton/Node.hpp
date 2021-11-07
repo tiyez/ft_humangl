@@ -28,15 +28,14 @@ struct NodeData {
 	std::string	name;
 };
 
-// TODO Note(viktor): seems like it should be struct. It doesn't have behaviour, only data.
-class Node { // TODO: cleanup this mess
+struct Node {
 public:
 	ftm::vec3	translation;
 	ftm::quat	rotation;
 	ftm::vec3	scale;
 	ftm::vec3	self_origin;
 	ftm::vec3	parent_origin;
-	const RenderObject *model; // TODO: use smart ptr??
+	const RenderObject *model;
 	int			parent_index;
 	std::vector<size_t>	childs;
 	std::vector<RotationFrame>	rot_frames;
@@ -67,8 +66,6 @@ public:
 		, parent_index(-1)
 		, color(ftm::vec3(0))
 	{ }
-
-	// TODO def constructor, destructor, copy constructor, assign operator
 };
 
 

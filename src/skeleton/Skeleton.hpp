@@ -35,6 +35,9 @@ public:
 
 private:
 	Skeleton() {};
+	Skeleton(const Skeleton &other) {};
+	Skeleton & operator=(const Skeleton &other) { return *this; };
+
 	void UpdateTime(float delta);
 	ftm::vec3 _cur_translation;
 	std::vector<TranslationFrame> _translation_frames;
@@ -44,10 +47,8 @@ private:
 	size_t	_highlighted_index;
 	float	_cur_time;
 	float	_anim_time;
-	// TODO: add constructor, destructor, copy const, assingn
 };
 
-// TODO: move output to other file
 std::ostream &operator<<(std::ostream &o, const ftm::vec3 &v);
 std::ostream &operator<<(std::ostream &o, const ftm::vec4 &v);
 std::ostream &operator<<(std::ostream &o, const ftm::mat4 &mat);

@@ -5,7 +5,7 @@
 #include "ftm.hpp"
 
 class RenderObject {
-public:	// TODO: add def constructor, copy constructor, assingnation, destructor
+public:
 
 	RenderObject(GLuint vbo, GLuint vao, GLint verts_count, GLuint program, GLint mvp_loc, GLint color_loc, GLint selected_loc);
 
@@ -13,6 +13,9 @@ public:	// TODO: add def constructor, copy constructor, assingnation, destructor
 	void RenderColor(const ftm::mat4 &mvp, const ftm::vec3 &color, bool selected) const;
 
 private:
+	RenderObject() {};
+	RenderObject(const RenderObject &other) {};
+	RenderObject & operator=(const RenderObject &other) { return *this; };
 
 	GLuint	_vbo;
 	GLuint	_vao;

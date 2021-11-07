@@ -10,6 +10,10 @@
 #include "Node.hpp"
 
 class NodeSerializer {
+private:
+	NodeSerializer(const NodeSerializer &other) {};
+	NodeSerializer & operator=(const NodeSerializer &other) { return *this; };
+
 	std::stringstream	stream;
 	int					node_counter;
 	std::vector<std::string>	names;
@@ -22,7 +26,6 @@ public:
 	void		serialize_nodes (const std::vector<class Node> &nodes, const std::string &name);
 	void		serialize_nodedata (const struct NodeData &nodedata);
 	std::string	finalize ();
-	// TODO: coplien
 };
 
 #endif /* Node_Serializer_Header */

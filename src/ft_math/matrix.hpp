@@ -45,7 +45,7 @@ struct Mat4 {
 		return res;
 	};
 	Mat4 & operator*=(const Mat4<T> &mat) {
-		*this = *this * mat;	// TODO: which order should be here?? )))
+		*this = *this * mat;
 		return *this;
 	};
 /* Operator for glm cast */
@@ -89,7 +89,7 @@ struct Mat3 {
 		r2 = o.r2;
 		return *this;
 	};
-	Mat3 operator*(const Mat3<T> &mat) const {	// TODO: check
+	Mat3 operator*(const Mat3<T> &mat) const {
 		Mat3 res;
 
 		res.r0.x = r0.x * mat.r0.x + r0.y * mat.r1.x + r0.z * mat.r2.x;
