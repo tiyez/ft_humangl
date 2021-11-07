@@ -16,6 +16,8 @@ public:
 	bool	listen_command ();
 	void	update (struct Input &input, float delta);
 
+	void	print_help ();
+
 	Skeleton	&get_skeleton () { return skeleton; }
 };
 
