@@ -18,8 +18,8 @@ ftm::mat4 calculate_projection(GLFWwindow *window) {
 ftm::mat4 calculate_camera(Input *input, float delta) {
 	const float			movement_speed = 3.0f;
 	const float			rotation_speed = 0.1f;
-	static ftm::vec3	camera_forward(0, 0, 1);
-	static ftm::vec3	camera_position(0, 0, 2);
+	static ftm::vec3	camera_forward(1, 0, 1);
+	static ftm::vec3	camera_position(7, 0, 9);
 
 	ftm::vec3	camera_right = ftm::normalize (ftm::cross (ftm::vec3 (0, 1, 0), camera_forward));
 	ftm::vec3	camera_forward_plane = ftm::normalize (ftm::cross (camera_right, ftm::vec3 (0, 1, 0)));

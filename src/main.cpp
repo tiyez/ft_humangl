@@ -14,8 +14,6 @@
 
 extern GLenum error;
 
-// TODO: make normal camera location ))
-// TODO: remove redundant output at start of program
 int main () {
 	Input			input {};
 	WindowUserData	userdata = { &input };
@@ -29,8 +27,6 @@ int main () {
 
 	NodeSerializer	serializer;
 	serializer.serialize_nodedata (create_nodedata (cube, "human"));
-	std::cout << serializer.finalize () << std::endl;
-
 
 	while (!glfwWindowShouldClose (window))
 	{
