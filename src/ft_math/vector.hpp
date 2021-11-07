@@ -15,7 +15,7 @@ struct Vec4 {
 		result.y = y * scalar;
 		result.z = z * scalar;
 		result.w = w * scalar;
-		return *this;
+		return result;
 	};
 
 /* Operator for glm cast */
