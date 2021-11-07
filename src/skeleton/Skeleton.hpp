@@ -36,13 +36,12 @@ public:
 private:
 	Skeleton() {};
 	Skeleton(const Skeleton &other) {};
-	Skeleton & operator=(const Skeleton &other) { return *this; };
 
 	void UpdateTime(float delta);
 	ftm::vec3 _cur_translation;
 	std::vector<TranslationFrame> _translation_frames;
 	std::string	_name;
-	std::vector<class Node>	_nodes;
+	std::vector<struct Node>	_nodes;
 	size_t	_root_index;
 	size_t	_highlighted_index;
 	float	_cur_time;

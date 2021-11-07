@@ -15,7 +15,7 @@ public:
 private:
 	RenderObject() {};
 	RenderObject(const RenderObject &other) {};
-	RenderObject & operator=(const RenderObject &other) { return *this; };
+	RenderObject & operator=(const RenderObject &other) = delete;
 
 	GLuint	_vbo;
 	GLuint	_vao;

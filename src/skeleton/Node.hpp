@@ -23,7 +23,7 @@ struct NodeData {
 	float		animation_time;
 	size_t		nodes_count;
 	std::vector<TranslationFrame> translations;
-	std::vector<class Node>	nodes;
+	std::vector<struct Node>	nodes;
 	int			root_index;
 	std::string	name;
 };

@@ -85,7 +85,7 @@ void Skeleton::UpdateTime(float delta) {
 	}
 }
 
-static void update_hierarchy(std::vector<class Node> &nodes, size_t index, float cur_time) {
+static void update_hierarchy(std::vector<struct Node> &nodes, size_t index, float cur_time) {
 	for (auto child : nodes[index].childs) {
 		update_hierarchy(nodes, child, cur_time);
 	}
@@ -98,8 +98,8 @@ void Skeleton::Animate(float delta) {
 	update_hierarchy(_nodes, _root_index, _cur_time);
 }
 
-static void draw_hierarchy(class MatrixStack &stack, const std::vector<class Node> &nodes, size_t index, int highlighted_index) {
-	const class Node	*node = &nodes[index];
+static void draw_hierarchy(class MatrixStack &stack, const std::vector<struct Node> &nodes, size_t index, int highlighted_index) {
+	const struct Node	*node = &nodes[index];
 
 	stack.push ();
 	if (node->parent_index >= 0) {
@@ -166,7 +166,7 @@ void	Skeleton::HighlightNode(int index) {
 
 void	Skeleton::RotateNodeFrame (size_t node_index, size_t frame_index, ftm::vec3 &euler_rot) {
 	if (node_index < _nodes.size ()) {
-		class Node	*node = &_nodes[node_index];
+		struct Node	*node = &_nodes[node_index];
 
 		if (frame_index < node->rot_frames.size ()) {
 			struct RotationFrame	&frame = node->rot_frames[frame_index];

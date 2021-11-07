@@ -152,7 +152,7 @@ bool	Console::listen_command () {
 			std::cout << "Skeleton name: " << skeleton._name << std::endl;
 			std::cout << "Nodes count: " << skeleton._nodes.size () << std::endl;
 			if (_node_index >= 0) {
-				class Node	*node = &skeleton._nodes[_node_index];
+				struct Node	*node = &skeleton._nodes[_node_index];
 
 				std::cout << "translation: " << node->translation << std::endl;
 				std::cout << "rotation: " << node->rotation << std::endl;
@@ -189,7 +189,7 @@ bool	Console::listen_command () {
 			}
 		} else if (0 == words[1].compare ("new_child") || 0 == words[1].compare ("newch")) {
 			if (_node_index >= 0) {
-				class Node	&parent = skeleton._nodes[_node_index];
+				struct Node	&parent = skeleton._nodes[_node_index];
 
 				skeleton._nodes.push_back (Node (parent.model));
 				skeleton._nodes.back ().parent_index = _node_index;

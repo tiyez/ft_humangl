@@ -19,12 +19,12 @@ void	NodeSerializer::serialize_translations (const std::vector<TranslationFrame>
 	stream << "\t{1, 0, {0, 0, 0}}" << std::endl << "};" << std::endl;
 }
 
-void	NodeSerializer::serialize_nodes (const std::vector<class Node> &nodes, const std::string &name) {
+void	NodeSerializer::serialize_nodes (const std::vector<struct Node> &nodes, const std::string &name) {
 	stream << "const struct HardNode\tskeleton_" << name << "[] = {" << std::endl;
 	names.push_back (name);
 
 	for (size_t index = 0; index < nodes.size (); index += 1) {
-		const class Node	*node = &nodes[index];
+		const struct Node	*node = &nodes[index];
 
 		stream << "\t{" << std::endl;
 		stream << "\t\t0, " << node->parent_index << ", ";

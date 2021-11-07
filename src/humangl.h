@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 
 class RenderObject;
-class Node;
+struct Node;
 struct NodeData;
 
 // SHADERS

@@ -20,7 +20,7 @@ public:
 
 private:
 	MatrixStack(const MatrixStack &other) {};
-	MatrixStack & operator=(const MatrixStack &other) { return *this; };
+	MatrixStack & operator=(const MatrixStack &other) = delete;
 };
 
 #endif //MATRIXSTACK_HPP

@@ -12,7 +12,7 @@
 class NodeSerializer {
 private:
 	NodeSerializer(const NodeSerializer &other) {};
-	NodeSerializer & operator=(const NodeSerializer &other) { return *this; };
+	NodeSerializer & operator=(const NodeSerializer &other) = delete;
 
 	std::stringstream	stream;
 	int					node_counter;
@@ -23,7 +23,7 @@ private:
 public:
 	NodeSerializer ();
 	void		serialize_translations (const std::vector<TranslationFrame> &translatinos, const std::string &name);
-	void		serialize_nodes (const std::vector<class Node> &nodes, const std::string &name);
+	void		serialize_nodes (const std::vector<struct Node> &nodes, const std::string &name);
 	void		serialize_nodedata (const struct NodeData &nodedata);
 	std::string	finalize ();
 };
