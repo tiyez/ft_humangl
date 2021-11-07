@@ -35,7 +35,6 @@ public:
 
 private:
 	Skeleton() {};
-	Skeleton(const Skeleton &other) {};
 
 	void UpdateTime(float delta);
 	ftm::vec3 _cur_translation;
